@@ -65,25 +65,24 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
 ## 🛠️ Tecnologías Utilizadas
 
 ### Backend
-- **Framework:** FastAPI (Python 3.10+)
-- **Base de Datos:** PostgreSQL 14+
-- **Autenticación:** JWT (JSON Web Tokens)
-- **ORM:** psycopg2 con RealDictCursor
-- **CORS:** FastAPI CORS middleware
+- **FastAPI** - Framework web moderno y rápido para construir APIs con Python. Validación automática de datos y documentación interactiva.
+- **PostgreSQL** - Sistema de base de datos relacional robusto y escalable para almacenar productos, ventas, servicios y clientes.
+- **JWT** - Tokens seguros para autenticación sin estado. Mantiene las sesiones de usuario activas por 30 minutos.
+- **psycopg2** - Adaptador PostgreSQL para Python que permite ejecutar consultas SQL y obtener resultados como diccionarios.
+- **CORS Middleware** - Permite que el frontend haga peticiones al backend desde diferentes puertos de forma segura.
 
 ### Frontend
-- **HTML5** + **CSS3** (Vanilla)
-- **JavaScript ES6+** (Sin frameworks)
-- **Sistema de Eventos:** EventBus personalizado
-- **APIs Externas:**
-  - RAWG Video Games Database API (videojuegos)
-  - Serper.dev API (consolas y accesorios)
+- **HTML5 + CSS3** - Estructura y estilos puros sin preprocesadores. Diseño responsive adaptado a móviles y tablets.
+- **JavaScript ES6+** - Lógica del cliente sin frameworks. Comunicación asíncrona con el backend vía Fetch API.
+- **EventBus** - Sistema personalizado de eventos para comunicación desacoplada entre componentes (ej: Dashboard se actualiza cuando se crea un producto).
+- **RAWG API** - Base de datos de +800,000 videojuegos con imágenes, descripciones y metadatos para búsqueda automática.
+- **Serper API** - Servicio de búsqueda de Google Images para encontrar imágenes de consolas y accesorios gaming.
 
 ### Arquitectura
-- **Patrón:** MVC (Model-View-Controller)
-- **Comunicación:** REST API
-- **Tiempo Real:** Event-driven architecture
-- **Puerto Único:** Frontend + Backend en puerto 8000
+- **MVC** - Separación de capas: Models (datos), Views (interfaz), Controllers (lógica de negocio).
+- **REST API** - Comunicación cliente-servidor mediante endpoints HTTP estándar (GET, POST, PUT, DELETE).
+- **Event-Driven** - Actualización en tiempo real sin refrescar página usando eventos personalizados.
+- **Puerto Único** - Backend sirve tanto la API como los archivos estáticos del frontend en puerto 8000.
 
 ---
 
@@ -185,15 +184,6 @@ python -m uvicorn main:app --reload --port 8000
 El sistema estará disponible en:
 - **Frontend:** http://localhost:8000/login
 - **API Docs:** http://localhost:8000/docs
-
-### Credenciales por Defecto
-
-```
-Usuario: admin
-Contraseña: admin123
-```
-
-> ⚠️ **Importante:** Cambiar credenciales en producción
 
 ---
 
@@ -332,8 +322,8 @@ POST /api/auth/login
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "password": "admin123"
+  "username": "tu_usuario",
+  "password": "tu_contraseña"
 }
 ```
 

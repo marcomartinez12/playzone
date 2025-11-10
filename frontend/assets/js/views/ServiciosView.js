@@ -169,22 +169,22 @@ function mostrarModalServicio(servicio = null) {
     const esEdicion = servicio !== null;
     servicioEditando = servicio;
 
-    modal.style.maxWidth = '600px';
+    modal.style.maxWidth = '520px';
     modal.innerHTML = `
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; margin: -20px -20px 20px -20px; border-radius: 12px 12px 0 0;">
-            <div style="font-size: 14px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 18px; margin: -20px -20px 16px -20px; border-radius: 12px 12px 0 0;">
+            <div style="font-size: 12px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
                 ${esEdicion ? 'Editar Servicio' : 'Nuevo Servicio de Reparación'}
             </div>
-            <div style="font-size: 24px; font-weight: 700;">
+            <div style="font-size: 20px; font-weight: 700;">
                 ${esEdicion ? `#${String(servicio.id_servicio).padStart(4, '0')}` : '🔧 Registrar Servicio'}
             </div>
         </div>
 
-        <div style="margin: 0 0 24px 0; text-align: left;">
+        <div style="margin: 0 0 16px 0; text-align: left;">
             <form id="formServicio">
                 <!-- Datos del Cliente -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Documento *
                     </label>
                     <div style="display: flex; gap: 8px;">
@@ -192,59 +192,59 @@ function mostrarModalServicio(servicio = null) {
                             value="${esEdicion && servicio.documento_cliente ? servicio.documento_cliente : ''}"
                             ${esEdicion ? 'readonly' : ''}
                             placeholder="Cédula o NIT"
-                            style="flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                            style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
                         ${!esEdicion ? `
                         <button type="button" id="btnBuscarClienteServicio"
-                            style="padding: 12px 16px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: background 0.2s;"
+                            style="padding: 10px 14px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: background 0.2s;"
                             onmouseover="this.style.background='#5568d3'"
                             onmouseout="this.style.background='#667eea'">
                             🔍 Buscar
                         </button>
                         ` : ''}
                     </div>
-                    <div id="servicioClienteStatus" style="margin-top: 5px; font-size: 12px; color: #718096;"></div>
+                    <div id="servicioClienteStatus" style="margin-top: 4px; font-size: 11px; color: #718096;"></div>
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Nombre completo *
                     </label>
                     <input type="text" id="servicioClienteNombre" required
                         value="${esEdicion && servicio.nombre_cliente ? servicio.nombre_cliente : ''}"
                         ${esEdicion ? 'readonly' : ''}
                         placeholder="Ej: Juan Pérez"
-                        style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
                 </div>
                 <input type="hidden" id="servicioClienteId" value="${esEdicion && servicio.id_cliente ? servicio.id_cliente : ''}">
 
                 <!-- Consola -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Consola / Equipo *
                     </label>
                     <input type="text" id="servicioConsola" required
                         value="${esEdicion ? servicio.consola : ''}"
                         placeholder="Ej: PlayStation 5, Xbox Series X, Nintendo Switch..."
-                        style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
                 </div>
 
                 <!-- Descripción de la falla -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Descripción de la Falla *
                     </label>
-                    <textarea id="servicioDescripcion" required rows="4"
+                    <textarea id="servicioDescripcion" required rows="3"
                         placeholder="Describe el problema o falla del equipo..."
-                        style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical;">${esEdicion ? servicio.descripcion : ''}</textarea>
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; resize: vertical;">${esEdicion ? servicio.descripcion : ''}</textarea>
                 </div>
 
                 <!-- Estado (solo en edición) -->
                 ${esEdicion ? `
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Estado *
                     </label>
                     <select id="servicioEstado" required
-                        style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #2d3748;">
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #2d3748;">
                         <option value="En reparacion" ${servicio.estado === 'En reparacion' ? 'selected' : ''}>⚙️ En reparación</option>
                         <option value="Listo" ${servicio.estado === 'Listo' ? 'selected' : ''}>✅ Listo para entrega</option>
                         <option value="Entregado" ${servicio.estado === 'Entregado' ? 'selected' : ''}>📦 Entregado</option>
@@ -253,24 +253,38 @@ function mostrarModalServicio(servicio = null) {
                 ` : ''}
 
                 <!-- Costo -->
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
                         Costo del Servicio
                     </label>
                     <input type="number" id="servicioCosto" min="0" step="1000"
                         value="${esEdicion && servicio.costo ? servicio.costo : ''}"
                         placeholder="Ej: 150000"
-                        style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    <div style="font-size: 12px; color: #718096; margin-top: 4px;">Opcional - Puedes definirlo más tarde</div>
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <div style="font-size: 11px; color: #718096; margin-top: 3px;">Opcional - Puedes definirlo más tarde</div>
                 </div>
+
+                <!-- Pagado (solo en edición) -->
+                ${esEdicion ? `
+                <div style="margin-bottom: 14px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="servicioPagado" ${servicio.pagado ? 'checked' : ''}
+                            style="width: 18px; height: 18px; cursor: pointer;">
+                        <span style="font-size: 13px; font-weight: 600; color: #4a5568;">
+                            💰 Servicio pagado
+                        </span>
+                    </label>
+                    <div style="font-size: 11px; color: #718096; margin-top: 3px; margin-left: 26px;">Marca esta casilla cuando el cliente haya pagado</div>
+                </div>
+                ` : ''}
             </form>
         </div>
 
-        <div class="confirm-modal-actions" style="margin-top: 24px; display: flex; gap: 12px;">
-            <button id="btnCancelar" class="confirm-btn confirm-btn-cancel" style="flex: 1; padding: 12px; font-size: 15px; font-weight: 600;">
+        <div class="confirm-modal-actions" style="margin-top: 16px; display: flex; gap: 10px;">
+            <button id="btnCancelar" class="confirm-btn confirm-btn-cancel" style="flex: 1; padding: 10px; font-size: 14px; font-weight: 600;">
                 Cancelar
             </button>
-            <button id="btnGuardar" class="confirm-btn confirm-btn-confirm" style="flex: 1; padding: 12px; font-size: 15px; font-weight: 600;">
+            <button id="btnGuardar" class="confirm-btn confirm-btn-confirm" style="flex: 1; padding: 10px; font-size: 14px; font-weight: 600;">
                 ${esEdicion ? 'Actualizar' : 'Registrar Servicio'}
             </button>
         </div>
@@ -456,6 +470,8 @@ async function actualizarServicio() {
     const descripcion = document.getElementById('servicioDescripcion').value.trim();
     const estado = document.getElementById('servicioEstado').value;
     const costo = document.getElementById('servicioCosto').value;
+    const pagadoCheckbox = document.getElementById('servicioPagado');
+    const pagado = pagadoCheckbox ? pagadoCheckbox.checked : false;
 
     if (!consola || !descripcion || !estado) {
         showWarning('Por favor completa todos los campos obligatorios', 'Campos incompletos');
@@ -475,7 +491,8 @@ async function actualizarServicio() {
                 consola: consola,
                 descripcion: descripcion,
                 estado: estado,
-                costo: costo ? parseFloat(costo) : null
+                costo: costo ? parseFloat(costo) : null,
+                pagado: pagado
             })
         });
 

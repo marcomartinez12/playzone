@@ -46,13 +46,13 @@ class ServicioController:
             # Insertar servicio
             cursor.execute(
                 """
-                INSERT INTO servicios (id_usuario, id_cliente, consola, descripcion, estado, costo)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO servicios (id_usuario, id_cliente, consola, descripcion, estado, costo, pagado)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING id_servicio, id_usuario, id_cliente, consola, descripcion,
-                          estado, costo, fecha_ingreso, fecha_entrega
+                          estado, costo, pagado, fecha_ingreso, fecha_entrega
                 """,
                 (servicio.id_usuario, servicio.id_cliente, servicio.consola,
-                 servicio.descripcion, EstadoServicio.EN_REPARACION.value, servicio.costo)
+                 servicio.descripcion, EstadoServicio.EN_REPARACION.value, servicio.costo, servicio.pagado)
             )
             nuevo_servicio = cursor.fetchone()
 
@@ -96,7 +96,7 @@ class ServicioController:
         with get_db_cursor() as cursor:
             query = """
                 SELECT s.id_servicio, s.id_usuario, s.id_cliente, s.consola,
-                       s.descripcion, s.estado, s.costo, s.fecha_ingreso, s.fecha_entrega,
+                       s.descripcion, s.estado, s.costo, s.pagado, s.fecha_ingreso, s.fecha_entrega,
                        c.nombre as nombre_cliente, c.documento as documento_cliente,
                        c.telefono as telefono_cliente,
                        u.username as nombre_usuario,
@@ -145,7 +145,7 @@ class ServicioController:
             cursor.execute(
                 """
                 SELECT s.id_servicio, s.id_usuario, s.id_cliente, s.consola,
-                       s.descripcion, s.estado, s.costo, s.fecha_ingreso, s.fecha_entrega,
+                       s.descripcion, s.estado, s.costo, s.pagado, s.fecha_ingreso, s.fecha_entrega,
                        c.nombre as nombre_cliente, c.documento as documento_cliente,
                        c.telefono as telefono_cliente, c.email,
                        u.username as nombre_usuario,
@@ -208,6 +208,10 @@ class ServicioController:
         if servicio.costo is not None:
             updates.append("costo = %s")
             params.append(servicio.costo)
+
+        if servicio.pagado is not None:
+            updates.append("pagado = %s")
+            params.append(servicio.pagado)
 
         if not updates:
             raise HTTPException(

@@ -69,13 +69,18 @@ async function cargarEstadisticasDashboard() {
         const serviciosArray = Array.isArray(servicios) ? servicios : [];
 
         // Calcular estadísticas
+        const ingresosVentas = calcularIngresosMes(ventasArray);
+        const ingresosServicios = calcularIngresosServiciosMes(serviciosArray);
+
         const estadisticas = {
             totalProductos: productosArray.length,
             stockBajo: productosArray.filter(p => p.stock_bajo === true || p.cantidad < 10).length,
             ventasHoy: filtrarVentasHoy(ventasArray).length,
             totalVentas: ventasArray.length,
             serviciosPendientes: serviciosArray.filter(s => s.estado === 'En reparacion').length,
-            ingresosMes: calcularIngresosMes(ventasArray),
+            ingresosMes: ingresosVentas + ingresosServicios,
+            ingresosVentas: ingresosVentas,
+            ingresosServicios: ingresosServicios,
             productoMasVendido: obtenerProductoMasVendido(ventasArray)
         };
 
@@ -91,6 +96,8 @@ async function cargarEstadisticasDashboard() {
             totalVentas: 0,
             serviciosPendientes: 0,
             ingresosMes: 0,
+            ingresosVentas: 0,
+            ingresosServicios: 0,
             productoMasVendido: { nombre: 'N/A', cantidad: 0 }
         });
     }
@@ -122,6 +129,23 @@ function calcularIngresosMes(ventas) {
         .reduce((total, venta) => total + parseFloat(venta.total), 0);
 }
 
+// Calcular ingresos de servicios del mes actual
+function calcularIngresosServiciosMes(servicios) {
+    const ahora = new Date();
+    const mesActual = ahora.getMonth();
+    const añoActual = ahora.getFullYear();
+
+    return servicios
+        .filter(servicio => {
+            // Solo contar servicios que estén pagados
+            if (!servicio.pagado) return false;
+
+            const fecha = new Date(servicio.fecha_ingreso || servicio.fecha_creacion);
+            return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual;
+        })
+        .reduce((total, servicio) => total + parseFloat(servicio.costo || 0), 0);
+}
+
 // Obtener producto más vendido
 function obtenerProductoMasVendido(ventas) {
     const conteo = {};
@@ -151,24 +175,30 @@ function mostrarEstadisticas(stats) {
     const elemTotalProductos = document.getElementById('stat-total-productos');
     const elemStockBajo = document.getElementById('stat-stock-bajo');
     const elemVentasHoy = document.getElementById('stat-ventas-hoy');
-    const elemTotalVentas = document.getElementById('stat-total-ventas');
     const elemServiciosPendientes = document.getElementById('stat-servicios-pendientes');
     const elemIngresosMes = document.getElementById('stat-ingresos-mes');
+    const elemIngresosVentas = document.getElementById('stat-ingresos-ventas');
+    const elemIngresosServicios = document.getElementById('stat-ingresos-servicios');
 
     if (elemTotalProductos) elemTotalProductos.textContent = stats.totalProductos;
     if (elemStockBajo) elemStockBajo.textContent = stats.stockBajo;
     if (elemVentasHoy) elemVentasHoy.textContent = stats.ventasHoy;
-    if (elemTotalVentas) elemTotalVentas.textContent = stats.totalVentas;
     if (elemServiciosPendientes) elemServiciosPendientes.textContent = stats.serviciosPendientes;
 
-    // Formatear ingresos del mes
-    const ingresosFormateados = new Intl.NumberFormat('es-CO', {
+    // Formatear ingresos
+    const formatter = new Intl.NumberFormat('es-CO', {
         style: 'currency',
         currency: 'COP',
         minimumFractionDigits: 0
-    }).format(stats.ingresosMes);
+    });
 
-    if (elemIngresosMes) elemIngresosMes.textContent = ingresosFormateados;
+    const ingresosTotalesFormateados = formatter.format(stats.ingresosMes);
+    const ingresosVentasFormateados = formatter.format(stats.ingresosVentas || 0);
+    const ingresosServiciosFormateados = formatter.format(stats.ingresosServicios || 0);
+
+    if (elemIngresosMes) elemIngresosMes.textContent = ingresosTotalesFormateados;
+    if (elemIngresosVentas) elemIngresosVentas.textContent = ingresosVentasFormateados;
+    if (elemIngresosServicios) elemIngresosServicios.textContent = ingresosServiciosFormateados;
 
     // Mostrar producto más vendido
     const productoMasVendido = document.getElementById('producto-mas-vendido');

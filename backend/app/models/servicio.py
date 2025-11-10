@@ -23,6 +23,7 @@ class ServicioBase(BaseModel):
     consola: str = Field(..., min_length=1, max_length=100, description="Tipo/modelo de consola")
     descripcion: str = Field(..., min_length=1, max_length=500, description="Descripción de la falla")
     costo: Optional[float] = Field(None, ge=0, description="Costo del servicio")
+    pagado: bool = Field(False, description="Indica si el servicio ha sido pagado")
 
 
 class ServicioCreate(ServicioBase):
@@ -36,6 +37,7 @@ class ServicioUpdate(BaseModel):
     descripcion: Optional[str] = Field(None, min_length=1, max_length=500)
     estado: Optional[EstadoServicio] = None
     costo: Optional[float] = Field(None, ge=0)
+    pagado: Optional[bool] = None
 
 
 class ServicioResponse(ServicioBase):
