@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Sistema de Gestión de Inventario PlayZone - Control de productos, ventas y servicios">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- RF-12: Meta tags para móviles -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PlayZone">
+
+    <title>PlayZone - Gestión de Inventario</title>
+
+    <!-- Favicons -->
+    <link href="/assets/images/logo.png" rel="icon">
+    <link href="/assets/images/logo.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/product.css">
+    <link rel="stylesheet" href="/assets/css/services.css">
+    <link rel="stylesheet" href="/assets/css/addsales.css">
+    <link rel="stylesheet" href="/assets/css/notifications.css">
+
+    <!-- Limpiar modo oscuro del localStorage -->
+    <script>
+        localStorage.removeItem('theme');
+        document.documentElement.classList.remove('dark-theme');
+    </script>
+</head>
+<body>
+    
+<!-- Banner -->
+    <header class="header">
+        <div class="header-content">
+            <div class="titlebanner">Play Zone</div>
+            <div class="user-info">
+                <div class="user-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span id="headerUsername">Usuario</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Salir</span>
+                </button>
+            </div>
+        </div>
+
+    </header>
+
+<!-- Menu -->
+    <button class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <aside class="sidebar">
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="/assets/images/logo.png" alt="Usuario">
+            </div>
+            <div class="user-name">nombre de usuario</div>
+            <div class="user-email">PlayZone@gmail.com</div>
+        </div>
+
+        <nav class="menu">
+            <a href="#" class="menu-item active" onclick="event.preventDefault(); showSection('inicio')">
+                <div class="menu-icon icon-inicio">
+                    <img src="/assets/images/hogar.png" alt="Inicio">
+                </div>
+                <span class="menu-text">Inicio</span>
+            </a>
+
+            <a href="#" class="menu-item" onclick="event.preventDefault(); showSection('productos')">
+                <div class="menu-icon icon-productos">
+                    <img src="/assets/images/agregar-producto.png" alt="Productos">
+                </div>
+                <span class="menu-text">Productos</span>
+            </a>
+
+            <a href="#" class="menu-item" onclick="event.preventDefault(); showSection('servicios')">
+                <div class="menu-icon icon-servicios" >
+                    <img src="/assets/images/servicio.png" alt="Servicios">
+                </div>
+                <span class="menu-text">Servicios</span>
+            </a>
+
+            <a href="#" class="menu-item" onclick="event.preventDefault(); showSection('registrarventas')">
+                <div class="menu-icon icon-registroventas">
+                    <img src="/assets/images/banca-electronica.png" alt="Registrarventas">
+                </div>
+                <span class="menu-text">Registrar ventas</span>
+            </a>
+
+            <a href="#" class="menu-item" onclick="event.preventDefault(); showSection('verventas')">
+                <div class="menu-icon icon-verventas">
+                    <img src="/assets/images/facturacion.png" alt="Verventas">
+                </div>
+                <span class="menu-text">Ver ventas</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="content">
+        <!-- Sección Inicio -->
+        <div id="inicio" class="section-content">
+            <div class="section-header" style="margin-bottom: 32px;">
+                <h1 style="font-size: 32px; font-weight: 700; color: #1a202c; margin-bottom: 8px;">Dashboard PlayZone</h1>
+                <p style="color: #718096; font-size: 16px;">Resumen general de tu negocio</p>
+            </div>
+
+            <!-- Tarjetas de estadísticas principales -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                <!-- Total de Productos -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #0066cc; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Total Productos</p>
+                            <h2 id="stat-total-productos" style="font-size: 40px; font-weight: 800; color: #0066cc; margin: 0; line-height: 1;">0</h2>
+                        </div>
+                        <div style="width: 56px; height: 56px; background: rgba(0, 102, 204, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">📦</div>
+                    </div>
+                </div>
+
+                <!-- Stock Bajo -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #d97706; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Stock Bajo</p>
+                            <h2 id="stat-stock-bajo" style="font-size: 40px; font-weight: 800; color: #d97706; margin: 0; line-height: 1;">0</h2>
+                        </div>
+                        <div style="width: 56px; height: 56px; background: rgba(217, 119, 6, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">⚠️</div>
+                    </div>
+                </div>
+
+                <!-- Ventas de Hoy -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #059669; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Ventas Hoy</p>
+                            <h2 id="stat-ventas-hoy" style="font-size: 40px; font-weight: 800; color: #059669; margin: 0; line-height: 1;">0</h2>
+                        </div>
+                        <div style="width: 56px; height: 56px; background: rgba(5, 150, 105, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">💰</div>
+                    </div>
+                </div>
+
+                <!-- Servicios Pendientes -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #7c3aed; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">En Reparación</p>
+                            <h2 id="stat-servicios-pendientes" style="font-size: 40px; font-weight: 800; color: #7c3aed; margin: 0; line-height: 1;">0</h2>
+                        </div>
+                        <div style="width: 56px; height: 56px; background: rgba(124, 58, 237, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">🔧</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segunda fila de tarjetas -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                <!-- Ingresos del Mes -->
+                <div style="background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(5, 150, 105, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📈</div>
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600;">Ingresos del Mes</p>
+                            <h3 id="stat-ingresos-mes" style="font-size: 28px; font-weight: 700; color: #059669; margin: 0;">$0</h3>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                        <span style="font-size: 14px; color: #059669; font-weight: 600;" id="stat-total-ventas">0</span>
+                        <span style="font-size: 13px; color: #4a5568;">ventas totales</span>
+                    </div>
+                </div>
+
+                <!-- Producto Más Vendido -->
+                <div style="background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(0, 102, 204, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🏆</div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Producto Más Vendido</p>
+                            <div id="producto-mas-vendido">
+                                <div style="font-size: 20px; font-weight: 700; color: #0066cc;">Cargando...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- fin Inicio -->
+
+
+        <!-- Sección Productos -->
+        <div id="productos" class="section-content">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <h1 style="font-size: 28px; font-weight: 600; color: #2d3748; margin-bottom: 8px;">Gestión de Inventario</h1>
+                <p style="color: #718096; font-size: 15px;">Administra tu catálogo de productos</p>
+            </div>
+
+            <!-- RF-11: Panel de Alertas de Stock Bajo -->
+            <div id="alertaStockPanel" style="display: none; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-left: 4px solid #ef4444; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 32px; animation: pulse 2s infinite;">⚠️</div>
+                        <div>
+                            <div style="font-weight: 700; color: #991b1b; font-size: 16px; margin-bottom: 4px;">
+                                <span id="alertaStockCount">0</span> productos con stock bajo
+                            </div>
+                            <div style="color: #dc2626; font-size: 13px;">
+                                Se requiere reabastecimiento urgente
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="mostrarProductosBajoStock()" style="padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                        Ver Productos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de acciones -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap;">
+                <button onclick="abrirModal()" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 4px rgba(102, 126, 234, 0.3)'">
+                    ➕ Agregar Producto
+                </button>
+
+                <div style="position: relative; flex: 1; max-width: 400px;">
+                    <input type="text" id="searchProductInput" placeholder="Buscar por nombre, código, categoría..." style="width: 100%; padding: 12px 40px 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; transition: all 0.2s;" onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 3px rgba(102, 126, 234, 0.1)'" onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                    <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #718096;">🔍</div>
+                </div>
+            </div>
+
+            <!-- RF-09: Panel de Filtros -->
+            <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                    <span style="font-size: 18px;">🔍</span>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #2d3748;">Filtrar Productos</h3>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <!-- Filtro por Rango de Precio -->
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                            💰 Rango de Precio
+                        </label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="number" id="filtroPrecioMin" placeholder="Min" min="0" step="1000" inputmode="numeric"
+                                   style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                            <span style="color: #718096;">-</span>
+                            <input type="number" id="filtroPrecioMax" placeholder="Max" min="0" step="1000" inputmode="numeric"
+                                   style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                        </div>
+                    </div>
+
+                    <!-- Filtro por Estado de Stock -->
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">
+                            📦 Estado de Stock
+                        </label>
+                        <select id="filtroStock" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #2d3748;">
+                            <option value="">Todos los productos</option>
+                            <option value="disponible">✅ Stock disponible (≥ 10)</option>
+                            <option value="bajo">⚠️ Stock bajo (1-9)</option>
+                            <option value="agotado">❌ Sin stock (0)</option>
+                        </select>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div style="display: flex; align-items: flex-end; gap: 8px;">
+                        <button onclick="aplicarFiltros()"
+                                style="flex: 1; padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: transform 0.2s;"
+                                onmouseover="this.style.transform='translateY(-2px)'"
+                                onmouseout="this.style.transform=''">
+                            Aplicar
+                        </button>
+                        <button onclick="limpiarFiltros()"
+                                style="padding: 10px 20px; background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s;"
+                                onmouseover="this.style.background='#edf2f7'"
+                                onmouseout="this.style.background='#f7fafc'">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de productos profesional -->
+            <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;">
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #f7fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Código</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Producto</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Imagen</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Categoría</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Descripción</th>
+                                <th style="padding: 16px 20px; text-align: right; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Precio</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Stock</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 60px 20px;">
+                                    <div style="display: inline-block;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                                        <div style="font-size: 16px; color: #718096; font-weight: 500;">Cargando productos...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- fin Productos -->
+
+        <!-- Sección Servicios -->
+        <div id="servicios" class="section-content">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <h1 style="font-size: 28px; font-weight: 600; color: #2d3748; margin-bottom: 8px;">Servicios de Reparación</h1>
+                <p style="color: #718096; font-size: 15px;">Gestiona las reparaciones de consolas y equipos</p>
+            </div>
+
+            <!-- Botón para agregar servicio -->
+            <div style="margin-bottom: 24px;">
+                <button onclick="abrirModalServicio()" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 4px rgba(102, 126, 234, 0.3)'">
+                    ➕ Registrar Nuevo Servicio
+                </button>
+            </div>
+
+            <!-- Filtros -->
+            <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">Filtrar por Estado</label>
+                        <select id="filtroEstadoServicio" onchange="cargarServicios()" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #2d3748;">
+                            <option value="">Todos los estados</option>
+                            <option value="En reparacion">En reparación</option>
+                            <option value="Listo">Listo</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 8px;">Buscar</label>
+                        <input type="text" id="buscarServicio" placeholder="Cliente o consola..." onkeyup="buscarServicios()" style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de servicios -->
+            <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;">
+                <div style="padding: 24px; border-bottom: 1px solid #e2e8f0;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: #2d3748; margin: 0;">Listado de Servicios</h3>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #f7fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">ID</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Cliente</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Consola</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Descripción</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Estado</th>
+                                <th style="padding: 16px 20px; text-align: right; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Costo</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviciosTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 60px 20px;">
+                                    <div style="display: inline-block;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                                        <div style="font-size: 16px; color: #718096; font-weight: 500;">Cargando servicios...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- fin Servicios -->
+
+        <!-- Sección add ventas -->
+        <div id="registrarventas" class="section-content">
+            <div class="section-header">
+                <h1>Registrar Ventas</h1>
+                <p>Registra ventas de manera sencilla</p>
+            </div>
+
+
+            <div class="filter-dropdown-container">
+                <button class="dropdown-btn" id="dropdownBtn">
+                    <span id="selectedFilter">Todos los productos</span>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-item active" data-filter="todos">Todos</div>
+                    <div class="dropdown-item" data-filter="videojuego">Videojuegos</div>
+                    <div class="dropdown-item" data-filter="consola">Consolas</div>
+                    <div class="dropdown-item" data-filter="accesorio">Accesorios</div>
+                </div>
+            </div>
+
+
+
+            
+            <div class="Contenido">
+
+                <div class ="Articulos">
+
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Los productos se cargarán dinámicamente -->
+                    </div>
+
+                </div>
+
+                <div class="Carrito">
+                    <aside class="cart-sidebar">
+                        <h2 class="cart-title">Carrito de Ventas<span class="cart-badge" id="cartBadge" style="display:none;">0</span></h2>
+                        <div class="cart-items" id="cartItems">
+                            <div class="cart-empty">Tu carrito está vacío</div>
+                        </div>
+                        <div class="cart-total">
+                            <div class="total-label">Total a pagar</div>
+                            <div class="total-amount" id="totalAmount">0</div>
+                        </div>
+                        <div class="cart-actions">
+                            <button class="action-btn save-btn" onclick="saveCart()">Guardar Venta</button>
+                            <button class="action-btn clear-btn" onclick="clearCart()">Vaciar</button>
+                        </div>
+                    </aside>   
+                </div>
+
+
+                
+            </div>
+
+
+
+        </div><!-- fin add ventas -->
+
+        <!-- Sección verventas -->
+        <div id="verventas" class="section-content">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <h1 style="font-size: 28px; font-weight: 600; color: #2d3748; margin-bottom: 8px;">Gestión de Ventas</h1>
+                <p style="color: #718096; font-size: 15px;">Monitoreo y análisis de ventas realizadas</p>
+            </div>
+
+            <!-- Tarjetas de Estadísticas -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                <!-- Card 1: Ventas de Hoy -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #667eea; transition: transform 0.2s, box-shadow 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Ventas Hoy</p>
+                            <h2 id="ventasHoy" style="font-size: 36px; font-weight: 700; color: #667eea; margin: 0;">0</h2>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            📊
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Total de Hoy -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #f5576c; transition: transform 0.2s, box-shadow 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Total Hoy</p>
+                            <h2 id="totalHoy" style="font-size: 36px; font-weight: 700; color: #f5576c; margin: 0;">$0</h2>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            💰
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Productos Vendidos -->
+                <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #00f2fe; transition: transform 0.2s, box-shadow 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600;">Productos</p>
+                            <h2 id="productosVendidos" style="font-size: 36px; font-weight: 700; color: #00d4e6; margin: 0;">0</h2>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            📦
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Ventas -->
+            <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;">
+                <div style="padding: 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 600; color: #2d3748; margin: 0 0 4px 0;">Historial de Ventas</h3>
+                        <p style="font-size: 14px; color: #718096; margin: 0;">Listado completo de transacciones</p>
+                    </div>
+                    <button onclick="descargarReporte()" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 4px rgba(102, 126, 234, 0.3)'">
+                        📥 Descargar Reporte
+                    </button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #f7fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">ID Venta</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Cliente</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Productos</th>
+                                <th style="padding: 16px 20px; text-align: right; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Total</th>
+                                <th style="padding: 16px 20px; text-align: left; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Fecha y Hora</th>
+                                <th style="padding: 16px 20px; text-align: center; font-weight: 600; color: #4a5568; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ventasTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 60px 20px;">
+                                    <div style="display: inline-block;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                                        <div style="font-size: 16px; color: #718096; font-weight: 500;">Cargando ventas...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<!-- Product Modal -->
+     <div class="modal-overlay" id="modalOverlay" onclick="cerrarModalOverlay(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Agregar Nuevo Producto</h2>
+                <button class="btn-cerrar" onclick="cerrarModal()">&times;</button>
+            </div>
+            
+            <form id="formProducto" onsubmit="guardarProducto(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombre">Nombre del Producto </label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ej: Xbox series s">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Categoría </label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="videojuego">Videojuegos</option>
+                            <option value="consola">Consolas</option>
+                            <option value="accesorio">Accesorios</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precio">Precio </label>
+                        <input type="number" id="precio" name="precio" step="0.01" required placeholder="0.00" inputmode="decimal">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">Cantidad </label>
+                        <input type="number" id="stock" name="stock" required placeholder="0" inputmode="numeric">
+                    </div>
+
+   
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" placeholder="Descripción detallada del producto..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imagen">URL de Imagen</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="url" id="imagen" name="imagen" placeholder="https://ejemplo.com/imagen.jpg" style="flex: 1;">
+                            <button type="button" id="btnBuscarImagen" onclick="buscarImagenesManual()"
+                                style="padding: 10px 14px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; transition: background 0.2s;"
+                                onmouseover="this.style.background='#5568d3'"
+                                onmouseout="this.style.background='#667eea'"
+                                title="Buscar imágenes">
+                                🔍
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-guardar">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- RF-12: Configuración de API para ngrok -->
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/utils/eventBus.js"></script>
+    <script src="/assets/js/notifications.js"></script>
+    <script src="/assets/js/utils/imageSearch.js"></script>
+    <script src="/assets/js/controllers/NavigationController.js"></script>
+    <script src="/assets/js/views/DashboardView.js"></script>
+    <script src="/assets/js/views/ProductoView.js"></script>
+    <script src="/assets/js/controllers/VentaController.js"></script>
+    <script src="/assets/js/views/VentasView.js"></script>
+    <script src="/assets/js/views/ServiciosView.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+/* ============================================
+   RF-12: ESTILOS RESPONSIVE PARA SERVICIOS
+   ============================================ */
+
+/* Tablets y dispositivos medianos */
+@media (max-width: 768px) {
+    /* Contenedor de tabla de servicios */
+    .services-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 10px;
+        border-radius: 12px;
+    }
+
+    .services-table {
+        min-width: 700px; /* Mantiene estructura en tablet */
+    }
+
+    .services-table th,
+    .services-table td {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    /* Botones de acción */
+    .service-actions button {
+        min-height: 40px;
+        padding: 8px 12px;
+    }
+
+    /* Búsqueda de servicios */
+    .search-service {
+        right: 15px;
+        top: 75px;
+    }
+
+    .search-service input {
+        width: 200px;
+    }
+}
+
+/* Móviles en modo vertical */
+@media (max-width: 480px) {
+    /* Búsqueda centrada en móvil */
+    .search-service {
+        position: static;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-service input {
+        width: calc(100% - 40px);
+        max-width: 300px;
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    /* Tabla de servicios compacta */
+    .services-table-container {
+        margin: 5px;
+    }
+
+    .services-table {
+        min-width: 600px; /* Permite scroll horizontal */
+    }
+
+    .services-table th,
+    .services-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    /* Botones más grandes para touch */
+    .service-actions button {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    /* Badges de estado más visibles */
+    .badge {
+        padding: 6px 12px;
+        font-size: 11px;
+        border-radius: 12px;
+    }
+
+    /* Formulario de servicios en modal */
+    .service-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+
+    .service-form input,
+    .service-form select,
+    .service-form textarea {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        min-height: 44px; /* Touch target */
+    }
+
+    .service-form textarea {
+        min-height: 100px;
+    }
+
+    /* Botones de formulario */
+    .service-form-actions button {
+        width: 100%;
+        min-height: 48px;
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 360px) {
+    .services-table-container {
+        margin: 3px;
+    }
+
+    .services-table th,
+    .services-table td {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+
+    .service-actions button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Modo horizontal en móvil */
+@media (max-width: 768px) and (orientation: landscape) {
+    .services-table-container {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+}

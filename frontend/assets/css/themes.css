@@ -1,0 +1,595 @@
+/* ============================================
+   DARK MODE - EPIC GAMES LAUNCHER STYLE
+   ============================================ */
+
+/*
+PALETA EPIC GAMES:
+- Fondo principal: #0e0e10 (negro azulado)
+- Fondo secundario: #18181b (gris oscuro azulado)
+- Fondo cards: #1f1f23 (gris medio)
+- Bordes: #2a2a2e (gris borde)
+- Acento azul: #0078f2 (azul Epic)
+- Acento hover: #409eff (azul claro)
+- Texto principal: #e8e8ea (blanco suave)
+- Texto secundario: #a8a8b3 (gris texto)
+*/
+
+/* FONDO PRINCIPAL */
+body.dark-theme,
+html.dark-theme body {
+    background: #0e0e10;
+}
+
+/* ============================================
+   HEADER - EPIC STYLE
+   ============================================ */
+body.dark-theme .header,
+html.dark-theme .header {
+    background: #18181b;
+    border-bottom: 1px solid #2a2a2e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .titlebanner,
+html.dark-theme .titlebanner {
+    color: #e8e8ea;
+    font-weight: 700;
+}
+
+body.dark-theme .user-info,
+html.dark-theme .user-info {
+    color: #a8a8b3;
+}
+
+body.dark-theme .user-info a,
+html.dark-theme .user-info a {
+    color: #0078f2 !important;
+    transition: color 0.2s ease;
+}
+
+body.dark-theme .user-info a:hover,
+html.dark-theme .user-info a:hover {
+    color: #409eff !important;
+}
+
+/* ============================================
+   SIDEBAR - EPIC STYLE
+   ============================================ */
+body.dark-theme .sidebar,
+html.dark-theme .sidebar {
+    background: #18181b;
+    border-right: 1px solid #2a2a2e;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .user-profile,
+html.dark-theme .user-profile {
+    background: #1f1f23;
+    border-bottom: 1px solid #2a2a2e;
+}
+
+body.dark-theme .user-avatar,
+html.dark-theme .user-avatar {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+    border: 3px solid #2a2a2e;
+    box-shadow: 0 4px 12px rgba(0, 120, 242, 0.3);
+}
+
+body.dark-theme .user-name,
+html.dark-theme .user-name {
+    color: #e8e8ea;
+}
+
+body.dark-theme .user-email,
+html.dark-theme .user-email {
+    color: #71717a;
+}
+
+/* ============================================
+   MENU - EPIC STYLE
+   ============================================ */
+body.dark-theme .menu::-webkit-scrollbar-track,
+html.dark-theme .menu::-webkit-scrollbar-track {
+    background: #1f1f23;
+}
+
+body.dark-theme .menu::-webkit-scrollbar-thumb,
+html.dark-theme .menu::-webkit-scrollbar-thumb {
+    background: #0078f2;
+    border-radius: 3px;
+}
+
+body.dark-theme .menu::-webkit-scrollbar-thumb:hover,
+html.dark-theme .menu::-webkit-scrollbar-thumb:hover {
+    background: #409eff;
+}
+
+body.dark-theme .menu-item,
+html.dark-theme .menu-item {
+    color: #a8a8b3;
+    border-left: 3px solid transparent;
+}
+
+body.dark-theme .menu-item:hover,
+html.dark-theme .menu-item:hover {
+    background: rgba(0, 120, 242, 0.1);
+    border-left-color: #0078f2;
+    color: #e8e8ea;
+}
+
+body.dark-theme .menu-item.active,
+html.dark-theme .menu-item.active {
+    background: rgba(0, 120, 242, 0.15);
+    border-left-color: #0078f2;
+    color: #ffffff;
+}
+
+body.dark-theme .menu-icon,
+html.dark-theme .menu-icon {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+body.dark-theme .menu-item:hover .menu-icon,
+html.dark-theme .menu-item:hover .menu-icon {
+    background: rgba(0, 120, 242, 0.2);
+}
+
+body.dark-theme .menu-item.active .menu-icon,
+html.dark-theme .menu-item.active .menu-icon {
+    background: rgba(0, 120, 242, 0.25);
+}
+
+/* ============================================
+   CONTENT - EPIC STYLE
+   ============================================ */
+body.dark-theme .content,
+html.dark-theme .content {
+    background: transparent;
+}
+
+body.dark-theme .section-header,
+html.dark-theme .section-header {
+    background: #1f1f23;
+    border-bottom: 2px solid #0078f2;
+    border-left: 4px solid #0078f2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .section-header h1,
+html.dark-theme .section-header h1 {
+    color: #e8e8ea;
+}
+
+body.dark-theme .section-header p,
+html.dark-theme .section-header p {
+    color: #a8a8b3;
+}
+
+/* ============================================
+   CARDS - EPIC STYLE
+   ============================================ */
+body.dark-theme .card,
+html.dark-theme .card {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .card:hover,
+html.dark-theme .card:hover {
+    border-color: #0078f2;
+    box-shadow: 0 4px 16px rgba(0, 120, 242, 0.2);
+    transform: translateY(-4px);
+}
+
+body.dark-theme .card h3,
+html.dark-theme .card h3 {
+    color: #e8e8ea;
+}
+
+body.dark-theme .card p,
+html.dark-theme .card p {
+    color: #a8a8b3;
+}
+
+/* ============================================
+   STAT CARDS - EPIC STYLE
+   ============================================ */
+body.dark-theme .stat-card,
+html.dark-theme .stat-card {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+    border-top: 3px solid #0078f2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .stat-card:hover,
+html.dark-theme .stat-card:hover {
+    border-top-color: #409eff;
+    box-shadow: 0 4px 16px rgba(0, 120, 242, 0.25);
+    transform: translateY(-6px);
+}
+
+body.dark-theme .stat-number,
+html.dark-theme .stat-number {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-theme .stat-label,
+html.dark-theme .stat-label {
+    color: #a8a8b3;
+}
+
+/* ============================================
+   PRODUCTOS/VENTAS - EPIC STYLE
+   ============================================ */
+body.dark-theme .product-card,
+html.dark-theme .product-card {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+}
+
+body.dark-theme .product-card::before,
+html.dark-theme .product-card::before {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+}
+
+body.dark-theme .product-card:hover,
+html.dark-theme .product-card:hover {
+    border-color: #0078f2;
+    box-shadow: 0 8px 24px rgba(0, 120, 242, 0.2);
+}
+
+body.dark-theme .product-name,
+html.dark-theme .product-name {
+    color: #e8e8ea;
+}
+
+body.dark-theme .product-description,
+html.dark-theme .product-description {
+    color: #a8a8b3;
+}
+
+body.dark-theme .product-price,
+html.dark-theme .product-price {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   CARRITO - EPIC STYLE
+   ============================================ */
+body.dark-theme .cart-sidebar,
+html.dark-theme .cart-sidebar {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .cart-title,
+html.dark-theme .cart-title {
+    background: linear-gradient(135deg, #0078f2 0%, #005bb5 100%);
+}
+
+body.dark-theme .cart-items::-webkit-scrollbar-track,
+html.dark-theme .cart-items::-webkit-scrollbar-track {
+    background: #18181b;
+}
+
+body.dark-theme .cart-items::-webkit-scrollbar-thumb,
+html.dark-theme .cart-items::-webkit-scrollbar-thumb {
+    background: #3a3a3f;
+}
+
+body.dark-theme .cart-items::-webkit-scrollbar-thumb:hover,
+html.dark-theme .cart-items::-webkit-scrollbar-thumb:hover {
+    background: #0078f2;
+}
+
+body.dark-theme .cart-item,
+html.dark-theme .cart-item {
+    background: #18181b;
+    border: 1px solid #2a2a2e;
+}
+
+body.dark-theme .cart-item:hover,
+html.dark-theme .cart-item:hover {
+    background: #1f1f23;
+    border-color: #0078f2;
+}
+
+body.dark-theme .cart-item-name,
+html.dark-theme .cart-item-name {
+    color: #e8e8ea;
+}
+
+body.dark-theme .cart-item-price,
+html.dark-theme .cart-item-price {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-theme .quantity-display,
+html.dark-theme .quantity-display {
+    color: #e8e8ea;
+}
+
+body.dark-theme .cart-empty,
+html.dark-theme .cart-empty {
+    color: #71717a;
+}
+
+body.dark-theme .cart-total,
+html.dark-theme .cart-total {
+    background: #18181b;
+    border-top: 1px solid #2a2a2e;
+}
+
+body.dark-theme .total-label,
+html.dark-theme .total-label {
+    color: #a8a8b3;
+}
+
+body.dark-theme .total-amount,
+html.dark-theme .total-amount {
+    background: linear-gradient(135deg, #0078f2 0%, #409eff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   TABLAS - EPIC STYLE
+   ============================================ */
+body.dark-theme .inventory-table-container,
+html.dark-theme .inventory-table-container {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+}
+
+body.dark-theme .inventory-table th,
+html.dark-theme .inventory-table th {
+    background: #18181b;
+    color: #e8e8ea;
+    border-bottom: 2px solid #2a2a2e;
+}
+
+body.dark-theme .inventory-table td,
+html.dark-theme .inventory-table td {
+    color: #a8a8b3;
+    border-bottom: 1px solid #2a2a2e;
+}
+
+body.dark-theme .inventory-table tbody tr:hover,
+html.dark-theme .inventory-table tbody tr:hover {
+    background: rgba(0, 120, 242, 0.05);
+}
+
+/* ============================================
+   BOTONES - EPIC STYLE
+   ============================================ */
+body.dark-theme .dropdown-btn,
+html.dark-theme .dropdown-btn {
+    background: linear-gradient(135deg, #0078f2 0%, #005bb5 100%);
+    box-shadow: 0 4px 12px rgba(0, 120, 242, 0.3);
+}
+
+body.dark-theme .dropdown-btn:hover,
+html.dark-theme .dropdown-btn:hover {
+    box-shadow: 0 6px 20px rgba(0, 120, 242, 0.4);
+}
+
+body.dark-theme .dropdown-menu,
+html.dark-theme .dropdown-menu {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme .dropdown-item,
+html.dark-theme .dropdown-item {
+    color: #a8a8b3;
+}
+
+body.dark-theme .dropdown-item:hover,
+html.dark-theme .dropdown-item:hover {
+    background: rgba(0, 120, 242, 0.1);
+    color: #e8e8ea;
+}
+
+body.dark-theme .dropdown-item.active,
+html.dark-theme .dropdown-item.active {
+    background: linear-gradient(135deg, #0078f2 0%, #005bb5 100%);
+    color: white;
+}
+
+body.dark-theme .add-btn,
+html.dark-theme .add-btn {
+    background: linear-gradient(135deg, #0078f2 0%, #005bb5 100%);
+    box-shadow: 0 4px 12px rgba(0, 120, 242, 0.3);
+}
+
+body.dark-theme .add-btn:hover,
+html.dark-theme .add-btn:hover {
+    box-shadow: 0 6px 20px rgba(0, 120, 242, 0.4);
+}
+
+/* ============================================
+   MODALES - EPIC STYLE
+   ============================================ */
+body.dark-theme .modal,
+html.dark-theme .modal {
+    background: #1f1f23;
+    border: 1px solid #2a2a2e;
+}
+
+body.dark-theme .modal-header,
+html.dark-theme .modal-header {
+    background: #18181b;
+    border-bottom: 1px solid #2a2a2e;
+}
+
+body.dark-theme .modal-header h2,
+html.dark-theme .modal-header h2 {
+    color: #e8e8ea;
+}
+
+body.dark-theme .modal-body,
+html.dark-theme .modal-body {
+    color: #a8a8b3;
+}
+
+body.dark-theme .modal-body label,
+html.dark-theme .modal-body label {
+    color: #e8e8ea;
+}
+
+body.dark-theme .modal-body input,
+body.dark-theme .modal-body select,
+body.dark-theme .modal-body textarea,
+html.dark-theme .modal-body input,
+html.dark-theme .modal-body select,
+html.dark-theme .modal-body textarea {
+    background: #18181b;
+    border: 1px solid #2a2a2e;
+    color: #e8e8ea;
+}
+
+body.dark-theme .modal-body input:focus,
+body.dark-theme .modal-body select:focus,
+body.dark-theme .modal-body textarea:focus,
+html.dark-theme .modal-body input:focus,
+html.dark-theme .modal-body select:focus,
+html.dark-theme .modal-body textarea:focus {
+    border-color: #0078f2;
+    box-shadow: 0 0 0 3px rgba(0, 120, 242, 0.1);
+}
+
+body.dark-theme .modal-footer,
+html.dark-theme .modal-footer {
+    background: #18181b;
+    border-top: 1px solid #2a2a2e;
+}
+
+/* ============================================
+   BOTÓN TOGGLE TEMA - EPIC STYLE
+   ============================================ */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #0078f2 0%, #005bb5 100%);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 120, 242, 0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+body.dark-theme .theme-toggle,
+html.dark-theme .theme-toggle {
+    background: linear-gradient(135deg, #409eff 0%, #0078f2 100%);
+    box-shadow: 0 4px 15px rgba(64, 158, 255, 0.4);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 6px 20px rgba(0, 120, 242, 0.5);
+}
+
+body.dark-theme .theme-toggle:hover,
+html.dark-theme .theme-toggle:hover {
+    box-shadow: 0 6px 25px rgba(64, 158, 255, 0.5);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+.theme-toggle .moon-icon {
+    display: block;
+}
+
+body.dark-theme .theme-toggle .sun-icon,
+html.dark-theme .theme-toggle .sun-icon {
+    display: block;
+}
+
+body.dark-theme .theme-toggle .moon-icon,
+html.dark-theme .theme-toggle .moon-icon {
+    display: none;
+}
+
+/* ============================================
+   TRANSICIONES SUAVES
+   ============================================ */
+body,
+.header,
+.sidebar,
+.user-profile,
+.user-avatar,
+.user-name,
+.user-email,
+.menu-item,
+.menu-icon,
+.section-header,
+.section-header h1,
+.section-header p,
+.card,
+.card h3,
+.card p,
+.stat-card,
+.stat-number,
+.stat-label,
+.content,
+.product-card,
+.cart-sidebar,
+.cart-item,
+.modal,
+input,
+select,
+textarea {
+    transition: all 0.3s ease;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .theme-toggle svg {
+        width: 24px;
+        height: 24px;
+    }
+}

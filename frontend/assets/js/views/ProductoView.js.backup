@@ -1,0 +1,278 @@
+// ============================================
+// GESTIÓN DE PRODUCTOS - PLAY ZONE
+// ============================================
+
+const API_URL = 'http://localhost/backend/api';
+let productoEditando = null;
+
+// ============================================
+// MODAL FUNCTIONS
+// ============================================
+
+function abrirModal(producto = null) {
+    productoEditando = producto;
+    const modal = document.getElementById('modalOverlay');
+    const tituloModal = modal.querySelector('.modal-header h2');
+    const form = document.getElementById('formProducto');
+
+    if (producto) {
+        // Modo edición
+        tituloModal.textContent = 'Editar Producto';
+        document.getElementById('nombre').value = producto.nombre || '';
+        document.getElementById('categoria').value = producto.categoria || '';
+        document.getElementById('precio').value = producto.precio || '';
+        document.getElementById('stock').value = producto.cantidad || '';
+        document.getElementById('descripcion').value = producto.descripcion || '';
+        document.getElementById('imagen').value = producto.imagen_url || '';
+    } else {
+        // Modo creación
+        tituloModal.textContent = 'Agregar Nuevo Producto';
+        form.reset();
+    }
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    document.getElementById('formProducto').reset();
+    productoEditando = null;
+}
+
+function cerrarModalOverlay(event) {
+    if (event.target === event.currentTarget) {
+        cerrarModal();
+    }
+}
+
+// ============================================
+// CRUD PRODUCTOS
+// ============================================
+
+// Cargar todos los productos
+async function cargarProductos() {
+    try {
+        const response = await fetch(`${API_URL}/productos.php`);
+        const data = await response.json();
+
+        if (data.success) {
+            mostrarProductosEnTabla(data.data);
+            mostrarProductosEnVentas(data.data);
+        } else {
+            console.error('Error al cargar productos:', data.message);
+        }
+    } catch (error) {
+        console.error('Error al conectar con el servidor:', error);
+    }
+}
+
+// Mostrar productos en la tabla de inventario
+function mostrarProductosEnTabla(productos) {
+    const tbody = document.getElementById('inventoryTableBody');
+    if (!tbody) return;
+
+    if (productos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay productos registrados</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = productos.map(producto => `
+        <tr>
+            <td>${producto.codigo}</td>
+            <td>${producto.nombre}</td>
+            <td><img src="${producto.imagen_url || '../assets/images/logo.png'}" alt="${producto.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;"></td>
+            <td>${producto.categoria}</td>
+            <td>${producto.descripcion || 'Sin descripción'}</td>
+            <td>$${parseFloat(producto.precio).toFixed(2)}</td>
+            <td>${producto.cantidad}</td>
+            <td><button class="btn-editar" onclick="editarProducto(${producto.id_producto})">✏️ Editar</button></td>
+            <td><button class="btn-eliminar" onclick="eliminarProducto(${producto.id_producto})">🗑️ Eliminar</button></td>
+        </tr>
+    `).join('');
+}
+
+// Guardar producto (crear o actualizar)
+async function guardarProducto(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    // RF-01: Validación de campos obligatorios
+    const nombre = formData.get('nombre')?.trim();
+    const categoria = formData.get('categoria');
+    const precio = formData.get('precio');
+    const cantidad = formData.get('stock');
+
+    // Validar nombre
+    if (!nombre) {
+        showError('El nombre del producto es obligatorio', 'Campo requerido');
+        document.getElementById('nombre').focus();
+        return;
+    }
+
+    // Validar categoría
+    if (!categoria) {
+        showError('Debes seleccionar una categoría', 'Campo requerido');
+        document.getElementById('categoria').focus();
+        return;
+    }
+
+    // Validar precio
+    if (!precio || parseFloat(precio) <= 0) {
+        showError('El precio debe ser mayor a 0', 'Campo requerido');
+        document.getElementById('precio').focus();
+        return;
+    }
+
+    // Validar cantidad
+    if (cantidad === null || cantidad === '' || parseInt(cantidad) < 0) {
+        showError('La cantidad debe ser un número válido', 'Campo requerido');
+        document.getElementById('stock').focus();
+        return;
+    }
+
+    const producto = {
+        nombre: nombre,
+        categoria: categoria,
+        precio: parseFloat(precio),
+        cantidad: parseInt(cantidad),
+        descripcion: formData.get('descripcion')?.trim() || '',
+        imagen_url: formData.get('imagen')?.trim() || '',
+        codigo: productoEditando ? productoEditando.codigo : `PROD-${Date.now()}`
+    };
+
+    // Si estamos editando, incluir el ID
+    if (productoEditando) {
+        producto.id_producto = productoEditando.id_producto;
+    }
+
+    try {
+        let response;
+        if (productoEditando) {
+            // Actualizar producto existente
+            response = await fetch(`${API_URL}/productos.php?id=${productoEditando.id_producto}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(producto)
+            });
+        } else {
+            // Crear nuevo producto
+            response = await fetch(`${API_URL}/productos.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(producto)
+            });
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            showSuccess(
+                productoEditando ? 'El producto ha sido actualizado correctamente' : 'El producto ha sido registrado en el inventario',
+                productoEditando ? 'Producto actualizado' : 'Producto registrado'
+            );
+            cerrarModal();
+            cargarProductos();
+        } else {
+            showError(data.message || 'No se pudo guardar el producto', 'Error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showError('Ocurrió un error al guardar el producto. Intenta nuevamente.', 'Error de conexión');
+    }
+}
+
+// Editar producto
+async function editarProducto(idProducto) {
+    try {
+        const response = await fetch(`${API_URL}/productos.php?id=${idProducto}`);
+        const data = await response.json();
+
+        if (data.success && data.data) {
+            abrirModal(data.data);
+        } else {
+            showError('No se encontró el producto', 'Error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showError('No se pudo cargar la información del producto', 'Error al editar');
+    }
+}
+
+// Eliminar producto
+async function eliminarProducto(idProducto) {
+    const confirmado = await showConfirm({
+        title: '¿Eliminar producto?',
+        message: 'Esta acción no se puede deshacer. El producto será eliminado permanentemente del inventario.',
+        type: 'danger',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar'
+    });
+
+    if (!confirmado) return;
+
+    try {
+        const response = await fetch(`${API_URL}/productos.php?id=${idProducto}`, {
+            method: 'DELETE'
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showSuccess('El producto ha sido eliminado del inventario', 'Producto eliminado');
+            cargarProductos();
+        } else {
+            showError('No se pudo eliminar el producto: ' + data.message, 'Error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showError('Ocurrió un error al eliminar el producto', 'Error de conexión');
+    }
+}
+
+// ============================================
+// PRODUCTOS PARA VENTAS
+// ============================================
+
+function mostrarProductosEnVentas(productos) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+
+    if (productos.length === 0) {
+        grid.innerHTML = '<p style="text-align:center;width:100%;">No hay productos disponibles</p>';
+        return;
+    }
+
+    grid.innerHTML = productos.filter(p => p.cantidad > 0).map(producto => `
+        <div class="product-card" data-categoria="${producto.categoria}">
+            <img src="${producto.imagen_url || '../assets/images/logo.png'}" alt="${producto.nombre}" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">${producto.nombre}</h3>
+                <p class="product-price">$${parseFloat(producto.precio).toFixed(2)}</p>
+                <p class="product-stock">Stock: ${producto.cantidad}</p>
+                <button class="add-to-cart-btn" onclick="agregarAlCarrito(${producto.id_producto}, '${producto.nombre}', ${producto.precio}, ${producto.cantidad})">
+                    Agregar al Carrito
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// EVENTOS
+// ============================================
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        cerrarModal();
+    }
+});
+
+// Cargar productos al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.includes('home.html')) {
+        cargarProductos();
+    }
+});

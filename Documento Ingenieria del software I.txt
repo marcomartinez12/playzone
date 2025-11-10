@@ -1,0 +1,674 @@
+PLATAFORMA WEB PARA EL CONTROL DE INVENTARIO Y SERVICIO DE MANTENIMIENTO DE CONSOLAS EN LA TIENDA PLAY ZONE
+
+
+
+
+
+CRISTIAN CAMILO JIMENEZ ROBLES
+MARCO ANDRES MARTINEZ MALAGON
+CAMILO REYES RODRIGUEZ
+KEVIN ANDRES BLANCO TRILLOS
+
+
+
+
+
+UNIVERSIDAD POPULAR DEL CESAR – Seccional Aguachica
+Departamento de Sistemas e Informática
+Programa de Ingeniería de Sistemas
+Mg. ERNEY ALBERTO RAMIREZ CAMARGO
+Aguachica, Cesar
+
+
+Contenido
+1. Problema	3
+1.1. Planteamiento del problema	3
+1.2. Justificación	4
+1.3. Objetivo General	5
+1.3.1. Objetivos Específicos	5
+1.4. Delimitación	5
+1.4.1. Temporal	5
+1.4.2. Espacial	6
+1.4.3. Contextual	6
+2. Marco Referencial	6
+2.1 Marco Histórico	6
+2.2 Marco Teórico	7
+2.3 Marco legal	8
+2.4 Marco Conceptual	9
+3. Diseño Metodológico	11
+3.1 Tipo de investigación	11
+3.2 Tipo de enfoque	11
+3.3 Instrumento	11
+3.4 Metodología	12
+Bibliografía	70
+
+
+Ilustración 1-Diagrama entidad-relación	41
+Ilustración 2-Diagrama de clases	41
+Ilustración 3-Diagrama de objetos	42
+Ilustración 4-Diagrama de despliegue	42
+Ilustración 5-Diagrama de componente	43
+Ilustración 6-Diagrama de actividad	43
+Ilustración 7-Diagrama de estructura compuesta	44
+Ilustración 8-Diagrama de casos de uso 1	44
+Ilustración 9-Diagrama de casos de uso 2	45
+Ilustración 10-Diagrama de casos de uso 3	45
+Ilustración 11-Diagrama de casos de uso 4	46
+Ilustración 12-Diagrama de casos de uso 5	46
+Ilustración 13-Diagrama de casos de uso 6	47
+Ilustración 14-Diagrama de casos de uso 7	47
+Ilustración 15-Diagrama de casos de uso 8	48
+Ilustración 16-Diagrama de casos de uso 9	48
+Ilustración 17-Diagrama de casos de uso 10	49
+Ilustración 18-Diagrama de casos de uso 11	49
+Ilustración 19-Diagrama de casos de uso 12	49
+Ilustración 20-Diagrama de casos de uso 13	49
+Ilustración 21-Diagrama de casos de uso 14	50
+Ilustración 22-Diagrama de casos de uso 15	50
+Ilustración 23-Diagrama de estado 1	50
+Ilustración 24-Diagrama de estado 2	51
+Ilustración 25-Diagrama de estado 3	51
+Ilustración 26-Diagrama de estado 4	52
+Ilustración 27-Diagrama de estado 5	52
+Ilustración 28-Diagrama de estado 6	53
+Ilustración 29-Diagrama de estado 7	53
+Ilustración 30-Diagrama de estado 8	54
+Ilustración 31-Diagrama de estado 9	54
+Ilustración 32-Diagrama de estado 10	55
+Ilustración 33-Diagrama de estado 11	55
+Ilustración 34-Diagrama de estado 12	56
+Ilustración 35-Diagrama de estado 13	56
+Ilustración 36-Diagrama de estado 14	57
+Ilustración 37-Diagrama de estado 15	57
+Ilustración 38-Diagrama de secuencia 1	58
+Ilustración 39-Diagrama de secuencia 2	58
+Ilustración 40-Diagrama de secuencia 3	59
+Ilustración 41-Diagrama de secuencia 4	59
+Ilustración 42-Diagrama de secuencia 5	60
+Ilustración 43-Diagrama de secuencia 6	60
+Ilustración 44-Diagrama de secuencia 7	61
+Ilustración 45-Diagrama de secuencia 8	61
+Ilustración 46-Diagrama de secuencia 9	61
+Ilustración 47-Diagrama de secuencia 10	62
+Ilustración 48-Diagrama de secuencia 11	62
+Ilustración 49-Diagrama de secuencia 12	62
+Ilustración 50-Diagrama de secuencia 13	63
+Ilustración 51-Diagrama de secuencia 14	63
+Ilustración 52-Diagrama de secuencia 15	63
+Ilustración 53-Diagramas de colaboración 1	64
+Ilustración 54-Diagramas de colaboración 2	64
+Ilustración 55-Diagramas de colaboración 3	64
+Ilustración 56-Diagramas de colaboración 4	64
+Ilustración 57-Diagramas de colaboración 5	64
+Ilustración 58-Paleta de colores	67
+Ilustración 59-Inicio de sección	68
+Ilustración 60-Dashboard	68
+Ilustración 61-Gestion productos	69
+Ilustración 62-Modal productos	69
+Ilustración 63-Registrar ventas	69
+Ilustración 64-Ventas registradas	70
+Ilustración 65-Modal factura	70
+Ilustración 66- Gestión servicios	71
+Ilustración 67-Modal servicio	71
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Introducción 
+ En el contexto actual, la gestión eficiente de inventarios es un pilar fundamental para el éxito operativo y comercial de cualquier negocio, especialmente en el sector minorista de productos especializados como consolas, videojuegos y accesorios. La tienda Play Zone, dedicada a la venta de artículos relacionados con el entretenimiento digital, enfrenta el desafío de optimizar sus procesos de control de inventario para garantizar una experiencia de compra satisfactoria, minimizar pérdidas y maximizar la eficiencia operativa. Este documento presenta el desarrollo de un sistema de inventario diseñado para Play Zone, con el objetivo de automatizar la gestión de productos, mejorar el seguimiento de existencias y facilitar la toma de decisiones estratégicas. A través de un enfoque basado en tecnología y análisis de requerimientos, se propone una solución integral que responda a las necesidades específicas del negocio, promoviendo su competitividad en un mercado dinámico y en constante evolución.
+
+1. Problema
+1.1. Planteamiento del problema
+La gestión adecuada de un inventario es fundamental ya que es posible conocer en tiempo real la disponibilidad de productos, identificar cuáles tienen mayor rotación y detectar aquellos que generan pérdidas por vencimiento, deterioro o robo. Además, facilita la planificación de compras, evitando tanto el sobreinventario como el desabastecimiento, lo que a su vez reduce costos innecesarios y mejora la eficiencia operativa. La falta de un inventario y control de stock puede generar una serie de problemas que afectan negativamente su funcionamiento y rentabilidad. Entre las principales consecuencias se encuentra la pérdida de ventas, ya que sin un control adecuado es posible ofrecer productos que no están disponibles, lo que genera decepción en los clientes y daña la imagen del negocio.
+La tienda PlayZone enfrenta dificultades en la gestión de su inventario debido a la falta de un sistema automatizado y eficiente. Actualmente, los procesos de control se realizan de forma manual o mediante herramientas básicas, lo que impide un seguimiento adecuado de las existencias, las ventas y las necesidades de reposición en tiempo real. Esto genera problemas como desabastecimiento de productos populares, acumulación de stock obsoleto y errores en los registros, lo que afecta tanto la satisfacción del cliente como la rentabilidad del negocio. Según Morales Agudelo y Pulgarín García (2024), la automatización de inventarios puede mejorar significativamente la precisión y la eficiencia operativa, aspectos esenciales para la competitividad en mercados dinámicos. 
+La falta de un sistema integrado también limita la capacidad de generar reportes confiables y tomar decisiones estratégicas, dificultando la identificación de tendencias de compra y la planificación de promociones. Tigua y Muñoz (2025) señalan que la automatización en la gestión de inventarios es clave para optimizar la toma de decisiones y reducir errores, lo que mejora la eficiencia operativa y fortalece la posición competitiva de las empresas. Para resolver estos problemas, se propone el desarrollo de un sistema automatizado de inventario que optimice la gestión de los productos, brinde un control más preciso y mejore la eficiencia operativa, fortaleciendo así la competitividad de Play Zone en el mercado.
+
+1.2. Justificación
+El desarrollo de un sistema de inventario para Play Zone se justifica por la necesidad de optimizar los procesos operativos y mejorar la competitividad de la tienda en el mercado de consolas, videojuegos y accesorios. La gestión manual actual del inventario genera ineficiencias que afectan directamente la experiencia del cliente, incrementan los costos operativos y limitan la capacidad de la tienda para responder ágilmente a las demandas del mercado. La implementación de un sistema optimizado permitirá un control preciso y en tiempo real de los productos, reduciendo errores humanos, minimizando el riesgo de desabastecimiento o sobrestock, y facilitando la planificación estratégica basada en datos confiables. Desde una perspectiva académica, este proyecto representa una oportunidad para aplicar conocimientos de desarrollo de software, gestión de bases de datos y análisis de sistemas, ofreciendo una solución práctica a un problema real en el contexto del comercio minorista especializado. La implementación de esta solución no solo beneficiará a Play Zone en términos de eficiencia y rentabilidad, sino que también servirá como un modelo replicable para otras pequeñas y medianas empresas del sector.
+
+
+1.3. Objetivo General
+Implementar una plataforma web para la tienda Play Zone que permita centralizar y optimizar la gestión de inventario, clientes y mantenimientos de consolas, con el fin de mejorar la eficiencia administrativa y la calidad del servicio ofrecido.
+1.3.1. Objetivos Específicos
+1. Determinar los requisitos funcionales y no funcionales del aplicativo.
+2. Diseñar la arquitectura del sistema mediante diagramas de casos de uso, clases y modelo entidad-relación de la base de datos.
+3. Codificar el aplicativo web utilizando tecnologías como HTML, CSS, JavaScript y un backend con base de datos relacional.
+
+1.4. Delimitación
+1.4.1. Temporal
+El desarrollo del sistema de inventario para Play Zone se llevará a cabo durante un período de dieciséis semanas. Este plazo incluye las fases de análisis de requerimientos, diseño, desarrollo, pruebas y entrega del sistema. La implementación inicial y las capacitaciones al personal de la tienda se realizarán dentro de este mismo período.
+1.4.2. Espacial
+El proyecto se centra exclusivamente en la tienda Play Zone ubicada en Calle 7 #17 – 70. El sistema de inventario será diseñado para operar en el entorno físico y operativo de esta tienda, considerando las características de su infraestructura tecnológica y las necesidades específicas de su inventario de consolas, videojuegos y mandos.
+1.4.3. Contextual 
+El sistema de inventario se desarrollará específicamente para la gestión de productos relacionados con el entretenimiento digital, incluyendo consolas, videojuegos y accesorios (mandos) vendidos por Play Zone. El proyecto no abarcará otros aspectos del negocio, como la gestión de clientes, marketing o finanzas. La solución estará orientada a satisfacer las necesidades operativas de una tienda minorista de tamaño mediano, con un enfoque en la automatización de procesos de inventario y la generación de reportes básicos para la toma de decisiones.
+
+2. Marco Referencial
+2.1 Marco Histórico
+La gestión de inventarios en las pequeñas y medianas empresas (PYMEs) ha sido tradicionalmente manual, utilizando herramientas como hojas de cálculo, lo que genera errores y desabastecimientos. Este problema es especialmente crítico en el sector retail de consolas y videojuegos, donde la rotación de productos y la actualización constante del inventario son esenciales para la competitividad.
+Desde la década de 1980, las grandes empresas comenzaron a implementar sistemas automatizados para gestionar sus inventarios, lo que les permitió una mejor visibilidad de las existencias, reduciendo costos operativos y mejorando la toma de decisiones. En Colombia, la adopción de estos sistemas ha sido más lenta en las PYMEs debido a los altos costos y la falta de infraestructura tecnológica adecuada.
+A nivel internacional, González Buitrago y Perilla Vaca (2025) afirman que la automatización en el sector retail mejora significativamente la eficiencia operativa y la toma de decisiones estratégicas. Quispe (2022) en Ecuador presento la creación de un sistema de gestión de inventarios (SGI) que mejora la administración de productos en empresas, reduciendo fallos humanos, se basa en el método PEPS, adoptando SCRUM para un desarrollo dinámico. Vidal et al., (2011) en México, presento su proyecto “Sistema de Información para el Control de Inventarios del Almacén del ITS”. Estos estudios destacan cómo las tecnologías avanzadas no solo optimizando el control de inventarios, sino que también permiten a las empresas mantenerse competitivas en mercados dinámicos. 
+A nivel nacional, estudios como los de Pérez De La Cruz y Urueta Urueta (2025) donde una compañía de decoración realiza el inventario de manera manual generando errores, pérdidas económicas y dificultades en la administración de productos perecederos y material POP; Bermúdez Monsalve et al. (2024), sobre el banco de alimentos en Medellín, muestran que la automatización mejora la precisión y reduce los desabastecimientos, una tendencia que puede aplicarse a otros sectores comerciales, incluidos los de consolas y videojuegos. Además, Oliver Dupont y Montealegre Hernández (2022) han propuesto modelos de automatización en Bogotá para pequeñas empresas del sector retail, demostrando su efectividad en la mejora de la gestión operativa. 
+A nivel local, se realizó una búsqueda de proyectos con el objetivo de identificar iniciativas similares que se tomaran como referencia. Se encontró en el municipio de Aguachica - Cesar, Portillo (2019) desarrollo un sistema web responsivo de inventario y facturación para el almacén AGROMÁQUINAS DEL CESAR, afirmando que “el desarrollo del proyecto mejorará el flujo de la información, contribuirá en la toma de decisiones de AGROMÁQUINAS DEL CESAR, contando con la información completa y a la vanguardia de las nuevas tecnologías tanto de escritorio como móviles”. Romero (2017) implemento un plan de negocio para desarrollar un software que solucione las dificultades en la gestión de facturación, inventario, clientes y proveedores en la ferretería Ferrotodo Materiales, ubicada en Chiriguaná - Cesar. 
+
+2.2 Marco Teórico 
+El Marco Teórico se basa en las teorías y enfoques existentes relacionados con la automatización de inventarios y su aplicación en el sector retail. La automatización de inventarios se ha consolidado como una herramienta clave para mejorar la eficiencia operativa y la toma de decisiones estratégicas en las empresas.
+Gestión de Inventarios: Según González Buitrago y Perilla Vaca (2025), la gestión eficiente de inventarios no solo implica el control físico de los productos, sino también la capacidad de adaptarse rápidamente a las demandas del mercado. En un entorno comercial competitivo, como el de PlayZone, una gestión automatizada permite mejorar la rotación de inventarios, optimizar los niveles de stock y minimizar los costos asociados al exceso de productos almacenados. 
+Automatización en el Sector Retail: La automatización de inventarios, que incluye el uso de sistemas informáticos y tecnologías como códigos de barras y sistemas ERP, permite a las empresas gestionar su inventario en tiempo real. Macías Loor y Briones Castro (2025) argumentan que la automatización facilita la toma de decisiones basada en datos precisos, lo que se traduce en una mayor competitividad y rentabilidad. Este tipo de sistemas también contribuye a la reducción de errores humanos y mejora la experiencia del cliente al permitir una atención más ágil.
+Sistemas de Gestión de Inventarios (SGI): Los sistemas automatizados permiten integrar la información de inventarios con otros procesos de la empresa, como la gestión de ventas y compras. Oliver Dupont y Montealegre Hernández (2022) destacan la importancia de los SGI para mejorar la eficiencia operativa en las PYMEs, especialmente en el contexto de sectores como el retail de productos electrónicos y videojuegos.
+
+2.3 Marco legal
+Ley 1581 de 2012 – Protección de Datos Personales
+La Ley 1581 de 2012 regula el tratamiento de datos personales en Colombia, estableciendo normas sobre la recolección, almacenamiento y uso de la información personal de los clientes. La implementación de un sistema automatizado de inventarios que implique el procesamiento de datos personales debe cumplir con esta ley, garantizando la seguridad, privacidad y confidencialidad de los datos almacenados.
+Código de Comercio de Colombia
+El Código de Comercio de Colombia (Ley 410 de 1971) establece las obligaciones comerciales de las empresas, incluyendo la obligación de llevar un registro adecuado de las operaciones comerciales. La automatización de inventarios facilita el cumplimiento de este requisito legal, garantizando la trazabilidad y exactitud de los registros de existencias y ventas.
+Ley 527 de 1999 – Comercio Electrónico
+La Ley 527 de 1999 regula el comercio electrónico en Colombia, especialmente en lo que respecta a la validación de documentos y transacciones electrónicas. Esta ley establece que los mensajes de datos tienen la misma validez jurídica que los documentos físicos, siempre que se garantice la autenticidad e integridad de la información. Las transacciones realizadas a través de un sistema automatizado de inventarios deben cumplir con esta normativa.
+Decreto 1074 de 2015 – Reglamentación para la Implementación de Tecnología en PYMEs
+El Decreto 1074 de 2015 establece lineamientos para la implementación de tecnologías de la información y la comunicación en las empresas colombianas, promoviendo la digitalización y modernización de las operaciones comerciales. La automatización de inventarios contribuye a este proceso, mejorando la eficiencia y competitividad de las PYMEs.
+Normativas Tributarias – Facturación Electrónica
+La Dirección de Impuestos y Aduanas Nacionales (DIAN) ha establecido regulaciones para que las empresas utilicen la facturación electrónica. Un sistema automatizado de inventarios puede integrarse con plataformas de facturación electrónica, facilitando el cumplimiento de las normativas fiscales y tributarias al garantizar la emisión de facturas electrónicas correctas y transparentes.
+2.4 Marco Conceptual
+Inventario
+El inventario es el conjunto de bienes y productos almacenados por una empresa, destinados a la venta, uso en producción o distribución. Su gestión eficiente es esencial para evitar desabastecimientos o exceso de stock, lo que garantiza una operación rentable y eficiente.
+Automatización de Inventarios
+La automatización de inventarios implica el uso de tecnologías y sistemas informáticos para gestionar y controlar el inventario de manera automática. Esto incluye herramientas como códigos de barras, sistemas ERP (Enterprise Resource Planning), y software especializado que permiten la actualización en tiempo real de las existencias. La automatización mejora la precisión, reduce la intervención manual y facilita el control riguroso del inventario.
+Sistema de Gestión de Inventarios (SGI)
+Un Sistema de Gestión de Inventarios (SGI) es una plataforma digital que permite gestionar todos los aspectos relacionados con el inventario de una empresa, como el seguimiento de existencias, reposición de productos y generación de reportes. Un SGI eficiente proporciona datos en tiempo real sobre las ventas, stock disponible y tendencias del mercado, facilitando la toma de decisiones estratégicas.
+ERP (Enterprise Resource Planning)
+El ERP es un software integral que centraliza la planificación y gestión de los recursos empresariales. Un ERP no solo gestiona el inventario, sino que también integra otros procesos, como ventas, compras, finanzas y recursos humanos. La implementación de un ERP facilita una visión global de las operaciones y mejora la eficiencia operativa de la empresa.
+Facturación electrónica
+La facturación electrónica es el proceso de emitir y almacenar facturas de manera digital, con validez legal. Este sistema permite a las empresas generar facturas automáticamente al realizar transacciones comerciales, y facilita el cumplimiento de las normativas fiscales y tributarias establecidas por las autoridades.
+Integración de sistemas
+La integración de sistemas se refiere a la capacidad de conectar y compartir datos entre diferentes plataformas dentro de una empresa. Un sistema de gestión de inventarios integrado con otros sistemas, como el ERP y la facturación electrónica, permite un flujo de información unificado, mejorando la eficiencia operativa y la toma de decisiones.
+
+3. Diseño Metodológico
+3.1 Tipo de investigación
+La investigación será aplicada porque se centrará en la propuesta de un sistema automatizado de inventarios que pueda ser utilizado en Play Zone, pero no se llevará a cabo la implementación real del sistema en la tienda. Se busca resolver un problema práctico de la gestión de inventarios y servicios de mantenimiento mediante el diseño de una solución tecnológica, evaluando su viabilidad y beneficios sin necesidad de realizar una intervención directa en el entorno real.
+3.2 Tipo de enfoque
+La investigación se desarrollará bajo un enfoque cualitativo, ya que se orienta a comprender y describir la problemática de la gestión de inventarios en la tienda Play Zone a partir de la información obtenida mediante entrevistas y observación del contexto actual. Este enfoque permite interpretar las percepciones, necesidades y experiencias del administrador, con el fin de diseñar una propuesta tecnológica que responda a dichas realidades. Más que medir variables numéricas o realizar pruebas estadísticas, el estudio busca analizar la situación desde una perspectiva descriptiva y propositiva, generando un sistema automatizado de inventarios que atienda las dificultades identificadas y ofrezca una solución viable para la tienda.
+3.3 Instrumento
+El instrumento de recolección de información utilizado en la investigación fue una entrevista semiestructurada dirigida al administrador de la tienda Play Zone. Este instrumento permitió obtener datos cualitativos sobre la forma en que actualmente se gestiona el inventario, las dificultades que se presentan en el proceso y las expectativas frente a la implementación de un sistema automatizado. La entrevista incluyó preguntas abiertas relacionadas con el registro de productos, control de ventas, organización de la información, generación de reportes y necesidades de notificación. Gracias a este instrumento fue posible identificar los requerimientos funcionales y no funcionales del sistema, así como establecer las prioridades del usuario final para el diseño de la plataforma web.
+3.4 Metodología 
+	La metodología de desarrollo seleccionada es la orientada a objetos, dado que permite modelar el sistema de inventario y mantenimiento de consolas de manera modular y estructurada. A través de diagramas UML, como casos de uso, clases y modelo entidad-relación, se representarán los diferentes componentes del sistema y sus interacciones. Este enfoque facilita la reutilización de código, la escalabilidad y el mantenimiento del software, aspectos fundamentales para garantizar la calidad y sostenibilidad de la solución propuesta.
+
+6. Anexos
+6.1. Diagrama de Gantt
+6.2. Instrumento 
+Preguntas de la entrevista
+1. ¿Qué método utiliza actualmente para gestionar el inventario (Manual, Excel, Software existente)?
+No manejo inventario, a veces le pido a un amigo que me ayude digitando algunas cosas en el computador y eso, pero no… todo lo llevo al ojo y a como me den las ventas diarias.
+2. ¿Qué información básica guarda de cada producto (nombre, precio, cantidad, código, etc.)?
+Nada, no guardo nada de eso.
+3. ¿De qué manera organiza y guarda la información de cada venta que realiza en la tienda?
+Nada, si alguien viene a comprarme un juego y lo tengo, me paga y se lo lleva o se los instalo directamente en la consola.
+4. ¿Qué dificultades encuentra con la forma en cómo lleva el inventario o el método que utiliza ahora para llevar el registro?
+Yo ya lo había dicho… cuando un producto falta, solo me doy cuenta cuando alguien llega y me lo pide, a veces tengo varios productos desde hace tiempo guardados y no recuerdo que están allí.
+5. ¿Qué funciones crees que necesites en la plataforma web?
+No estoy seguro de que cosas deberían hacer eso programas.
+6. ¿Desea que sistema genere reportes? por ejemplo: ventas diarias, productos más vendidos.
+Si, aguanta que me muestre un registro diario.
+7. ¿Le interesa que el sistema tenga alertas cuando los productos estén bajos?
+Si, me gustaría las notificaciones.
+8. ¿Quiere manejar categorías diferentes? (juegos, consolas, accesorios, reparaciones).
+No, sin tanto complique… que todo esté en una página.
+9. ¿Desea que el sistema permita registrar clientes cuando hace una venta o cuando utiliza el servicio de reparación?
+Si, me gustaría dar un servicio más personalizado
+10. ¿Desea que el sistema envié notificaciones a los clientes cuando una reparación esta lista?
+Si, sería bueno
+11. ¿Qué información le gustaría ver primero al entrar al sistema?
+Una página de inicio con publicidad del negocio… imágenes del negocio y esas cosas.
+12. ¿Cómo le gustaría que se vea la interfaz o qué color le gustaría que predominara? (minimalista, colorida, estilo gamer).
+Con imágenes y videos relacionados con la tienda… así, cosas de videojuegos
+13. ¿Cuántas personas accederán al sistema y qué roles tendrían?
+Por el momento, solo estoy yo aquí…
+14. ¿Con que dispositivos espera manejar el sistema? (computador, móvil o Tablet).
+Desde cualquier dispositivo sería bueno
+15. ¿Desea que el sistema envié recordatorios al administrador cuando haya una reparación pendiente?
+Si, que me recuerde cuando tengo un arreglo pendiente, porque, a veces me llegan y los dejo ahí y no me acuerdo de ellos.
+6.3. Requisitos funcionales 
+
+6.3.1. Requisitos no funcionales
+
+Seguridad 
+El sistema deberá garantizar la protección de la información mediante el uso de contraseñas encriptadas y protocolos de seguridad que eviten accesos no autorizados. Los datos de clientes y ventas deberán almacenarse cumpliendo con la Ley 1581 de 2012 sobre protección de datos personales. Además, antes de eliminar cualquier registro, el sistema solicitará confirmación para evitar pérdidas accidentales de información.
+Usabilidad 
+La plataforma contará con una interfaz intuitiva, de fácil navegación y con un diseño estilo gamer, tal como lo solicitó el administrador de la tienda. Será responsive, lo que permitirá su uso desde computadores, tablets o dispositivos móviles, y los menús estarán claramente identificados para facilitar la interacción del usuario.
+Rendimiento
+Las operaciones críticas, como el registro de productos, ventas o consultas de inventario, deberán ejecutarse en un tiempo máximo de dos segundos. El sistema tendrá la capacidad de soportar hasta treinta accesos por hora sin degradar su desempeño.
+Escalabilidad
+La arquitectura del sistema permitirá la incorporación futura de nuevos módulos, como facturación electrónica o reportes avanzados, sin necesidad de rediseñar toda la aplicación. La base de datos estará preparada para crecer en volumen de registros sin afectar la velocidad de consulta.
+Compatibilidad
+El sistema será accesible desde los principales navegadores web (Google Chrome, Mozilla Firefox y Microsoft Edge) y funcionará en sistemas operativos como Windows, Linux y Android/iOS a través de navegador.
+Mantenibilidad
+El código estará documentado y organizado de manera modular, lo que facilitará futuras actualizaciones o modificaciones sin afectar el resto de la aplicación.
+Disponibilidad
+El sistema deberá estar operativo al menos el 95% del tiempo, exceptuando los mantenimientos programados.
+6.4. Casos de uso
+
+RF- <01><Iniciar Sesión>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir el acceso seguro del administrador a la plataforma.DescripciónEl sistema deberá validar las credenciales (usuario y contraseña) del administrador para permitirle el acceso al sistema.PrecondiciónEl administrador debe estar registrado previamente en el sistema.Secuencia
+NormalPasoAcción11	El administrador accede a la pantalla de inicio de sesión2El administrador ingresa su usuario y contraseña3El sistema valida las credenciales4Si las credenciales son correctas, el sistema permite el acceso al panel principal56nPostcondiciónEl administrador queda autenticado dentro del sistema y puede acceder a sus funcionalidades.ExcepcionesPasoAcción1Si las credenciales son incorrectas, el sistema muestra un mensaje de error y solicita reintentar.2Si el administrador deja campos vacíos, el sistema indica que son obligatorios.3RendimientoPasoCota de tiempo1La validación de credenciales debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 6 accesos por horaImportanciaVital UrgenciaInmediatamente ComentariosSe recomiendo implementar sistemas de seguridad
+
+
+RF- <02><Registro de productos>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir el registro de los productos en el sistemaDescripciónEl administrador ingresara los datos esenciales de los productos como nombre, precio y la cantidad que hay de este en el sistema.PrecondiciónLos productos no deben estar registrados en el sistema previamente.Secuencia
+NormalPasoAcción1El administrador debe acceder al sistema con su usuario y contraseña.2El administrador deberá ir a la opción de agregar nuevo producto3Ingresar la información del producto como el nombre y la cantidad disponible.4Establecer el precio unitario del producto5Dar clic en el botón registrar6nPostcondiciónEl producto queda registrado en el sistema y listo para aparecer en la lista de productos del sistema.ExcepcionesPasoAcción1Si el producto ya está en el sistema, no lo registre de nuevo.2Si el administrador deja campos vacíos, el sistema indica que son obligatorios.3RendimientoPasoCota de tiempo1El registro debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 10 registros por horaImportanciaVital UrgenciaInmediatamente ComentariosMandar una notificación en caso que el producto ya este registrado. 
+
+
+
+RF- <03><Actualización de productos>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosMantener la información de los productos al díaDescripciónEl administrador podrá modificar los datos de los productos en caso de un dato erróneo o mal digitado y borrarlo del sistema en caso que se requiera.PrecondiciónEl producto debe estar registrado previamente en el sistema.Secuencia
+NormalPasoAcción1El administrador debe acceder al sistema con usuario y contraseña.2Buscar el producto que se desea modificar y seleccionarlo.3Dar clic en el botón modificar4Modificar los datos erróneos5Dar clic en guardar6nPostcondiciónEl producto queda registrado y aparecerá con la nueva información dentro del sistema.ExcepcionesPasoAcción1En caso que se desee eliminar el producto, solo se debe dar clic en el botón eliminar.2Si el administrador deja campos vacíos, el sistema indica que son obligatorios.3RendimientoPasoCota de tiempo1La actualización o eliminación debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 6 accesos por horaImportanciaImportanteUrgenciaHay presión ComentariosSe recomiendo tener un mensaje de verificación cuando se vaya a eliminar un producto.
+
+RF- <04><Registro Ventas>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir que el administrador registre las ventas realizadas.DescripciónEl administrador en el sistema podrá guardar y llevar un registro de las ventas hechas durante todo el día.PrecondiciónEl producto vendido debe estar registrado en el sistema y que este tenga por lo menos la cantidad de requerida.Secuencia
+NormalPasoAcción1El administrador debe acceder al sistema con usuario y contraseña.2Ir a la opción registrar venta3Agregar el producto o el servicio ofrecido4Digitar la cantidad5Dar clic en el botón confirmar6nPostcondiciónSe generará una factura que se guardará en la base de datos del sistema.ExcepcionesPasoAcción1Si el producto o no está en el sistema, no genere una factura.23RendimientoPasoCota de tiempo1La factura debe generarse en menos de 2 segundos.Frecuencia esperadaHasta 10 facturas por horaImportanciaVital UrgenciaInmediatamente ComentariosImplementar un mensaje de comprobación, si es la venta correcta.
+
+
+RF- <05><Listado de Ventas>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir la visualización de todas las ventas realizadas en el sistema.DescripciónEl sistema debe mostrar un listado diario con todas las ventas realizadas.PrecondiciónSe debe hacer por lo menos una venta y estar registrada en el sistema.Secuencia
+NormalPasoAcción1El administrador debe acceder al sistema con usuario y contraseña.2Dirigirse a la opción reportes3Aparcera una ventana donde se visualizarán los registros de ventas diarios.456nPostcondiciónSe descargará un documento con los registrosExcepcionesPasoAcción123RendimientoPasoCota de tiempo1La visualización debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 6 accesos por horaImportanciaImportanteUrgenciaPuede esperarComentarios
+
+
+RF- <06><Registrar Servicios de Reparación>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir al administrador registrar nuevos servicios de reparación en el sistema, detallando su descripción y estado.DescripciónEl administrador podrá registrar las reparaciones de productos que le lleven por mal funcionamiento, dejando en la descripción del producto la falla que presenta y en el estado, si todavía está en reparación o está ya termino y el usuario ya puede pasar por él.PrecondiciónEl administrador debe haber iniciado sesión en el sistema.Secuencia
+NormalPasoAcción1El administrador selecciona la opción registrar servicio de reparación2El sistema muestra el formulario con los campos descripción y estado a rellenar.3El sistema lo guarda en la base de datos.4Muestra un mensaje de confirmación, guardado exitosamentePostcondiciónEl servicio queda registrado en el sistema a la espera de una modificación de estado.ExcepcionesPasoAcción1Si ocurre un error de conexión con la base de datos, el sistema muestra un mensaje que no se pudo registrar el servicio y que lo intente nuevamente.2Si el administrador deja campos vacíos, el sistema indica que son obligatorios.3RendimientoPasoCota de tiempo1El registro debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 20 servicios registrados por horaImportanciaVital UrgenciaHay presiónComentariosEl estado del servicio debe ser seleccionado de una lista desplegable con dos opciones: En reparación y Listo.
+
+
+
+RF- <07><Datos Básicos Clientes>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir al administrador registrar información de los clientes como: nombre y número telefónico.DescripciónEl sistema deberá pedir la información cuando el administrador desee registrar una venta o un servicio de reparación.PrecondiciónEl cliente debe haber realizado una compra o utilizar el servicio de reparación.Secuencia
+NormalPasoAcción1Registrar una compra o servicio2El sistema mostrar un formulario con los campos a rellenar.3Dar clic en completar registro.456nPostcondiciónSe registrará la información del cliente junto con la compra.ExcepcionesPasoAcción1Si el administrador deja campos vacíos, el sistema indica que son obligatorios.23RendimientoPasoCota de tiempo1El registro debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 20 clientes registrados por horaImportanciaVital UrgenciaHay presiónComentariosLos campos obligatorios deben ser nombre, apellido y al menos un número de teléfono.
+
+
+RF- <08><Tablero Inicial>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosMostrar al usuario una vista con todos los productos disponibles.DescripciónCuando el usuario acceda al sistema podrá ver todos los productos de la tienda, su precio unitario y la cantidad que se dispone de ellos, todo en una sola página, sin divisiones por categorías.PrecondiciónHaber ingresado en el aplicativoSecuencia
+NormalPasoAcción1Ingresar al software2En la página principal dirigirse a productos.3El sistema mostrara la imagen, nombre, precio y cantidad del producto.4El usuario podrá navegar y ver los productos.56nPostcondiciónEl usuario visualizara el tablero con los productos disponibles.ExcepcionesPasoAcción1Si ocurre un error al cargar los productos, se mostrara un botón para reintentar.23RendimientoPasoCota de tiempo1El sistema debe tardar 2 segundos en cargar y mostrar los productos.Frecuencia esperadaHasta 30 accesos por horaImportanciaVital UrgenciaInmediatamente ComentariosEl tablero debe incluir funciones como búsqueda de productos.
+
+
+RF- <09><Filtrado de productos>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosFacilitar la búsqueda de productos de manera rápida aplicando filtros (sin necesidad de categorías).DescripciónEl sistema permitirá al administrador buscar y filtrar productos mediante criterios como: nombre, precio y cantidad disponible o estado de stock, sin necesidad de dividirlos en categorías.PrecondiciónDebe haber por lo menos dos productos registrados en la base de datos.Secuencia
+NormalPasoAcción1El administrador accede a la opción de gestión de productos.2El administrador selecciona la opción “filtrar producto”3El administrador ingresa un criterio de filtrado (ejemplo: nombre, rango de precios o disponibilidad)4El sistema procesa a búsqueda según el criterio ingresado.5El sistema muestra la lista de productos que cumplen con el filtro.PostcondiciónExcepcionesPasoAcción1Si no existen productos registrados, el sistema mostrara un mensaje “no hay productos disponibles”2Si ningún producto cumple con el criterio, el sistema mostrara un mensaje “no hay productos disponibles”3RendimientoPasoCota de tiempo1La búsqueda y filtrado debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 5 filtrados por horaImportanciaImportanteUrgenciaPuede esperarComentariosEl sistema debe permitir el uso de múltiples criterios de filtrado en una misma búsqueda.
+
+
+
+
+
+
+
+
+
+RF- <10><Búsqueda Especifica de productos>Versión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermite al administrador encontrar rápidamente un producto específico en el inventario mediante su nombre o palabra clave.DescripciónEl sistema permitirá al administrador ingresar el nombre completo de un producto para encontrarlo en la base de datos.PrecondiciónDebe existir al menos un producto con ese nombre específico en el sistema.Secuencia
+NormalPasoAcción1El administrador accede al módulo de gestión de productos.2Selecciona la opción búsqueda especifica3Ingresa el nombre completo4El sistema muestra el producto que coincide con el criterio ingresado.PostcondiciónEl administrador obtiene en pantalla el producto o la lista de coincidencias exactas con el nombre buscado.
+ExcepcionesPasoAcción1Si no hay productos registrados, el sistema muestra “no existen productos en el inventario”2Si no se encuentran coincidencia el sistema muestra no se encontraron resultados.3RendimientoPasoCota de tiempo1La búsqueda debe completarse en menos de 2 segundos.Frecuencia esperadaHasta 5 búsquedas por horaImportanciaImportanteUrgenciaInmediataComentariosEl sistema debe permitir búsquedas parciales y no distinguir entre mayúsculas y minúsculas.
+
+RF- <11>Alertas visuales por bajo stockVersión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosNotificar al administrador cuando un producto tenga un nivel de stock bajo, para tomar decisiones de reposición a tiempo.DescripciónEl sistema mostrará alertas visuales (íconos, colores o mensajes destacados) en la interfaz de gestión de productos cuando algún producto alcance el nivel mínimo definido de stock.PrecondiciónEl producto debe tener configurado un nivel mínimo de stock.Secuencia
+NormalPasoAcción1El administrador accede al módulo de gestión de productos.2El sistema verifica automáticamente los niveles de stock.
+3Si un producto está por debajo del mínimo, el sistema marca dicho producto con una alerta visual.
+4El administrador visualiza la alerta y puede tomar acción (ejemplo: reabastecer)PostcondiciónEl administrador es informado de manera visual de los productos con bajo stock.ExcepcionesPasoAcción1
+2Si no se han definido mínimos de stock, no se mostrará ninguna alerta.3Si no hay productos registrados, el sistema muestra “No existen productos en el inventario”.RendimientoPasoCota de tiempo1La verificación de stock y la aparición de alertas deben ocurrir en menos de 2 segundos tras la carga de la interfaz.Frecuencia esperadaHasta 5 accesos por horaImportanciaVital UrgenciaInmediatamente ComentariosLas alertas deben ser visuales y claras (ejemplo: color rojo, ícono de advertencia).RF- <12>Accesibilidad desde navegador webVersión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosGarantizar que el sistema sea accesible desde diferentes dispositivos para mejorar la disponibilidad y facilidad de uso.DescripciónEl sistema será accesible a través de navegadores web tanto en computadores como en dispositivos móviles (celulares o tablets), sin necesidad de instalar aplicaciones adicionales.PrecondiciónEl usuario debe contar con conexión a internet y disponer navegador web actualizado.Secuencia
+NormalPasoAcción1El usuario ingresa la url desde cualquier navegador (computador o celular).2El sistema carga la interfaz adaptada al dispositivo.3El usuario inicia sesión o accede según sus permisos.45PostcondiciónEl usuario puede utilizar todas las funcionalidades del sistema desde su navegador, independientemente del dispositivo.ExcepcionesPasoAcción1
+Si el usuario no tiene conexión a internet, el sistema no será accesible.23RendimientoPasoCota de tiempo1La carga de la interfaz no debe superar los 5 segundos en condiciones de conexión estándar.
+Frecuencia esperadaHasta 6 accesos por díaImportanciaVital UrgenciaInmediatamente ComentariosSe recomienda que el diseño sea responsive, adaptándose automáticamente al tamaño de pantalla del dispositivo.
+
+
+
+
+RF- <13>Marcar reparación como lista para entregaVersión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosPermitir al administrador llevar un control más claro del estado de las reparaciones y diferenciar las que están listas de las pendientes.DescripciónEl administrador podrá marcar una reparación registrada como “Lista para entrega”, de modo que quede diferenciada de aquellas que aún se encuentran en estado “Pendiente” o en proceso.PrecondiciónDebe existir al menos una reparación registrada en el sistema.Secuencia
+NormalPasoAcción1El administrador accede al módulo de reparaciones.
+2El administrador selecciona una reparación pendiente.3El administrador marca la reparación como “Lista para entrega”.4El sistema actualiza el estado de la reparación.5El sistema muestra la reparación en el listado de “listas para entrega”.PostcondiciónLa reparación queda registrada con el estado “Lista para entrega”, diferenciándose de las pendientes.ExcepcionesPasoAcción1Si la reparación no existe, se muestra un mensaje de error.2Si el administrador intenta marcar una reparación ya entregada, el sistema muestra una advertencia.RendimientoPasoCota de tiempo1El cambio de estado debe reflejarse en menos de 2 segundos.Frecuencia esperadaCada vez que se termine una reparación.ImportanciaVital UrgenciaInmediatamente ComentariosSe recomienda que las reparaciones listas para entrega se identifiquen visualmente (ejemplo: ícono verde o etiqueta diferenciada).
+
+
+RF- <14>Búsqueda de reparaciones por cliente o consolaVersión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosFacilitar al administrador la localización rápida de reparaciones en curso o finalizadas mediante el nombre del cliente o el tipo/modelo de consola registrada.DescripciónEl sistema permitirá que el administrador realice búsquedas de reparaciones ingresando como criterio el nombre del cliente o la consola asociada. El sistema devolverá un listado con las coincidencias encontradas.PrecondiciónDebe existir al menos una reparación registrada en el sistema.Secuencia
+NormalPasoAcción1El administrador accede al módulo de reparaciones.2El administrador ingresa el nombre del cliente o la consola a buscar.3El sistema procesa la búsqueda.4El sistema muestra la lista de reparaciones que coinciden con el criterio.PostcondiciónEl administrador obtiene un listado filtrado con las reparaciones correspondientes al cliente o consola ingresada.ExcepcionesPasoAcción1Si no se ingresa un criterio de búsqueda, el sistema muestra un mensaje de advertencia.2Si no existen coincidencias, el sistema muestra un mensaje de “sin resultados encontrados”.RendimientoPasoCota de tiempo1La búsqueda debe completarse en menos de 3 segundos.Frecuencia esperadaHasta 4 búsquedas por horaImportanciaVital UrgenciaInmediatamente ComentariosSe recomienda incluir filtros avanzados (por fecha de ingreso, estado de reparación, etc.) para complementar la búsqueda y hacerla más precisa.
+
+
+
+
+
+RF- <15>Confirmación de RegistroVersión<1.0  06-09-2025>Autores<Cristian Camilo Jiménez Robles
+Camilo Reyes Rodríguez
+Marco Andrés Martínez Malagón
+Kevin Andrés Blanco Trillos>Fuentes<Los Autores>Objetivos asociadosConfirmar al administrador que la acción realizada fue completada con éxito para evitar dudas o duplicaciones.DescripciónPermite al administrador recibir un mensaje de confirmación cada vez que realice una acción de registro en el sistema, asegurando que la operación fue exitosaPrecondiciónEl administrador debe haber ingresado correctamente la información de la venta, producto o reparación.Secuencia
+NormalPasoAcción1El administrador registra una venta, producto o reparación en el sistema.2El sistema valida que los datos ingresados sean correctos.3El sistema guarda la información en la base de datos.4El sistema muestra un mensaje de confirmación en pantalla indicando que el registro fue exitoso.PostcondiciónEl administrador recibe la confirmación visual de la acción realizada.ExcepcionesPasoAcción1Si falta un dato obligatorio, el sistema muestra un mensaje de error y no guarda la información.RendimientoPasoCota de tiempo1El sistema deberá mostrar el mensaje de confirmación en menos de 2 segundos después de realizar el registro.Frecuencia esperadaHasta 6 confirmaciones de registro por horaImportanciaVital UrgenciaInmediatamente ComentariosSe puede incluir un mensaje diferenciado según la acción (ejemplo: “Venta registrada con éxito”, “Producto agregado correctamente”, “Reparación guardada”).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6.5. Diagramas
+6.5.1. Diagrama entidad-relación
+
+Ilustración 1-Diagrama entidad-relación
+ 
+
+6.5.2. Diagrama de clases
+
+Ilustración 2-Diagrama de clases
+
+6.5.3. Diagrama de objetos
+
+Ilustración 3-Diagrama de objetos
+
+6.5.4. Diagrama de despliegue
+
+Ilustración 4-Diagrama de despliegue
+
+6.5.5. Diagrama de componente
+
+Ilustración 5-Diagrama de componente
+
+6.5.6. Diagrama de actividad
+
+Ilustración 6-Diagrama de actividad
+
+6.5.7. Diagrama de estructura compuesta
+
+Ilustración 7-Diagrama de estructura compuesta
+6.5.8. Diagramas de casos de uso
+
+Ilustración 8-Diagrama de casos de uso 1
+
+
+Ilustración 9-Diagrama de casos de uso 2
+
+
+
+Ilustración 10-Diagrama de casos de uso 3
+
+Ilustración 11-Diagrama de casos de uso 4
+
+
+
+
+Ilustración 12-Diagrama de casos de uso 5
+
+
+Ilustración 13-Diagrama de casos de uso 6
+
+
+
+Ilustración 14-Diagrama de casos de uso 7
+
+Ilustración 15-Diagrama de casos de uso 8
+
+
+
+Ilustración 16-Diagrama de casos de uso 9
+
+Ilustración 17-Diagrama de casos de uso 10
+
+
+Ilustración 18-Diagrama de casos de uso 11
+
+
+Ilustración 19-Diagrama de casos de uso 12
+
+
+
+Ilustración 20-Diagrama de casos de uso 13
+
+Ilustración 21-Diagrama de casos de uso 14
+
+Ilustración 22-Diagrama de casos de uso 15
+
+6.5.9. Diagramas de estado
+
+Ilustración 23-Diagrama de estado 1
+
+
+
+Ilustración 24-Diagrama de estado 2
+
+
+Ilustración 25-Diagrama de estado 3
+
+
+Ilustración 26-Diagrama de estado 4
+
+
+Ilustración 27-Diagrama de estado 5
+
+
+Ilustración 28-Diagrama de estado 6
+
+
+Ilustración 29-Diagrama de estado 7
+
+
+Ilustración 30-Diagrama de estado 8
+
+
+Ilustración 31-Diagrama de estado 9
+
+Ilustración 32-Diagrama de estado 10
+
+
+Ilustración 33-Diagrama de estado 11
+
+Ilustración 34-Diagrama de estado 12
+
+
+
+Ilustración 35-Diagrama de estado 13
+
+Ilustración 36-Diagrama de estado 14
+
+
+Ilustración 37-Diagrama de estado 15
+
+
+ 
+
+Ilustración 38-Diagrama de secuencia 1
+ 
+
+Ilustración 39-Diagrama de secuencia 2
+ 
+
+Ilustración 40-Diagrama de secuencia 3
+ 
+
+Ilustración 41-Diagrama de secuencia 4
+ 
+
+Ilustración 42-Diagrama de secuencia 5
+
+
+Ilustración 43-Diagrama de secuencia 6
+ 
+
+Ilustración 44-Diagrama de secuencia 7
+ 
+
+Ilustración 45-Diagrama de secuencia 8
+ 
+
+Ilustración 46-Diagrama de secuencia 9
+ 
+
+Ilustración 47-Diagrama de secuencia 10
+
+
+Ilustración 48-Diagrama de secuencia 11
+ 
+
+Ilustración 49-Diagrama de secuencia 12
+ 
+
+Ilustración 50-Diagrama de secuencia 13
+
+
+Ilustración 51-Diagrama de secuencia 14
+  
+
+Ilustración 52-Diagrama de secuencia 15
+
+6.5.10. Diagramas de colaboración 
+
+Ilustración 53-Diagramas de colaboración 1
+
+
+Ilustración 54-Diagramas de colaboración 2
+
+
+Ilustración 55-Diagramas de colaboración 3
+
+
+Ilustración 56-Diagramas de colaboración 4
+
+
+Ilustración 57-Diagramas de colaboración 5
+6.6. Diccionario de Datos
+* Usuario (Administrador) 
+Solo hay un administrador en el sistema (según entrevista: “Por el momento, solo estoy yo aquí…”).
+
+
+* Producto 
+Entidad central del sistema. No se usan categorías (“sin tanto complique… que todo esté en una página”).
+
+
+* Cliente 
+Se registra en ventas o reparaciones (“me gustaría dar un servicio más personalizado”).
+
+
+* Venta 
+Incluye generación de factura y actualización automática de stock.
+
+
+* DetalleVenta 
+Tabla intermedia para relación muchos a muchos entre Venta y Producto.
+
+
+* Reparación 
+Gestión de mantenimiento de consolas. Estados posibles: 'En reparación' o 'Listo'.
+
+
+
+
+6.7. Diseño
+
+Ilustración 58-Paleta de colores
+
+Ilustración 59-Inicio de sección
+
+
+Ilustración 60-Dashboard
+
+
+Ilustración 61-Gestion productos
+
+Ilustración 62-Modal productos
+
+
+Ilustración 63-Registrar ventas
+
+
+Ilustración 64-Ventas registradas
+
+Ilustración 65-Modal factura
+
+
+Ilustración 66- Gestión servicios
+
+Ilustración 67-Modal servicio
+
+
+
+
+
+
+
+
+
+
+      Bibliografía
+Acevedo Tamayo, A. C., Macias, R. A., & Molina Cardona, E. N. (2023). Importancia del control de inventarios en las Pymes comercializadoras de tecnología tangible en el área metropolitana de Antioquía. Bello: Corporación Universitaria Minuto de Dios – UNIMINUTO. Obtenido de https://repository.uniminuto.edu/items/42487ddd-d23a-42a4-9373-7200e8a668a2
+Bermúdez Monsalve, C. D., Suárez Hernández, A. H., & Jiménez Ramos, L. M. (2024). Propuesta de automatización del proceso de inventarios en el Banco de Alimentos de Medellín. Medellín: Politécnico Grancolombiano. Obtenido de https://dialnet.unirioja.es/servlet/articulo?codigo=10118086
+Congreso de Colombia. (1971). Decreto 410 de 1971. Por el cual se expide el Código de Comercio de Colombia. Obtenido de https://www.mincit.gov.co/ministerio/normograma-sig/procesos-de-apoyo/gestion-juridica/decretos/decreto-ley-410-de-1971.aspx?
+Congreso de Colombia. (1999). Ley 527 de 1999. Por medio de la cual se define y reglamenta el acceso y uso de mensajes de datos, del comercio electrónico y de las firmas digitales y se establecen las entidades de certificación. Obtenido de https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=4276
+Congreso de Colombia. (2012). Ley 1581 de 2012. Ley estatutaria de protección de datos personales en Colombia. Obtenido de https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981
+Gómez, J. A., & Rodríguez, P. (2021). Implementación de sistemas ERP en pequeñas empresas: Un estudio de caso en el sector retail de Colombia. Journal of Business & Technology, 67-80.
+González Buitrago, D. E., & Perilla Vaca, A. K. (2025). Plan de negocio para la implementación de un sistema de planificación de recursos empresariales (ERP) en el sector de manufactura e industria pesada. Bogotá: Universidad Ean. Obtenido de https://repository.universidadean.edu.co/entities/publication/b9df48c2-1549-4cd9-83be-b264ecf45ffc
+Macías Loor, F. I., & Briones Castro, G. L. (2025). GESTIÓN DE INVENTARIOS EN LOS PROCESOS DE COMPRA DE MERCADERÍA: EMPRESA ERICORLA S.A. Lima: Universidad Alas Peruanas. Obtenido de https://dialnet.unirioja.es/servlet/articulo?codigo=10091181
+Morales Agudelo, A. E., & Pulgarín García, A. E. (2024). SISTEMA DE OPTIMIZACIÓN DE INVENTARIOS. Medellín: Tecnológico de Antioquia. Obtenido de https://dspace.tdea.edu.co/handle/tdea/6502
+Oliver Dupont, E. L., & Montealegre Hernández, A. C. (2022). Establecimiento de un modelo de automatización para control de inventario en pequeñas droguerías en el centro de Bogotá. Bogotá: Universidad Cooperativa de Colombia. Obtenido de https://repository.ucc.edu.co/entities/publication/30340b9a-d6b7-41fc-b991-204c41097549
+Pérez De La Cruz, L. D., & Urueta, U. S. (2025). Diseño de un Producto Mínimo Viable (PMV) Para la Gestión Inteligente de Inventarios en la PyME de Decoración Sublime Space. Barranquilla: Universidad de la Costa. Obtenido de https://repositorio.cuc.edu.co/entities/publication/44a66b1c-c600-43ad-98b2-a80f1de3186e
+Portillo Villegas , M. (2019). Desarrollo de un sistema web responsivo de inventario y facturación, que permita gestionar la información del almacén Agromáquinas del Cesar en el municipio de Aguachica. Obtenido de http://repositorio.unicesar.edu.co/handle/123456789/1044
+Presidencia de Colombia. (2015). Decreto 1074 de 2015. Decreto Único Reglamentario del Sector Comercio, Industria y Turismo. Obtenido de https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=78153
+Quispe Ortiz, J. M. (2022). DESARROLLO DE UN SISTEMA PARA GESTIÓN DE INVENTARIOS CON MANEJO DE CÓDIGOS DE BARRAS. PONTIFICIA UNIVERSIDAD CATÓLICA DEL ECUADOR. Obtenido de https://repositorio.puce.edu.ec/items/13d213d1-ffb2-422e-942b-3101ac3ac676
+Ramírez, J., Vargas, P., & López, R. (2022). Optimización de la gestión de inventarios en el comercio minorista mediante la automatización. Revista de Gestión Empresarial, 21, 134-146.
+Romero, M. (2017). IMPLEMENTACIÓN DEL SISTEMA DE FACTURACIÓN, ANÁLISIS E INVENTARIOPARA LA FERRETERÍA FERRETODO MATERIALES. Obtenido de https://www.studocu.com/co/document/universidad-popular-del-cesar/gestion-de-proyectos/implementacion-del-sistema-de-facturacion-analisis-e-inventario-para-la-ferreteria-ferretodo-materiales/5063372
+Tigua R, & Muñoz. (2025). Estrategias de automatización en la gestión de inventarios para PYMEs. Ambato: Tesis de pregrado, Universidad Técnica de Ambato.
+Vidal Vásquez, O., Reyes Luna, B., Vargas López, M., & Sánchez López, M. (2011). Sistema de Información para el Control de Inventarios del Almacén del ITS. Obtenido de https://www.redalyc.org/pdf/944/94419100007.pdf
+
+      
+

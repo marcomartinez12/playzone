@@ -1,0 +1,24 @@
+# FastAPI Framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Database
+psycopg2-binary
+supabase
+
+# Authentication & Security
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+
+# CORS
+fastapi-cors
+
+# Validation
+pydantic
+pydantic-settings
+email-validator
+
+# Date & Time
+python-dateutil

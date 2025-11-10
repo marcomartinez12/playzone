@@ -1,0 +1,375 @@
+/* style de seccion productos */
+/* Btn Add */
+.product-btn {
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.product-btn:hover {
+    background: #047857;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* barra de busqueda */
+.search-product {
+    position: fixed;
+    top: 80px;
+    right: 30px; 
+}
+
+.search-product input {
+    padding: 12px 45px 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    width: 250px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.search-product input:focus {
+    outline: none;
+    border-color: #0066cc;
+    width: 300px;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #0066cc;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-icon:hover {
+    background: #0052a3;
+    transform: translateY(-50%) scale(1.05);
+}
+
+
+/* Table */
+.inventory-table-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    overflow: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-top: 5pt;
+    overflow-x: auto; /* RF-12: Scroll horizontal en móviles */
+    -webkit-overflow-scrolling: touch; /* Suavizado en iOS */
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inventory-table th {
+    background: #f8f9fa;
+    color: #333;
+    padding: 18px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.inventory-table td {
+    padding: 15px 18px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.inventory-table tbody tr:hover {
+    background: #f8f9ff;
+}
+
+
+
+ /* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal {
+    background-color: #1D4859;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+}
+
+.modal-header {
+    background-color: #00304D;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.btn-cerrar {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10%;
+    transition: background 0.3s ease;
+}
+
+.btn-cerrar:hover {
+    background: rgba(214, 0, 0, 0.721);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color:white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    min-width: 450px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-footer {
+    padding: 20px 25px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-cancelar {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.btn-cancelar:hover {
+    background: #e0e0e0;
+}
+
+.btn-guardar {
+    background: #00AE47;
+    color: white;
+}
+
+.btn-guardar:hover {
+    background: #00AE47;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    /* RF-12: Barra de búsqueda adaptada */
+    .search-product {
+        right: 15px;
+        top: 75px;
+    }
+
+    .search-product input {
+        width: 200px;
+    }
+
+    .search-product input:focus {
+        width: 220px;
+    }
+
+    /* RF-12: Tabla scrolleable horizontal */
+    .inventory-table-container {
+        margin: 10px;
+        border-radius: 12px;
+    }
+
+    .inventory-table {
+        min-width: 600px; /* Mantiene estructura en móvil */
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    /* Modales */
+    .modal {
+        max-height: 95vh;
+    }
+
+    .modal-header h2 {
+        font-size: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .btn {
+        width: 100%;
+        min-height: 44px; /* RF-12: Touch target */
+    }
+}
+
+@media (max-width: 480px) {
+    /* RF-12: Búsqueda en móvil */
+    .search-product {
+        position: static;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-product input {
+        width: calc(100% - 40px);
+        max-width: 300px;
+    }
+
+    .search-product input:focus {
+        width: calc(100% - 40px);
+    }
+
+    /* RF-12: Tabla más compacta en móvil */
+    .inventory-table-container {
+        margin: 5px;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .product-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 40px;
+    }
+
+    /* Modales móvil */
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-header {
+        padding: 15px 20px;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+    }
+
+    .btn {
+        min-height: 48px; /* RF-12: Touch target aumentado */
+        font-size: 15px;
+    }
+}
