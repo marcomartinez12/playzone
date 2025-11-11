@@ -398,7 +398,8 @@ async function guardarServicio() {
                 },
                 body: JSON.stringify({
                     nombre: nombre,
-                    documento: documento
+                    documento: documento,
+                    telefono: '0000000000' // Teléfono por defecto para servicios sin teléfono
                 })
             });
 
@@ -406,7 +407,7 @@ async function guardarServicio() {
             if (clienteData.success) {
                 idCliente = clienteData.data.id_cliente;
             } else {
-                showError('Error al registrar el cliente: ' + clienteData.message, 'Error');
+                showError('Error al registrar el cliente: ' + (clienteData.message || clienteData.detail || 'Error desconocido'), 'Error');
                 return;
             }
         }
@@ -552,13 +553,21 @@ async function eliminarServicio(idServicio) {
 
 // Cargar servicios cuando se accede a la sección
 document.addEventListener('DOMContentLoaded', function() {
+    let cargandoServicios = false;
+    let timeoutId = null;
+
     const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            const serviciosSection = document.getElementById('servicios');
-            if (serviciosSection && serviciosSection.classList.contains('active')) {
-                cargarServicios();
-            }
-        });
+        const serviciosSection = document.getElementById('servicios');
+        if (serviciosSection && serviciosSection.classList.contains('active') && !cargandoServicios) {
+            // Debounce: cancelar llamadas anteriores y esperar 100ms
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                cargandoServicios = true;
+                cargarServicios().finally(() => {
+                    cargandoServicios = false;
+                });
+            }, 100);
+        }
     });
 
     const config = { attributes: true, subtree: true, attributeFilter: ['class'] };
