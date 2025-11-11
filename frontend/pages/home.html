@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="/assets/css/addsales.css">
     <link rel="stylesheet" href="/assets/css/notifications.css">
 
+    <!-- Chart.js para gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
     <!-- Limpiar modo oscuro del localStorage -->
     <script>
         localStorage.removeItem('theme');
@@ -205,6 +208,20 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Gráfica de Ventas Diarias -->
+            <div style="background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 32px;">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                    <div style="width: 48px; height: 48px; background: rgba(102, 126, 234, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📊</div>
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 600; color: #2d3748; margin: 0 0 4px 0;">Ventas de los Últimos 7 Días</h3>
+                        <p style="font-size: 13px; color: #718096; margin: 0;">Evolución diaria de ventas e ingresos</p>
+                    </div>
+                </div>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="ventasDiariasChart"></canvas>
                 </div>
             </div>
 

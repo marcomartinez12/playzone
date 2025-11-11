@@ -2,6 +2,9 @@
 // DASHBOARD - VISTA DE INICIO
 // ============================================
 
+// Variable global para la gráfica
+let ventasDiariasChart = null;
+
 // Cargar estadísticas del dashboard
 async function cargarEstadisticasDashboard() {
     try {
@@ -85,6 +88,7 @@ async function cargarEstadisticasDashboard() {
         };
 
         mostrarEstadisticas(estadisticas);
+        crearGraficaVentasDiarias(ventasArray);
 
     } catch (error) {
         console.error('Error al cargar estadísticas:', error);
@@ -208,6 +212,255 @@ function mostrarEstadisticas(stats) {
             <div style="color: #718096; font-size: 14px; margin-top: 4px;">${stats.productoMasVendido.cantidad} unidades vendidas</div>
         `;
     }
+}
+
+// Crear gráfica de ventas diarias (últimos 7 días)
+function crearGraficaVentasDiarias(ventas) {
+    // Obtener los últimos 7 días
+    const hoy = new Date();
+    const dias = [];
+    const labels = [];
+    const ventasPorDia = {};
+    const ingresosPorDia = {};
+
+    // Inicializar los últimos 7 días
+    for (let i = 6; i >= 0; i--) {
+        const fecha = new Date(hoy);
+        fecha.setDate(fecha.getDate() - i);
+        fecha.setHours(0, 0, 0, 0);
+
+        const fechaStr = fecha.toISOString().split('T')[0];
+        dias.push(fechaStr);
+
+        // Formatear etiqueta (ej: "Lun 10")
+        const opciones = { weekday: 'short', day: 'numeric' };
+        labels.push(fecha.toLocaleDateString('es', opciones));
+
+        ventasPorDia[fechaStr] = 0;
+        ingresosPorDia[fechaStr] = 0;
+    }
+
+    // Contar ventas e ingresos por día
+    ventas.forEach(venta => {
+        const fechaVenta = new Date(venta.fecha_venta);
+        fechaVenta.setHours(0, 0, 0, 0);
+        const fechaStr = fechaVenta.toISOString().split('T')[0];
+
+        if (ventasPorDia.hasOwnProperty(fechaStr)) {
+            ventasPorDia[fechaStr]++;
+            ingresosPorDia[fechaStr] += parseFloat(venta.total || 0);
+        }
+    });
+
+    // Preparar datos para la gráfica
+    const dataVentas = dias.map(dia => ventasPorDia[dia]);
+    const dataIngresos = dias.map(dia => ingresosPorDia[dia]);
+
+    // Destruir gráfica anterior si existe
+    if (ventasDiariasChart) {
+        ventasDiariasChart.destroy();
+    }
+
+    // Crear nueva gráfica
+    const ctx = document.getElementById('ventasDiariasChart');
+    if (!ctx) return;
+
+    // Crear gradientes
+    const gradientVentas = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+    gradientVentas.addColorStop(0, 'rgba(102, 126, 234, 0.4)');
+    gradientVentas.addColorStop(1, 'rgba(102, 126, 234, 0.0)');
+
+    const gradientIngresos = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+    gradientIngresos.addColorStop(0, 'rgba(5, 150, 105, 0.4)');
+    gradientIngresos.addColorStop(1, 'rgba(5, 150, 105, 0.0)');
+
+    ventasDiariasChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Número de Ventas',
+                    data: dataVentas,
+                    backgroundColor: gradientVentas,
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Ingresos ($)',
+                    data: dataIngresos,
+                    backgroundColor: gradientIngresos,
+                    borderColor: 'rgba(5, 150, 105, 1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: 'rgba(5, 150, 105, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 20,
+                        font: {
+                            size: 13,
+                            family: 'system-ui, -apple-system, sans-serif',
+                            weight: '500'
+                        },
+                        color: '#4a5568'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    titleColor: '#2d3748',
+                    bodyColor: '#4a5568',
+                    borderColor: '#e2e8f0',
+                    borderWidth: 1,
+                    padding: 16,
+                    cornerRadius: 8,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    boxPadding: 6,
+                    usePointStyle: true,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.datasetIndex === 1) {
+                                // Ingresos en formato moneda
+                                label += new Intl.NumberFormat('es-CO', {
+                                    style: 'currency',
+                                    currency: 'COP',
+                                    minimumFractionDigits: 0
+                                }).format(context.parsed.y);
+                            } else {
+                                label += context.parsed.y + ' ventas';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Número de Ventas',
+                        color: '#667eea',
+                        font: {
+                            size: 13,
+                            weight: '600',
+                            family: 'system-ui, -apple-system, sans-serif'
+                        }
+                    },
+                    ticks: {
+                        stepSize: 1,
+                        color: '#718096',
+                        font: {
+                            size: 12
+                        },
+                        padding: 8
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.03)',
+                        lineWidth: 1,
+                        drawBorder: false
+                    },
+                    border: {
+                        display: false
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Ingresos (COP)',
+                        color: '#059669',
+                        font: {
+                            size: 13,
+                            weight: '600',
+                            family: 'system-ui, -apple-system, sans-serif'
+                        }
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + new Intl.NumberFormat('es-CO', {
+                                notation: 'compact',
+                                compactDisplay: 'short'
+                            }).format(value);
+                        },
+                        color: '#718096',
+                        font: {
+                            size: 12
+                        },
+                        padding: 8
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    border: {
+                        display: false
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#4a5568',
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        },
+                        padding: 8
+                    },
+                    border: {
+                        color: '#e2e8f0'
+                    }
+                }
+            }
+        }
+    });
 }
 
 // Cargar al iniciar

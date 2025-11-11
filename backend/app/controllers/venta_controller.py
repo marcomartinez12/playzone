@@ -129,17 +129,15 @@ class VentaController:
             id_cliente: Filtrar por cliente (opcional)
 
         Returns:
-            Lista de ventas
+            Lista de ventas con detalles de productos
         """
         with get_db_cursor() as cursor:
             query = """
                 SELECT v.id_venta, v.id_usuario, v.id_cliente, v.total, v.fecha_venta,
-                       c.nombre as nombre_cliente, u.username as nombre_usuario,
-                       COUNT(dv.id_detalle) as total_productos
+                       c.nombre as nombre_cliente, u.username as nombre_usuario
                 FROM ventas v
                 JOIN clientes c ON v.id_cliente = c.id_cliente
                 JOIN usuarios u ON v.id_usuario = u.id_usuario
-                LEFT JOIN detalle_ventas dv ON v.id_venta = dv.id_venta
                 WHERE 1=1
             """
             params = []
@@ -156,12 +154,35 @@ class VentaController:
                 query += " AND v.id_cliente = %s"
                 params.append(id_cliente)
 
-            query += " GROUP BY v.id_venta, c.nombre, u.username ORDER BY v.fecha_venta DESC"
+            query += " ORDER BY v.fecha_venta DESC"
 
             cursor.execute(query, params)
             ventas = cursor.fetchall()
 
-        return [dict(v) for v in ventas]
+            # Para cada venta, obtener sus productos
+            ventas_con_productos = []
+            for venta in ventas:
+                venta_dict = dict(venta)
+
+                # Obtener detalles de productos de esta venta
+                cursor.execute(
+                    """
+                    SELECT dv.cantidad, dv.precio_unitario,
+                           (dv.cantidad * dv.precio_unitario) as subtotal,
+                           p.nombre, p.codigo, p.categoria
+                    FROM detalle_ventas dv
+                    JOIN productos p ON dv.id_producto = p.id_producto
+                    WHERE dv.id_venta = %s
+                    """,
+                    (venta_dict['id_venta'],)
+                )
+                productos = cursor.fetchall()
+                venta_dict['productos'] = [dict(prod) for prod in productos]
+                venta_dict['total_productos'] = len(venta_dict['productos'])
+
+                ventas_con_productos.append(venta_dict)
+
+        return ventas_con_productos
 
     @staticmethod
     def obtener_venta(id_venta: int) -> dict:
