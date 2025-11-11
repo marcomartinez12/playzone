@@ -214,6 +214,17 @@ function mostrarModalServicio(servicio = null) {
                         placeholder="Ej: Juan Pérez"
                         style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
                 </div>
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 6px;">
+                        Teléfono *
+                    </label>
+                    <input type="tel" id="servicioClienteTelefono" inputmode="numeric"
+                        value="${esEdicion && servicio.telefono_cliente ? servicio.telefono_cliente : ''}"
+                        ${esEdicion ? 'readonly' : ''}
+                        placeholder="Ej: 3001234567"
+                        style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                    <div id="servicioClienteTelefonoHint" style="font-size: 11px; color: #718096; margin-top: 3px; display: none;">Cliente nuevo - ingresa el teléfono</div>
+                </div>
                 <input type="hidden" id="servicioClienteId" value="${esEdicion && servicio.id_cliente ? servicio.id_cliente : ''}">
 
                 <!-- Consola -->
@@ -330,6 +341,8 @@ async function buscarClienteParaServicio() {
     const statusDiv = document.getElementById('servicioClienteStatus');
     const nombreInput = document.getElementById('servicioClienteNombre');
     const clienteIdInput = document.getElementById('servicioClienteId');
+    const telefonoInput = document.getElementById('servicioClienteTelefono');
+    const telefonoHint = document.getElementById('servicioClienteTelefonoHint');
 
     if (!documento) {
         statusDiv.innerHTML = '<span style="color: #f59e0b;">⚠️ Ingresa un documento</span>';
@@ -349,20 +362,56 @@ async function buscarClienteParaServicio() {
         if (response.ok) {
             const data = await response.json();
             if (data.success && data.cliente) {
+                // Cliente encontrado - mostrar datos y hacer readonly
                 nombreInput.value = data.cliente.nombre;
+                nombreInput.setAttribute('readonly', 'readonly');
+                nombreInput.style.background = '#f7fafc';
+                nombreInput.style.cursor = 'not-allowed';
+
+                telefonoInput.value = data.cliente.telefono || '';
+                telefonoInput.setAttribute('readonly', 'readonly');
+                telefonoInput.style.background = '#f7fafc';
+                telefonoInput.style.cursor = 'not-allowed';
+                telefonoInput.removeAttribute('required');
+
                 clienteIdInput.value = data.cliente.id_cliente;
+                telefonoHint.style.display = 'none';
                 statusDiv.innerHTML = '<span style="color: #10b981;">✓ Cliente encontrado</span>';
             } else {
+                // Cliente nuevo - habilitar campos para edición
                 nombreInput.value = '';
+                nombreInput.removeAttribute('readonly');
+                nombreInput.style.background = '';
+                nombreInput.style.cursor = '';
                 nombreInput.focus();
+
+                telefonoInput.value = '';
+                telefonoInput.removeAttribute('readonly');
+                telefonoInput.style.background = '';
+                telefonoInput.style.cursor = '';
+                telefonoInput.setAttribute('required', 'required');
+
                 clienteIdInput.value = '';
-                statusDiv.innerHTML = '<span style="color: #f59e0b;">ℹ️ Cliente nuevo - Ingresa el nombre</span>';
+                telefonoHint.style.display = 'block';
+                statusDiv.innerHTML = '<span style="color: #f59e0b;">ℹ️ Cliente nuevo - Ingresa nombre y teléfono</span>';
             }
         } else {
+            // Cliente nuevo - habilitar campos para edición
             nombreInput.value = '';
+            nombreInput.removeAttribute('readonly');
+            nombreInput.style.background = '';
+            nombreInput.style.cursor = '';
             nombreInput.focus();
+
+            telefonoInput.value = '';
+            telefonoInput.removeAttribute('readonly');
+            telefonoInput.style.background = '';
+            telefonoInput.style.cursor = '';
+            telefonoInput.setAttribute('required', 'required');
+
             clienteIdInput.value = '';
-            statusDiv.innerHTML = '<span style="color: #f59e0b;">ℹ️ Cliente nuevo - Ingresa el nombre</span>';
+            telefonoHint.style.display = 'block';
+            statusDiv.innerHTML = '<span style="color: #f59e0b;">ℹ️ Cliente nuevo - Ingresa nombre y teléfono</span>';
         }
     } catch (error) {
         console.error('Error buscando cliente:', error);
@@ -375,12 +424,20 @@ async function guardarServicio() {
     const documento = document.getElementById('servicioClienteDocumento').value.trim();
     const nombre = document.getElementById('servicioClienteNombre').value.trim();
     let idCliente = document.getElementById('servicioClienteId').value;
+    const telefono = document.getElementById('servicioClienteTelefono').value.trim();
     const consola = document.getElementById('servicioConsola').value.trim();
     const descripcion = document.getElementById('servicioDescripcion').value.trim();
     const costo = document.getElementById('servicioCosto').value;
 
     if (!documento || !nombre || !consola || !descripcion) {
         showWarning('Por favor completa todos los campos obligatorios', 'Campos incompletos');
+        return;
+    }
+
+    // Si no hay ID de cliente, validar que tenga teléfono
+    if (!idCliente && !telefono) {
+        showWarning('Por favor ingresa el teléfono del cliente', 'Campo requerido');
+        document.getElementById('servicioClienteTelefono').focus();
         return;
     }
 
@@ -399,7 +456,7 @@ async function guardarServicio() {
                 body: JSON.stringify({
                     nombre: nombre,
                     documento: documento,
-                    telefono: '0000000000' // Teléfono por defecto para servicios sin teléfono
+                    telefono: telefono
                 })
             });
 
