@@ -169,15 +169,20 @@ function mostrarModalServicio(servicio = null) {
     const esEdicion = servicio !== null;
     servicioEditando = servicio;
 
-    modal.style.maxWidth = '500px';
-    modal.style.maxHeight = '85vh';
+    // Detectar si es móvil
+    const isMobile = window.innerWidth <= 768;
+
+    modal.style.maxWidth = isMobile ? '95vw' : '500px';
+    modal.style.maxHeight = isMobile ? '90vh' : '85vh';
     modal.style.overflowY = 'auto';
+    modal.style.margin = isMobile ? '10px' : '20px';
+
     modal.innerHTML = `
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 18px; margin: -20px -20px 14px -20px; border-radius: 12px 12px 0 0; position: sticky; top: -20px; z-index: 10;">
-            <div style="font-size: 11px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: ${isMobile ? '12px 14px' : '14px 18px'}; margin: -20px -20px 14px -20px; border-radius: 12px 12px 0 0; position: sticky; top: -20px; z-index: 10;">
+            <div style="font-size: ${isMobile ? '10px' : '11px'}; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
                 ${esEdicion ? 'Editar Servicio' : 'Nuevo Servicio'}
             </div>
-            <div style="font-size: 18px; font-weight: 700;">
+            <div style="font-size: ${isMobile ? '16px' : '18px'}; font-weight: 700;">
                 ${esEdicion ? `#${String(servicio.id_servicio).padStart(4, '0')}` : '🔧 Registrar'}
             </div>
         </div>
@@ -185,8 +190,8 @@ function mostrarModalServicio(servicio = null) {
         <div style="margin: 0; text-align: left;">
             <form id="formServicio">
                 <!-- Datos del Cliente -->
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Documento *
                     </label>
                     <div style="display: flex; gap: 6px;">
@@ -194,106 +199,106 @@ function mostrarModalServicio(servicio = null) {
                             value="${esEdicion && servicio.documento_cliente ? servicio.documento_cliente : ''}"
                             ${esEdicion ? 'readonly' : ''}
                             placeholder="Cédula o NIT"
-                            style="flex: 1; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                            style="flex: 1; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
                         ${!esEdicion ? `
                         <button type="button" id="btnBuscarClienteServicio"
-                            style="padding: 8px 12px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: background 0.2s; font-size: 13px;"
+                            style="padding: ${isMobile ? '10px' : '8px 12px'}; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: background 0.2s; font-size: ${isMobile ? '16px' : '13px'}; min-width: ${isMobile ? '44px' : 'auto'};"
                             onmouseover="this.style.background='#5568d3'"
                             onmouseout="this.style.background='#667eea'">
                             🔍
                         </button>
                         ` : ''}
                     </div>
-                    <div id="servicioClienteStatus" style="margin-top: 3px; font-size: 10px; color: #718096;"></div>
+                    <div id="servicioClienteStatus" style="margin-top: 3px; font-size: ${isMobile ? '9px' : '10px'}; color: #718096;"></div>
                 </div>
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Nombre completo *
                     </label>
                     <input type="text" id="servicioClienteNombre" required
                         value="${esEdicion && servicio.nombre_cliente ? servicio.nombre_cliente : ''}"
                         ${esEdicion ? 'readonly' : ''}
                         placeholder="Ej: Juan Pérez"
-                        style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
                 </div>
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Teléfono *
                     </label>
                     <input type="tel" id="servicioClienteTelefono" inputmode="numeric"
                         value="${esEdicion && servicio.telefono_cliente ? servicio.telefono_cliente : ''}"
                         ${esEdicion ? 'readonly' : ''}
                         placeholder="Ej: 3001234567"
-                        style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
-                    <div id="servicioClienteTelefonoHint" style="font-size: 10px; color: #718096; margin-top: 2px; display: none;">Cliente nuevo - ingresa el teléfono</div>
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                    <div id="servicioClienteTelefonoHint" style="font-size: ${isMobile ? '9px' : '10px'}; color: #718096; margin-top: 2px; display: none;">Cliente nuevo - ingresa el teléfono</div>
                 </div>
                 <input type="hidden" id="servicioClienteId" value="${esEdicion && servicio.id_cliente ? servicio.id_cliente : ''}">
 
                 <!-- Consola -->
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Consola / Equipo *
                     </label>
                     <input type="text" id="servicioConsola" required
                         value="${esEdicion ? servicio.consola : ''}"
-                        placeholder="Ej: PlayStation 5, Xbox Series X..."
-                        style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px;">
+                        placeholder="Ej: PlayStation 5..."
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'};">
                 </div>
 
                 <!-- Descripción de la falla -->
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Descripción de la Falla *
                     </label>
                     <textarea id="servicioDescripcion" required rows="2"
                         placeholder="Describe el problema..."
-                        style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; resize: vertical; min-height: 50px;">${esEdicion ? servicio.descripcion : ''}</textarea>
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; resize: vertical; min-height: ${isMobile ? '60px' : '50px'};">${esEdicion ? servicio.descripcion : ''}</textarea>
                 </div>
 
                 <!-- Estado y Costo en 2 columnas (solo en edición) -->
                 ${esEdicion ? `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: ${isMobile ? '1fr' : '1fr 1fr'}; gap: ${isMobile ? '10px' : '10px'}; margin-bottom: ${isMobile ? '10px' : '12px'};">
                     <div>
-                        <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                        <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                             Estado *
                         </label>
                         <select id="servicioEstado" required
-                            style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; color: #2d3748;">
+                            style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; color: #2d3748;">
                             <option value="En reparacion" ${servicio.estado === 'En reparacion' ? 'selected' : ''}>⚙️ En reparación</option>
                             <option value="Listo" ${servicio.estado === 'Listo' ? 'selected' : ''}>✅ Listo</option>
                             <option value="Entregado" ${servicio.estado === 'Entregado' ? 'selected' : ''}>📦 Entregado</option>
                         </select>
                     </div>
                     <div>
-                        <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                        <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                             Costo
                         </label>
                         <input type="number" id="servicioCosto" min="0" step="1000"
                             value="${servicio.costo ? servicio.costo : ''}"
                             placeholder="150000"
-                            style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px;">
+                            style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'};">
                     </div>
                 </div>
                 ` : `
                 <!-- Costo (solo en creación) -->
-                <div style="margin-bottom: 12px;">
-                    <label style="display: block; font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 5px;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
                         Costo del Servicio
                     </label>
                     <input type="number" id="servicioCosto" min="0" step="1000"
                         placeholder="Ej: 150000"
-                        style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px;">
-                    <div style="font-size: 10px; color: #718096; margin-top: 2px;">Opcional - Puedes definirlo más tarde</div>
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'};">
+                    <div style="font-size: ${isMobile ? '9px' : '10px'}; color: #718096; margin-top: 2px;">Opcional - Puedes definirlo más tarde</div>
                 </div>
                 `}
 
                 <!-- Pagado (solo en edición) -->
                 ${esEdicion ? `
-                <div style="margin-bottom: 12px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; background: #f7fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: ${isMobile ? '10px 8px' : '8px'}; background: #f7fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
                         <input type="checkbox" id="servicioPagado" ${servicio.pagado ? 'checked' : ''}
-                            style="width: 16px; height: 16px; cursor: pointer;">
-                        <span style="font-size: 12px; font-weight: 600; color: #4a5568;">
+                            style="width: ${isMobile ? '18px' : '16px'}; height: ${isMobile ? '18px' : '16px'}; cursor: pointer;">
+                        <span style="font-size: ${isMobile ? '13px' : '12px'}; font-weight: 600; color: #4a5568;">
                             💰 Servicio pagado
                         </span>
                     </label>
@@ -302,11 +307,11 @@ function mostrarModalServicio(servicio = null) {
             </form>
         </div>
 
-        <div class="confirm-modal-actions" style="margin-top: 14px; display: flex; gap: 8px; position: sticky; bottom: -20px; background: white; padding-top: 10px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; margin-bottom: -20px;">
-            <button id="btnCancelar" class="confirm-btn confirm-btn-cancel" style="flex: 1; padding: 9px; font-size: 13px; font-weight: 600;">
+        <div class="confirm-modal-actions" style="margin-top: ${isMobile ? '12px' : '14px'}; display: flex; gap: ${isMobile ? '6px' : '8px'}; position: sticky; bottom: -20px; background: white; padding-top: ${isMobile ? '12px' : '10px'}; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; margin-bottom: -20px;">
+            <button id="btnCancelar" class="confirm-btn confirm-btn-cancel" style="flex: 1; padding: ${isMobile ? '12px' : '9px'}; font-size: ${isMobile ? '14px' : '13px'}; font-weight: 600; min-height: ${isMobile ? '44px' : 'auto'};">
                 Cancelar
             </button>
-            <button id="btnGuardar" class="confirm-btn confirm-btn-confirm" style="flex: 1; padding: 9px; font-size: 13px; font-weight: 600;">
+            <button id="btnGuardar" class="confirm-btn confirm-btn-confirm" style="flex: 1; padding: ${isMobile ? '12px' : '9px'}; font-size: ${isMobile ? '14px' : '13px'}; font-weight: 600; min-height: ${isMobile ? '44px' : 'auto'};">
                 ${esEdicion ? 'Actualizar' : 'Registrar'}
             </button>
         </div>

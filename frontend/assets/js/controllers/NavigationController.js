@@ -54,6 +54,12 @@ function toggleMenu() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.overlay');
     sidebar.classList.toggle('active');
+    const menuToggle = document.querySelector('.menu-toggle');
+    
+    // Animar botón hamburguesa
+    if (menuToggle) {
+        menuToggle.classList.toggle('active');
+    }
     overlay.classList.toggle('active');
 }
 
