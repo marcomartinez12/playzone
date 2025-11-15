@@ -257,11 +257,11 @@ body{
 }
 
 .menu-toggle {
-    display: none;
+    display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; padding: 0;
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000;
+    z-index: 1002;
     background: #667eea;
     border: none;
     width: 45px;
@@ -276,7 +276,7 @@ body{
     width: 25px;
     height: 3px;
     background: #ffffff;
-    margin: 5px auto;
+    
     border-radius: 2px;
     transition: 0.3s;
 }
@@ -546,4 +546,15 @@ body{
         transform: scale(1.1);
         opacity: 0.8;
     }
+}
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
 }

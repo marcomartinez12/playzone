@@ -72,19 +72,28 @@
         letter-spacing: 0.5px;
     }
 
+    /* Mantener visible el nombre del usuario */
+    .user-badge {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
     .user-badge span {
-        display: none; /* Ocultar nombre en móvil */
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    /* Mantener visible el texto del botón salir */
+    .logout-btn {
+        padding: 6px 10px;
+        font-size: 12px;
     }
 
     .logout-btn span {
-        display: none; /* Solo mostrar icono */
-    }
-
-    .logout-btn,
-    .user-badge {
-        padding: 8px;
-        min-width: 36px;
-        justify-content: center;
+        display: inline;
     }
 }
 
