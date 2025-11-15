@@ -67,7 +67,9 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
 ### Backend
 - **FastAPI** - Framework web moderno y rápido para construir APIs con Python. Validación automática de datos y documentación interactiva.
 - **PostgreSQL** - Sistema de base de datos relacional robusto y escalable para almacenar productos, ventas, servicios y clientes.
-- **JWT** - Tokens seguros para autenticación sin estado. Mantiene las sesiones de usuario activas por 30 minutos.
+- **JWT + Refresh Tokens** - Sistema de autenticación de doble token. Access tokens (30 min) para acceso y refresh tokens (30 días) para sesiones persistentes.
+- **Bcrypt** - Hashing seguro de contraseñas con salt. Migración automática de contraseñas antiguas en texto plano.
+- **ReportLab** - Generación profesional de reportes PDF con branding de PlayZone.
 - **psycopg2** - Adaptador PostgreSQL para Python que permite ejecutar consultas SQL y obtener resultados como diccionarios.
 - **CORS Middleware** - Permite que el frontend haga peticiones al backend desde diferentes puertos de forma segura.
 
@@ -131,10 +133,19 @@ CREATE USER playzone_user WITH PASSWORD 'tu_contraseña';
 GRANT ALL PRIVILEGES ON DATABASE playzone_db TO playzone_user;
 ```
 
-#### Ejecutar script de inicialización
+#### Ejecutar scripts de inicialización
 ```bash
+# 1. Crear tablas base
 psql -U playzone_user -d playzone_db -f database/init.sql
+
+# 2. Aplicar características de seguridad
+psql -U playzone_user -d playzone_db -f backend/migrations/001_security_enhancements.sql
 ```
+
+O desde **Supabase SQL Editor**:
+1. Copiar contenido de `backend/migrations/001_security_enhancements.sql`
+2. Pegar en SQL Editor
+3. Click en **Run**
 
 ### 4. Configurar Variables de Entorno
 
@@ -318,9 +329,13 @@ playzone/
 
 ### Autenticación
 ```http
-POST /api/auth/login
-Content-Type: application/json
+POST /api/auth/login              # Login con rate limiting
+POST /api/auth/register           # Registrar usuario
+POST /api/auth/refresh            # Refrescar access token
+POST /api/auth/logout             # Cerrar sesión
+POST /api/auth/logout-all         # Cerrar todas las sesiones
 
+# Ejemplo de login
 {
   "username": "tu_usuario",
   "password": "tu_contraseña"
@@ -341,6 +356,7 @@ DELETE /api/productos/{id}          # Eliminar producto
 GET    /api/ventas/                 # Listar ventas
 POST   /api/ventas/                 # Registrar venta
 GET    /api/ventas/{id}             # Obtener venta
+GET    /api/ventas/reporte/pdf      # Descargar reporte PDF profesional
 ```
 
 ### Servicios
@@ -398,12 +414,26 @@ EventBus.on(Events.PRODUCTO_CREADO, (data) => {
 
 ## 🔒 Seguridad
 
-- ✅ Autenticación JWT
-- ✅ Tokens con expiración (30 minutos)
-- ✅ Validación en backend y frontend
-- ✅ Escape HTML para prevenir XSS
-- ✅ Sanitización de inputs
-- ✅ CORS configurado correctamente
+### Autenticación y Acceso
+- ✅ **JWT + Refresh Tokens** - Access tokens (30 min) + Refresh tokens (30 días)
+- ✅ **Rate Limiting** - Máx 5 intentos fallidos por usuario, 10 por IP
+- ✅ **Bloqueo Temporal** - 15 minutos después de alcanzar el límite
+- ✅ **Roles y Permisos** - ADMIN, VENDEDOR, CAJERO con permisos granulares
+- ✅ **Auditoría Completa** - Log de todos los logins y acciones críticas
+- ✅ **Logout Seguro** - Revocación de tokens individuales o todas las sesiones
+
+### Protección de Datos
+- ✅ **Contraseñas Hasheadas** - Bcrypt con salt automático
+- ✅ **Migración Automática** - Actualiza contraseñas en texto plano a bcrypt
+- ✅ **Soft Delete** - Borrado lógico, datos preservados
+- ✅ **Validación de Inputs** - Prevención SQL injection y XSS
+- ✅ **Sanitización** - Escape HTML automático
+- ✅ **CORS Configurado** - Orígenes permitidos específicos
+
+### Reportes y Auditoría
+- ✅ **Generación PDF Profesional** - Reportes con branding PlayZone
+- ✅ **Tracking de Sesiones** - IP, user agent, timestamps
+- ✅ **Logs de Cambios** - Datos anteriores y nuevos en auditoría
 
 ---
 
