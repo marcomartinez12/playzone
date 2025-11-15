@@ -22,3 +22,6 @@ email-validator
 
 # Date & Time
 python-dateutil
+
+# PDF Generation
+reportlab

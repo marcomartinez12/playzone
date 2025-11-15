@@ -130,21 +130,23 @@ async function verDetalleVenta(idVenta) {
 
         const venta = await response.json();
 
+        const isMobile = window.innerWidth <= 768;
+
         const detallesHTML = venta.detalles.map((d, idx) => `
             <tr style="border-bottom: 1px solid #e2e8f0;">
-                <td style="padding: 12px 16px;">
-                    <div style="font-weight: 500; color: #2d3748;">${d.nombre_producto}</div>
-                    <div style="font-size: 12px; color: #718096; margin-top: 2px;">Código: ${d.codigo || 'N/A'}</div>
+                <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'};">
+                    <div style="font-weight: 500; color: #2d3748; font-size: ${isMobile ? '12px' : '13px'};">${d.nombre_producto}</div>
+                    <div style="font-size: ${isMobile ? '10px' : '11px'}; color: #718096; margin-top: 2px;">Cód: ${d.codigo || 'N/A'}</div>
                 </td>
-                <td style="padding: 12px 16px; text-align: center;">
-                    <span style="display: inline-block; padding: 4px 10px; background: #edf2f7; color: #4a5568; border-radius: 8px; font-weight: 600;">
+                <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'}; text-align: center;">
+                    <span style="display: inline-block; padding: ${isMobile ? '3px 8px' : '4px 10px'}; background: #edf2f7; color: #4a5568; border-radius: 6px; font-weight: 600; font-size: ${isMobile ? '11px' : '12px'};">
                         ${d.cantidad}
                     </span>
                 </td>
-                <td style="padding: 12px 16px; text-align: right; color: #4a5568; font-weight: 500;">
+                <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'}; text-align: right; color: #4a5568; font-weight: 500; font-size: ${isMobile ? '11px' : '12px'};">
                     $${d.precio_unitario.toLocaleString('es-CO')}
                 </td>
-                <td style="padding: 12px 16px; text-align: right; font-weight: 700; color: #38a169; font-size: 15px;">
+                <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'}; text-align: right; font-weight: 700; color: #38a169; font-size: ${isMobile ? '12px' : '14px'};">
                     $${d.subtotal.toLocaleString('es-CO')}
                 </td>
             </tr>
@@ -163,55 +165,62 @@ function mostrarModalDetalle(venta, detallesHTML) {
     const modal = overlay.querySelector('.confirm-modal');
     const originalContent = modal.innerHTML;
 
-    modal.style.maxWidth = '700px';
+    // Detectar si es móvil
+    const isMobile = window.innerWidth <= 768;
+
+    modal.style.maxWidth = isMobile ? '95vw' : '600px';
+    modal.style.maxHeight = isMobile ? '90vh' : '85vh';
+    modal.style.overflowY = 'auto';
+    modal.style.margin = isMobile ? '10px' : '20px';
+
     modal.innerHTML = `
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; margin: -20px -20px 20px -20px; border-radius: 12px 12px 0 0;">
-            <div style="font-size: 14px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Detalle de Venta</div>
-            <div style="font-size: 32px; font-weight: 700; font-family: monospace;">#${String(venta.id_venta).padStart(4, '0')}</div>
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: ${isMobile ? '14px 16px' : '18px 20px'}; margin: -20px -20px 14px -20px; border-radius: 12px 12px 0 0; position: sticky; top: -20px; z-index: 10;">
+            <div style="font-size: ${isMobile ? '11px' : '12px'}; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Detalle de Venta</div>
+            <div style="font-size: ${isMobile ? '22px' : '26px'}; font-weight: 700; font-family: monospace;">#${String(venta.id_venta).padStart(4, '0')}</div>
         </div>
 
-        <div style="margin: 0 0 24px 0; text-align: left;">
+        <div style="margin: 0; text-align: left;">
             <!-- Información del Cliente -->
-            <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 24px; border-left: 4px solid #667eea;">
-                <h4 style="margin: 0 0 16px 0; color: #2d3748; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <div style="background: #f7fafc; padding: ${isMobile ? '14px' : '16px'}; border-radius: 8px; margin-bottom: ${isMobile ? '14px' : '18px'}; border-left: 3px solid #667eea;">
+                <h4 style="margin: 0 0 ${isMobile ? '10px' : '12px'} 0; color: #2d3748; font-size: ${isMobile ? '13px' : '14px'}; font-weight: 600; display: flex; align-items: center; gap: 6px;">
                     👤 Información del Cliente
                 </h4>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 14px;">
+                <div style="display: grid; grid-template-columns: ${isMobile ? '1fr' : 'repeat(2, 1fr)'}; gap: ${isMobile ? '8px' : '10px'}; font-size: ${isMobile ? '12px' : '13px'};">
                     <div>
-                        <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Nombre</div>
+                        <div style="color: #718096; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px;">Nombre</div>
                         <div style="color: #2d3748; font-weight: 500;">${venta.nombre_cliente}</div>
                     </div>
                     <div>
-                        <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Documento</div>
+                        <div style="color: #718096; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px;">Documento</div>
                         <div style="color: #2d3748; font-weight: 500;">${venta.documento}</div>
                     </div>
                     <div>
-                        <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Teléfono</div>
+                        <div style="color: #718096; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px;">Teléfono</div>
                         <div style="color: #2d3748; font-weight: 500;">${venta.telefono || 'No registrado'}</div>
                     </div>
                     <div>
-                        <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Email</div>
+                        <div style="color: #718096; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px;">Email</div>
                         <div style="color: #2d3748; font-weight: 500;">${venta.email || 'No registrado'}</div>
                     </div>
                 </div>
-                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
-                    <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Fecha de Venta</div>
-                    <div style="color: #2d3748; font-weight: 500;">📅 ${formatearFecha(venta.fecha_venta)}</div>
+                <div style="margin-top: ${isMobile ? '8px' : '10px'}; padding-top: ${isMobile ? '8px' : '10px'}; border-top: 1px solid #e2e8f0;">
+                    <div style="color: #718096; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px;">Fecha de Venta</div>
+                    <div style="color: #2d3748; font-weight: 500; font-size: ${isMobile ? '12px' : '13px'};">📅 ${formatearFecha(venta.fecha_venta)}</div>
                 </div>
             </div>
 
             <!-- Productos -->
-            <h4 style="margin: 0 0 12px 0; color: #2d3748; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <h4 style="margin: 0 0 ${isMobile ? '8px' : '10px'} 0; color: #2d3748; font-size: ${isMobile ? '13px' : '14px'}; font-weight: 600; display: flex; align-items: center; gap: 6px;">
                 📦 Productos
             </h4>
-            <div style="border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: ${isMobile ? 'auto' : 'hidden'}; -webkit-overflow-scrolling: touch;">
+                <table style="width: 100%; border-collapse: collapse; font-size: ${isMobile ? '11px' : '13px'};">
                     <thead>
                         <tr style="background: #f7fafc;">
-                            <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: #4a5568; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Producto</th>
-                            <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: #4a5568; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Cant.</th>
-                            <th style="padding: 12px 16px; text-align: right; font-weight: 600; color: #4a5568; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Precio Unit.</th>
-                            <th style="padding: 12px 16px; text-align: right; font-weight: 600; color: #4a5568; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Subtotal</th>
+                            <th style="padding: ${isMobile ? '8px 10px' : '10px 12px'}; text-align: left; font-weight: 600; color: #4a5568; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px;">Producto</th>
+                            <th style="padding: ${isMobile ? '8px 10px' : '10px 12px'}; text-align: center; font-weight: 600; color: #4a5568; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px;">Cant.</th>
+                            <th style="padding: ${isMobile ? '8px 10px' : '10px 12px'}; text-align: right; font-weight: 600; color: #4a5568; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px;">P. Unit.</th>
+                            <th style="padding: ${isMobile ? '8px 10px' : '10px 12px'}; text-align: right; font-weight: 600; color: #4a5568; font-size: ${isMobile ? '10px' : '11px'}; text-transform: uppercase; letter-spacing: 0.3px;">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>${detallesHTML}</tbody>
@@ -219,16 +228,16 @@ function mostrarModalDetalle(venta, detallesHTML) {
             </div>
 
             <!-- Total -->
-            <div style="background: linear-gradient(135deg, #38a169 0%, #2f855a 100%); color: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: right;">
-                <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">TOTAL DE LA VENTA</div>
-                <div style="font-size: 32px; font-weight: 700;">
+            <div style="background: linear-gradient(135deg, #38a169 0%, #2f855a 100%); color: white; padding: ${isMobile ? '14px 16px' : '16px 18px'}; border-radius: 8px; margin-top: ${isMobile ? '14px' : '16px'}; text-align: right; position: sticky; bottom: ${isMobile ? '-20px' : '-10px'}; z-index: 10;">
+                <div style="font-size: ${isMobile ? '11px' : '12px'}; opacity: 0.9; margin-bottom: 3px;">TOTAL DE LA VENTA</div>
+                <div style="font-size: ${isMobile ? '24px' : '28px'}; font-weight: 700;">
                     $${venta.total.toLocaleString('es-CO')}
                 </div>
             </div>
         </div>
 
-        <div class="confirm-modal-actions" style="margin-top: 24px;">
-            <button class="confirm-btn confirm-btn-confirm" id="closeDetail" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 600;">
+        <div class="confirm-modal-actions" style="margin-top: ${isMobile ? '14px' : '18px'};">
+            <button class="confirm-btn confirm-btn-confirm" id="closeDetail" style="width: 100%; padding: ${isMobile ? '12px' : '10px'}; font-size: ${isMobile ? '14px' : '14px'}; font-weight: 600; min-height: ${isMobile ? '44px' : 'auto'};">
                 Cerrar
             </button>
         </div>
@@ -241,31 +250,69 @@ function mostrarModalDetalle(venta, detallesHTML) {
         setTimeout(() => {
             modal.innerHTML = originalContent;
             modal.style.maxWidth = '';
+            modal.style.maxHeight = '';
+            modal.style.overflowY = '';
+            modal.style.margin = '';
         }, 300);
     };
 }
 
-// Descargar reporte en formato CSV
-function descargarReporte() {
+// Descargar reporte profesional en formato PDF
+async function descargarReporte() {
     if (!ventasData || ventasData.length === 0) {
         showWarning('No hay ventas para descargar', 'Sin datos');
         return;
     }
 
-    const fecha = new Date().toISOString().split('T')[0];
-    let csv = 'ID,Cliente,Productos,Total,Fecha,Usuario\n';
+    try {
+        const token = localStorage.getItem('token');
 
-    ventasData.forEach(venta => {
-        csv += `${venta.id_venta},"${venta.nombre_cliente}",${venta.total_productos || 0},$${venta.total},"${formatearFecha(venta.fecha_venta)}","${venta.nombre_usuario}"\n`;
-    });
+        // Mostrar mensaje de generación
+        showInfo('Generando reporte PDF profesional...', 'Procesando');
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `ventas_${fecha}.csv`;
-    link.click();
+        // Llamar al endpoint del backend para generar el PDF
+        const response = await fetch(`${API_URL}/ventas/reporte/pdf`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-    showSuccess('Reporte descargado correctamente', 'Descarga completada');
+        if (!response.ok) {
+            throw new Error('Error al generar el reporte PDF');
+        }
+
+        // Obtener el blob del PDF
+        const blob = await response.blob();
+
+        // Obtener el nombre del archivo de los headers (si está disponible)
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = 'PlayZone_Reporte_Ventas.pdf';
+
+        if (contentDisposition) {
+            const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+            if (matches != null && matches[1]) {
+                filename = matches[1].replace(/['"]/g, '');
+            }
+        }
+
+        // Crear enlace de descarga
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpiar
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        showSuccess('Reporte PDF descargado correctamente', 'Descarga completada');
+    } catch (error) {
+        console.error('Error descargando reporte:', error);
+        showError('Error al descargar el reporte PDF', 'Error de descarga');
+    }
 }
 
 // Cargar ventas cuando se accede a la sección
