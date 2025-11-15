@@ -1,6 +1,7 @@
 """
 Modelos de Seguridad
-Roles, Permisos, Auditoría, Refresh Tokens
+Auditoría y Refresh Tokens
+Sistema simplificado para UN SOLO ADMINISTRADOR
 """
 from pydantic import BaseModel
 from typing import Optional, List
@@ -12,13 +13,6 @@ from enum import Enum
 # ENUMS
 # ============================================
 
-class RolEnum(str, Enum):
-    """Roles disponibles en el sistema"""
-    ADMIN = "ADMIN"
-    VENDEDOR = "VENDEDOR"
-    CAJERO = "CAJERO"
-
-
 class ModuloEnum(str, Enum):
     """Módulos del sistema"""
     USUARIOS = "usuarios"
@@ -28,45 +22,6 @@ class ModuloEnum(str, Enum):
     SERVICIOS = "servicios"
     AUDITORIA = "auditoria"
 
-
-# ============================================
-# ROLES Y PERMISOS
-# ============================================
-
-class RolBase(BaseModel):
-    """Modelo base de Rol"""
-    nombre: str
-    descripcion: Optional[str] = None
-
-
-class RolResponse(RolBase):
-    """Respuesta de Rol"""
-    id_rol: int
-    fecha_creacion: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class PermisoBase(BaseModel):
-    """Modelo base de Permiso"""
-    nombre: str
-    descripcion: Optional[str] = None
-    modulo: str
-
-
-class PermisoResponse(PermisoBase):
-    """Respuesta de Permiso"""
-    id_permiso: int
-    fecha_creacion: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class RolConPermisos(RolResponse):
-    """Rol con sus permisos asignados"""
-    permisos: List[PermisoResponse] = []
 
 
 # ============================================

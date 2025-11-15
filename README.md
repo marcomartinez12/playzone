@@ -418,7 +418,7 @@ EventBus.on(Events.PRODUCTO_CREADO, (data) => {
 - ✅ **JWT + Refresh Tokens** - Access tokens (30 min) + Refresh tokens (30 días)
 - ✅ **Rate Limiting** - Máx 5 intentos fallidos por usuario, 10 por IP
 - ✅ **Bloqueo Temporal** - 15 minutos después de alcanzar el límite
-- ✅ **Roles y Permisos** - ADMIN, VENDEDOR, CAJERO con permisos granulares
+- ✅ **Sistema Simplificado** - Un solo administrador con acceso total
 - ✅ **Auditoría Completa** - Log de todos los logins y acciones críticas
 - ✅ **Logout Seguro** - Revocación de tokens individuales o todas las sesiones
 

@@ -72,11 +72,9 @@ class AuthController:
         with get_db_cursor() as cursor:
             cursor.execute(
                 """
-                SELECT u.id_usuario, u.username, u.email, u.password, u.activo, u.eliminado,
-                       r.nombre as rol
-                FROM usuarios u
-                LEFT JOIN roles r ON u.id_rol = r.id_rol
-                WHERE u.username = %s
+                SELECT id_usuario, username, email, password, activo, eliminado
+                FROM usuarios
+                WHERE username = %s
                 """,
                 (usuario_login.username,)
             )
@@ -180,8 +178,7 @@ class AuthController:
         access_token = create_access_token(
             data={
                 "sub": user["username"],
-                "id_usuario": user["id_usuario"],
-                "rol": user["rol"]
+                "id_usuario": user["id_usuario"]
             },
             expires_delta=access_token_expires
         )
@@ -223,8 +220,7 @@ class AuthController:
             "user": {
                 "id_usuario": user["id_usuario"],
                 "username": user["username"],
-                "email": user["email"],
-                "rol": user["rol"]
+                "email": user["email"]
             }
         }
 
@@ -261,11 +257,10 @@ class AuthController:
             password_hash = hash_password(usuario.password)
 
             # Insertar usuario con contraseña hasheada
-            # Por defecto, se asigna rol ADMIN (id_rol = 1)
             cursor.execute(
                 """
-                INSERT INTO usuarios (username, email, password, id_rol)
-                VALUES (%s, %s, %s, (SELECT id_rol FROM roles WHERE nombre = 'ADMIN' LIMIT 1))
+                INSERT INTO usuarios (username, email, password)
+                VALUES (%s, %s, %s)
                 RETURNING id_usuario, username, email, fecha_registro
                 """,
                 (usuario.username, usuario.email, password_hash)
@@ -318,10 +313,9 @@ class AuthController:
         with get_db_cursor() as cursor:
             cursor.execute(
                 """
-                SELECT u.id_usuario, u.username, u.email, r.nombre as rol
-                FROM usuarios u
-                LEFT JOIN roles r ON u.id_rol = r.id_rol
-                WHERE u.id_usuario = %s AND u.activo = TRUE AND u.eliminado = FALSE
+                SELECT id_usuario, username, email
+                FROM usuarios
+                WHERE id_usuario = %s AND activo = TRUE AND eliminado = FALSE
                 """,
                 (id_usuario,)
             )
@@ -338,8 +332,7 @@ class AuthController:
         access_token = create_access_token(
             data={
                 "sub": user["username"],
-                "id_usuario": user["id_usuario"],
-                "rol": user["rol"]
+                "id_usuario": user["id_usuario"]
             },
             expires_delta=access_token_expires
         )

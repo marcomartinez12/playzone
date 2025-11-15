@@ -9,6 +9,7 @@ supabase
 
 # Authentication & Security
 python-jose[cryptography]
+bcrypt==4.0.1
 passlib[bcrypt]
 python-dotenv
 
