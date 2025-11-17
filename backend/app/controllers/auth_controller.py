@@ -3,7 +3,7 @@ Controlador de Autenticacion
 RF-01: Iniciar Sesion
 Incluye: Rate Limiting, Refresh Tokens, Auditoría, Hashing de contraseñas, Recuperación de contraseña
 """
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from typing import Optional
 from fastapi import HTTPException, status
 from app.models.usuario import UsuarioLogin, UsuarioCreate, UsuarioResponse, Token
@@ -466,8 +466,8 @@ class AuthController:
         # Generar token seguro
         reset_token = secrets.token_urlsafe(32)
 
-        # Calcular fecha de expiración
-        expires_at = datetime.now() + timedelta(minutes=settings.reset_token_expire_minutes)
+        # Calcular fecha de expiración (UTC)
+        expires_at = datetime.now(timezone.utc) + timedelta(minutes=settings.reset_token_expire_minutes)
 
         # Guardar token en BD (hasheado)
         with get_db_cursor() as cursor:
