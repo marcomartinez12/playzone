@@ -124,6 +124,13 @@ class EmailService:
                 "html": html_content
             }
 
+            # Debug: verificar email_from
+            print(f"\n🔍 DEBUG EMAIL CONFIG:")
+            print(f"   EMAIL_FROM setting: '{settings.email_from}'")
+            print(f"   RESEND_API_KEY set: {bool(settings.resend_api_key)}")
+            print(f"   FRONTEND_URL: '{settings.frontend_url}'")
+            print(f"   Params: {params}\n")
+
             response = resend.Emails.send(params)
 
             print(f"\n{'='*60}")
