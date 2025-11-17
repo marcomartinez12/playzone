@@ -94,7 +94,7 @@ app.include_router(servicios.router, prefix="/api/servicios", tags=["Servicios"]
 
 
 # Servir archivos estáticos del frontend
-frontend_path = Path(__file__).parent.parent / "Frontend"
+frontend_path = Path(__file__).parent.parent / "frontend"
 
 # Montar carpeta de assets (CSS, JS, images)
 app.mount("/assets", StaticFiles(directory=str(frontend_path / "assets")), name="assets")
