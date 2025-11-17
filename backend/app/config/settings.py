@@ -5,7 +5,10 @@ import os
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-load_dotenv()
+# Solo cargar .env en desarrollo (no en Render/producción)
+# Render usa variables de entorno del dashboard
+if not os.getenv("RENDER"):
+    load_dotenv()
 
 
 class Settings(BaseSettings):
