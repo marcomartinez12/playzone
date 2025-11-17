@@ -53,6 +53,14 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
 - ✅ Producto más vendido
 - ✅ Actualización automática sin refrescar
 
+### 🔐 Recuperación de Contraseña
+- ✅ Flujo completo de "Olvidé mi contraseña"
+- ✅ Envío de emails con Resend API
+- ✅ Tokens seguros con expiración (30 minutos)
+- ✅ Hashing de tokens en base de datos
+- ✅ Soporte para timezone UTC en producción
+- ✅ Validación de tokens y cambio de contraseña
+
 ### 📱 Accesibilidad Móvil (RF-12)
 - ✅ Diseño 100% responsive
 - ✅ Touch targets optimizados (44x44px mínimo)
@@ -65,13 +73,16 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
 ## 🛠️ Tecnologías Utilizadas
 
 ### Backend
-- **FastAPI** - Framework web moderno y rápido para construir APIs con Python. Validación automática de datos y documentación interactiva.
-- **PostgreSQL** - Sistema de base de datos relacional robusto y escalable para almacenar productos, ventas, servicios y clientes.
-- **JWT + Refresh Tokens** - Sistema de autenticación de doble token. Access tokens (30 min) para acceso y refresh tokens (30 días) para sesiones persistentes.
-- **Bcrypt** - Hashing seguro de contraseñas con salt. Migración automática de contraseñas antiguas en texto plano.
-- **ReportLab** - Generación profesional de reportes PDF con branding de PlayZone.
-- **psycopg2** - Adaptador PostgreSQL para Python que permite ejecutar consultas SQL y obtener resultados como diccionarios.
-- **CORS Middleware** - Permite que el frontend haga peticiones al backend desde diferentes puertos de forma segura.
+- **FastAPI** - Framework web moderno y rápido para construir APIs REST con Python 3.10+. Validación automática de datos con Pydantic y documentación interactiva con Swagger UI.
+- **PostgreSQL** - Sistema de gestión de base de datos relacional (RDBMS) robusto, de código abierto y escalable. Soporta transacciones ACID para almacenar productos, ventas, servicios y clientes.
+- **Supabase** - Plataforma Backend-as-a-Service (BaaS) basada en PostgreSQL. Proporciona base de datos en la nube, autenticación y APIs automáticas para despliegue en producción.
+- **JWT + Refresh Tokens** - JSON Web Tokens para autenticación stateless. Access tokens (30 min) para acceso a recursos protegidos y refresh tokens (30 días) para renovar sesiones sin re-login.
+- **Bcrypt** - Algoritmo de hashing adaptativo para contraseñas con salt automático y factor de trabajo configurable. Protege contra ataques de fuerza bruta y rainbow tables.
+- **Resend** - Servicio de email transaccional moderno con API RESTful. Usado para enviar emails de recuperación de contraseña con alta entregabilidad.
+- **ReportLab** - Librería Python para generación dinámica de documentos PDF con estilos personalizados, tablas y gráficos.
+- **psycopg2** - Adaptador PostgreSQL para Python que implementa DB-API 2.0. Permite ejecutar consultas SQL parametrizadas y obtener resultados como diccionarios.
+- **python-dotenv** - Carga variables de entorno desde archivos `.env` para gestión de configuración separada del código (siguiendo principios de 12-factor app).
+- **CORS Middleware** - Cross-Origin Resource Sharing. Permite que el frontend (puerto 8000) haga peticiones AJAX al backend desde el mismo origen o diferentes subdominios de forma segura.
 
 ### Frontend
 - **HTML5 + CSS3** - Estructura y estilos puros sin preprocesadores. Diseño responsive adaptado a móviles y tablets.
@@ -81,10 +92,11 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
 - **Serper API** - Servicio de búsqueda de Google Images para encontrar imágenes de consolas y accesorios gaming.
 
 ### Arquitectura
-- **MVC** - Separación de capas: Models (datos), Views (interfaz), Controllers (lógica de negocio).
-- **REST API** - Comunicación cliente-servidor mediante endpoints HTTP estándar (GET, POST, PUT, DELETE).
-- **Event-Driven** - Actualización en tiempo real sin refrescar página usando eventos personalizados.
-- **Puerto Único** - Backend sirve tanto la API como los archivos estáticos del frontend en puerto 8000.
+- **MVC (Model-View-Controller)** - Patrón de diseño que separa la aplicación en tres capas: Models (estructura de datos con Pydantic), Views (interfaz HTML/CSS/JS), Controllers (lógica de negocio en Python).
+- **REST API (Representational State Transfer)** - Arquitectura para servicios web que usa métodos HTTP estándar: GET (consultar), POST (crear), PUT (actualizar), DELETE (eliminar). Recursos identificados por URLs y respuestas en formato JSON.
+- **Event-Driven Architecture** - Patrón basado en eventos donde los componentes se comunican mediante un EventBus. Permite actualización en tiempo real sin refrescar página (ej: Dashboard se actualiza automáticamente cuando se crea un producto).
+- **Single Page Application (SPA)** - Aplicación web de una sola página que carga dinámicamente contenido mediante JavaScript, sin recargas completas.
+- **Puerto Único (8000)** - Backend FastAPI sirve tanto los endpoints REST API (`/api/*`) como los archivos estáticos del frontend (`/assets/*`, `/login`, `/home`) en un solo proceso.
 
 ---
 
@@ -163,7 +175,22 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 # Server
 HOST=0.0.0.0
 PORT=8000
+
+# Email - Resend API (para recuperación de contraseña)
+RESEND_API_KEY=re_tu_api_key_aqui
+EMAIL_FROM=onboarding@resend.dev
+RESET_TOKEN_EXPIRE_MINUTES=30
+FRONTEND_URL=http://localhost:8000
+
+# API Keys para búsqueda de imágenes
+RAWG_API_KEY=tu_api_key_rawg_aqui
+SERPER_API_KEY=tu_api_key_serper_aqui
 ```
+
+**Obtener API Keys:**
+- **Resend:** Registrarse en https://resend.com (100 emails/día gratis)
+- **RAWG:** Registrarse en https://rawg.io/apidocs (100,000 requests/mes gratis)
+- **Serper:** Registrarse en https://serper.dev (2,500 búsquedas gratis)
 
 ### 5. Configurar APIs de Imágenes
 
@@ -329,16 +356,29 @@ playzone/
 
 ### Autenticación
 ```http
-POST /api/auth/login              # Login con rate limiting
+POST /api/auth/login              # Login con rate limiting (máx 5 intentos)
 POST /api/auth/register           # Registrar usuario
-POST /api/auth/refresh            # Refrescar access token
-POST /api/auth/logout             # Cerrar sesión
-POST /api/auth/logout-all         # Cerrar todas las sesiones
+POST /api/auth/refresh            # Refrescar access token con refresh token
+POST /api/auth/logout             # Cerrar sesión actual (revoca refresh token)
+POST /api/auth/logout-all         # Cerrar todas las sesiones del usuario
+POST /api/auth/forgot-password    # Solicitar recuperación de contraseña
+POST /api/auth/reset-password     # Restablecer contraseña con token
 
 # Ejemplo de login
 {
   "username": "tu_usuario",
   "password": "tu_contraseña"
+}
+
+# Ejemplo de forgot-password
+{
+  "email": "usuario@example.com"
+}
+
+# Ejemplo de reset-password
+{
+  "token": "token_recibido_por_email",
+  "new_password": "nueva_contraseña_segura"
 }
 ```
 
@@ -437,6 +477,46 @@ EventBus.on(Events.PRODUCTO_CREADO, (data) => {
 
 ---
 
+## 🚀 Despliegue en Producción (Render.com)
+
+### Requisitos
+- Cuenta en [Render.com](https://render.com) (gratis)
+- Cuenta en [Supabase](https://supabase.com) para PostgreSQL en la nube (gratis)
+- Repositorio Git (GitHub, GitLab, etc.)
+
+### Pasos para Despliegue
+
+#### 1. Configurar Base de Datos en Supabase
+1. Crear proyecto en Supabase
+2. Copiar Connection String (Transaction Pooler - puerto 6543)
+3. Ejecutar migraciones en SQL Editor:
+   - `backend/migrations/001_security_enhancements.sql`
+   - `backend/migrations/002_add_password_reset.sql`
+
+#### 2. Configurar Web Service en Render
+1. Conectar repositorio de GitHub
+2. Configurar build:
+   - **Build Command:** `pip install -r backend/requirements.txt`
+   - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+3. Agregar variables de entorno en Dashboard:
+```env
+DATABASE_URL=postgresql://postgres.xxx:password@pooler.supabase.com:6543/postgres
+SECRET_KEY=clave_produccion_muy_segura
+RESEND_API_KEY=re_tu_api_key
+EMAIL_FROM=onboarding@resend.dev
+FRONTEND_URL=https://tu-app.onrender.com
+RAWG_API_KEY=tu_api_key
+SERPER_API_KEY=tu_api_key
+```
+
+#### 3. Consideraciones Importantes
+- **Variables de entorno:** Render usa el dashboard, NO archivos `.env`
+- **Timezone:** El código usa UTC automáticamente en producción
+- **CORS:** Configurar `ALLOWED_ORIGINS` con tu dominio de Render
+- **Email:** Resend requiere dominio verificado para emails de producción (usa `onboarding@resend.dev` para testing)
+
+---
+
 ## 📱 Acceso Móvil
 
 ### Opción 1: Red Local
@@ -455,6 +535,44 @@ Usar la URL proporcionada (ej: `https://abc123.ngrok-free.app`)
 2. Agregar puerto 8000
 3. Hacer público
 4. Compartir URL generada
+
+---
+
+## 📚 Glosario de Términos Técnicos
+
+### Conceptos de Backend
+- **API REST:** Interfaz de Programación de Aplicaciones que usa el protocolo HTTP para comunicación entre cliente y servidor mediante URLs y métodos estándar (GET, POST, PUT, DELETE).
+- **JWT (JSON Web Token):** Estándar abierto para transmitir información de forma segura entre partes como un objeto JSON firmado digitalmente. Contiene claims (afirmaciones) sobre el usuario.
+- **Hashing:** Función criptográfica de un solo sentido que convierte texto (ej: contraseña) en un string fijo. No se puede revertir para obtener el texto original.
+- **Salt:** Dato aleatorio que se concatena a una contraseña antes de hashear para proteger contra rainbow tables y ataques de diccionario.
+- **Refresh Token:** Token de larga duración usado para obtener nuevos access tokens sin requerir nuevo login. Se almacena de forma segura y puede ser revocado.
+- **Rate Limiting:** Técnica que limita el número de peticiones que un usuario puede hacer en un período de tiempo para prevenir abuso y ataques de fuerza bruta.
+- **CORS (Cross-Origin Resource Sharing):** Mecanismo de seguridad del navegador que permite a servidores indicar qué orígenes pueden acceder a sus recursos.
+- **Middleware:** Software que actúa como intermediario entre aplicaciones. En FastAPI, procesa requests/responses antes de llegar al endpoint (ej: autenticación, logs).
+- **ORM vs Raw SQL:** Object-Relational Mapping traduce objetos a SQL automáticamente. Este proyecto usa SQL raw con psycopg2 para máximo control y rendimiento.
+- **Transaction Pooler:** Servicio que mantiene conexiones abiertas a la base de datos y las reutiliza, reduciendo latencia y mejorando rendimiento (usado en Supabase).
+
+### Conceptos de Frontend
+- **SPA (Single Page Application):** Aplicación web que carga una sola página HTML y actualiza dinámicamente el contenido sin recargar la página completa.
+- **Fetch API:** API nativa del navegador para hacer peticiones HTTP asíncronas (reemplazo moderno de XMLHttpRequest).
+- **EventBus:** Patrón de diseño que permite comunicación entre componentes sin dependencias directas mediante publicación/suscripción de eventos.
+- **Promise:** Objeto JavaScript que representa la eventual finalización (o fallo) de una operación asíncrona y su valor resultante.
+- **async/await:** Sintaxis moderna de JavaScript para trabajar con Promises de forma más legible, similar a código síncrono.
+- **localStorage:** API del navegador para almacenar datos persistentes en el cliente (ej: tokens de autenticación).
+- **Responsive Design:** Diseño web que se adapta al tamaño de pantalla del dispositivo usando CSS media queries y unidades flexibles.
+
+### Conceptos de Seguridad
+- **XSS (Cross-Site Scripting):** Vulnerabilidad que permite inyectar scripts maliciosos en páginas web vistas por otros usuarios.
+- **SQL Injection:** Ataque que inserta código SQL malicioso en queries para acceder, modificar o eliminar datos no autorizados.
+- **CSRF (Cross-Site Request Forgery):** Ataque que fuerza a usuarios autenticados a ejecutar acciones no intencionadas en una aplicación web.
+- **Stateless Authentication:** Sistema de autenticación donde el servidor no mantiene sesión del usuario; toda la información está en el token JWT.
+- **Soft Delete:** Técnica que marca registros como eliminados sin borrarlos físicamente de la base de datos (usando flag `eliminado=true`).
+
+### Conceptos de Bases de Datos
+- **ACID:** Propiedades de transacciones: Atomicity (todo o nada), Consistency (estado válido), Isolation (transacciones independientes), Durability (cambios permanentes).
+- **Índice:** Estructura de datos que mejora la velocidad de consultas en una tabla a costa de espacio adicional y escrituras más lentas.
+- **Foreign Key:** Constraint que asegura integridad referencial entre tablas (ej: `id_producto` en ventas debe existir en productos).
+- **Migration:** Script SQL versionado que modifica el esquema de la base de datos de forma controlada y reversible.
 
 ---
 
