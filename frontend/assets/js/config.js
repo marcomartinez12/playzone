@@ -4,9 +4,11 @@
 
 // URL del backend - rutas relativas (funciona con puerto único)
 const API_URL = '/api';
+const API_BASE_URL = '/api'; // Alias para compatibilidad
 
 // Para acceso móvil con ngrok, cambiar a la URL completa de ngrok:
 // const API_URL = 'https://TU-URL-NGROK.ngrok-free.dev/api';
+// const API_BASE_URL = 'https://TU-URL-NGROK.ngrok-free.dev/api';
 
 // ============================================
 // RAWG API - Para imágenes de videojuegos

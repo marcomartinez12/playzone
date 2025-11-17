@@ -26,3 +26,6 @@ python-dateutil
 
 # PDF Generation
 reportlab
+
+# Email Service
+resend

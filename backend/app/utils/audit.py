@@ -6,6 +6,7 @@ from typing import Optional
 from datetime import datetime
 from app.config.database import get_db_cursor
 from app.models.security import AuditoriaCreate
+import json
 
 
 class AuditLogger:
@@ -42,6 +43,10 @@ class AuditLogger:
         Returns:
             ID del registro de auditoría creado
         """
+        # Convertir diccionarios a JSON si es necesario
+        datos_anteriores_json = json.dumps(datos_anteriores) if datos_anteriores else None
+        datos_nuevos_json = json.dumps(datos_nuevos) if datos_nuevos else None
+
         with get_db_cursor() as cursor:
             cursor.execute(
                 """
@@ -54,7 +59,7 @@ class AuditLogger:
                 """,
                 (
                     id_usuario, username, accion, modulo, entidad, id_entidad,
-                    datos_anteriores, datos_nuevos, ip_address, user_agent
+                    datos_anteriores_json, datos_nuevos_json, ip_address, user_agent
                 )
             )
             result = cursor.fetchone()

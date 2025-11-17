@@ -94,7 +94,7 @@ app.include_router(servicios.router, prefix="/api/servicios", tags=["Servicios"]
 
 
 # Servir archivos estáticos del frontend
-frontend_path = Path(__file__).parent.parent / "frontend"
+frontend_path = Path(__file__).parent.parent / "Frontend"
 
 # Montar carpeta de assets (CSS, JS, images)
 app.mount("/assets", StaticFiles(directory=str(frontend_path / "assets")), name="assets")
@@ -110,6 +110,17 @@ async def serve_login():
 async def serve_home():
     """Servir página principal"""
     return FileResponse(str(frontend_path / "pages" / "home.html"))
+
+# Rutas para recuperación de contraseña
+@app.get("/forgot-password.html")
+async def serve_forgot_password():
+    """Servir página de recuperación de contraseña"""
+    return FileResponse(str(frontend_path / "forgot-password.html"))
+
+@app.get("/reset-password.html")
+async def serve_reset_password():
+    """Servir página de restablecimiento de contraseña"""
+    return FileResponse(str(frontend_path / "reset-password.html"))
 
 
 if __name__ == "__main__":

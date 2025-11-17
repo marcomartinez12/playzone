@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     rawg_api_key: str = os.getenv("RAWG_API_KEY", "")
     serper_api_key: str = os.getenv("SERPER_API_KEY", "")
 
+    # Email Configuration - Resend
+    resend_api_key: str = os.getenv("RESEND_API_KEY", "")
+    email_from: str = os.getenv("EMAIL_FROM", "onboarding@resend.dev")
+    reset_token_expire_minutes: int = int(os.getenv("RESET_TOKEN_EXPIRE_MINUTES", 30))
+    frontend_url: str = os.getenv("FRONTEND_URL", "http://localhost:5500")
+
     @property
     def origins_list(self):
         return [o.strip() for o in self.allowed_origins.split(",")]

@@ -1,15 +1,28 @@
 """
 Rutas de Autenticacion
 RF-01: Iniciar Sesion
-Incluye: Rate Limiting, Refresh Tokens, Logout, Auditoría
+Incluye: Rate Limiting, Refresh Tokens, Logout, Auditoría, Recuperación de contraseña
 """
 from fastapi import APIRouter, HTTPException, Request, Depends
+from pydantic import BaseModel, EmailStr
 from app.models.usuario import UsuarioLogin, UsuarioCreate, Token
 from app.models.security import RefreshTokenRequest, TokenPair
 from app.controllers.auth_controller import AuthController
 from app.middleware.auth import get_current_user
 
 router = APIRouter()
+
+
+# Modelos para recuperación de contraseña
+class PasswordResetRequest(BaseModel):
+    """Modelo para solicitar recuperación de contraseña"""
+    email: EmailStr
+
+
+class PasswordResetConfirm(BaseModel):
+    """Modelo para confirmar recuperación de contraseña"""
+    token: str
+    new_password: str
 
 
 @router.post("/login", response_model=dict, summary="Iniciar sesion con seguridad")
@@ -128,5 +141,48 @@ async def logout_all_sessions(
     return AuthController.logout_all_sessions(
         current_user["id_usuario"],
         current_user["username"],
+        ip_address
+    )
+
+
+@router.post("/forgot-password", response_model=dict, summary="Solicitar recuperación de contraseña")
+async def forgot_password(reset_request: PasswordResetRequest, request: Request):
+    """
+    Solicita recuperación de contraseña enviando email con token
+
+    Por seguridad, siempre retorna éxito sin revelar si el email existe
+
+    Args:
+        reset_request: Email del usuario
+        request: Request object
+
+    Returns:
+        Mensaje genérico de confirmación
+    """
+    ip_address = request.client.host if request.client else None
+
+    return AuthController.request_password_reset(reset_request.email, ip_address)
+
+
+@router.post("/reset-password", response_model=dict, summary="Restablecer contraseña")
+async def reset_password(reset_confirm: PasswordResetConfirm, request: Request):
+    """
+    Restablece la contraseña usando el token de recuperación
+
+    Args:
+        reset_confirm: Token y nueva contraseña
+        request: Request object
+
+    Returns:
+        Confirmación de cambio de contraseña
+
+    Raises:
+        HTTPException: Si el token es inválido o expiró
+    """
+    ip_address = request.client.host if request.client else None
+
+    return AuthController.reset_password(
+        reset_confirm.token,
+        reset_confirm.new_password,
         ip_address
     )

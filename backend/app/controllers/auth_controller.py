@@ -1,9 +1,9 @@
 """
 Controlador de Autenticacion
 RF-01: Iniciar Sesion
-Incluye: Rate Limiting, Refresh Tokens, Auditoría, Hashing de contraseñas
+Incluye: Rate Limiting, Refresh Tokens, Auditoría, Hashing de contraseñas, Recuperación de contraseña
 """
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import Optional
 from fastapi import HTTPException, status
 from app.models.usuario import UsuarioLogin, UsuarioCreate, UsuarioResponse, Token
@@ -14,6 +14,9 @@ from app.utils.refresh_token import RefreshTokenManager
 from app.utils.audit import AuditLogger
 from app.config.database import get_db_cursor
 from app.config.settings import settings
+from app.services.email_service import email_service
+import secrets
+import json
 
 
 class AuthController:
@@ -399,4 +402,183 @@ class AuthController:
             "success": True,
             "message": f"{tokens_revocados} sesiones cerradas exitosamente",
             "sessions_closed": tokens_revocados
+        }
+
+    @staticmethod
+    def request_password_reset(email: str, ip_address: Optional[str] = None) -> dict:
+        """
+        Solicita recuperación de contraseña enviando email con token
+
+        Args:
+            email: Email del usuario
+            ip_address: IP del solicitante
+
+        Returns:
+            Mensaje de confirmación
+
+        Raises:
+            HTTPException: Si hay errores
+        """
+        # Buscar usuario por email
+        with get_db_cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id_usuario, username, email, activo, eliminado
+                FROM usuarios
+                WHERE email = %s
+                """,
+                (email,)
+            )
+            user = cursor.fetchone()
+
+        # Por seguridad, siempre retornar mensaje genérico
+        # (no revelar si el email existe o no)
+        mensaje_generico = "Si el email está registrado, recibirás un enlace de recuperación"
+
+        if not user:
+            # Registrar intento en auditoría
+            AuditLogger.log(
+                accion="PASSWORD_RESET_REQUEST_FAILED",
+                modulo="auth",
+                datos_nuevos={"email": email, "razon": "Email no encontrado"},
+                ip_address=ip_address
+            )
+            return {
+                "success": True,
+                "message": mensaje_generico
+            }
+
+        # Verificar si el usuario está activo
+        if not user['activo'] or user['eliminado']:
+            AuditLogger.log(
+                accion="PASSWORD_RESET_REQUEST_FAILED",
+                modulo="auth",
+                id_usuario=user['id_usuario'],
+                username=user['username'],
+                datos_nuevos={"email": email, "razon": "Usuario inactivo o eliminado"},
+                ip_address=ip_address
+            )
+            return {
+                "success": True,
+                "message": mensaje_generico
+            }
+
+        # Generar token seguro
+        reset_token = secrets.token_urlsafe(32)
+
+        # Calcular fecha de expiración
+        expires_at = datetime.now() + timedelta(minutes=settings.reset_token_expire_minutes)
+
+        # Guardar token en BD (hasheado)
+        with get_db_cursor() as cursor:
+            token_hash = hash_password(reset_token)
+            cursor.execute(
+                """
+                UPDATE usuarios
+                SET reset_token = %s, reset_token_expires = %s
+                WHERE id_usuario = %s
+                """,
+                (token_hash, expires_at, user['id_usuario'])
+            )
+
+        # Enviar email
+        email_enviado = email_service.send_password_reset_email(user['email'], reset_token)
+
+        # Auditoría
+        AuditLogger.log(
+            accion="PASSWORD_RESET_REQUEST",
+            modulo="auth",
+            id_usuario=user['id_usuario'],
+            username=user['username'],
+            datos_nuevos={
+                "email": user['email'],
+                "email_enviado": email_enviado,
+                "token_expires": expires_at.isoformat()
+            },
+            ip_address=ip_address
+        )
+
+        return {
+            "success": True,
+            "message": mensaje_generico
+        }
+
+    @staticmethod
+    def reset_password(token: str, new_password: str, ip_address: Optional[str] = None) -> dict:
+        """
+        Restablece la contraseña usando el token de recuperación
+
+        Args:
+            token: Token de recuperación
+            new_password: Nueva contraseña
+            ip_address: IP del solicitante
+
+        Returns:
+            Mensaje de confirmación
+
+        Raises:
+            HTTPException: Si el token es inválido o expiró
+        """
+        # Buscar usuario con token válido
+        with get_db_cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id_usuario, username, email, reset_token, reset_token_expires
+                FROM usuarios
+                WHERE reset_token IS NOT NULL
+                AND reset_token_expires > NOW()
+                AND activo = TRUE
+                AND eliminado = FALSE
+                """
+            )
+            usuarios_con_token = cursor.fetchall()
+
+        # Buscar el usuario cuyo token hash coincida
+        user = None
+        for usuario in usuarios_con_token:
+            if verify_password(token, usuario['reset_token']):
+                user = usuario
+                break
+
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Token de recuperación inválido o expirado"
+            )
+
+        # Hashear nueva contraseña
+        new_password_hash = hash_password(new_password)
+
+        # Actualizar contraseña y limpiar token
+        with get_db_cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE usuarios
+                SET password = %s,
+                    reset_token = NULL,
+                    reset_token_expires = NULL
+                WHERE id_usuario = %s
+                """,
+                (new_password_hash, user['id_usuario'])
+            )
+
+        # Revocar todos los refresh tokens (cerrar sesiones activas)
+        RefreshTokenManager.revocar_todos_tokens_usuario(user['id_usuario'])
+
+        # Enviar email de confirmación
+        email_service.send_password_changed_notification(user['email'])
+
+        # Auditoría
+        AuditLogger.log(
+            accion="PASSWORD_RESET_COMPLETED",
+            modulo="auth",
+            id_usuario=user['id_usuario'],
+            username=user['username'],
+            datos_nuevos={"email": user['email']},
+            ip_address=ip_address
+        )
+
+        return {
+            "success": True,
+            "message": "Contraseña actualizada exitosamente"
         }
