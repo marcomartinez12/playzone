@@ -296,7 +296,7 @@ function mostrarProductosEnTabla(productos) {
             </td>
 
             <td style="padding: 16px 20px; text-align: right;">
-                <span style="font-weight: 700; color: #2d3748; font-size: 15px;">$${parseFloat(producto.precio).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                <span style="font-weight: 700; color: #2d3748; font-size: 15px;">${formatCurrency(producto.precio)}</span>
             </td>
 
             <td style="padding: 16px 20px; text-align: center;">
@@ -488,7 +488,7 @@ function mostrarProductosEnVentas(productos) {
             <img src="${producto.imagen_url || '../assets/images/logo.png'}" alt="${producto.nombre}" class="product-image">
             <div class="product-info">
                 <h3 class="product-name">${producto.nombre}</h3>
-                <p class="product-price">$${parseFloat(producto.precio).toFixed(2)}</p>
+                <p class="product-price">${formatCurrency(producto.precio)}</p>
                 <p class="product-stock">Stock: ${producto.cantidad}</p>
                 <button class="add-to-cart-btn" onclick="agregarAlCarrito(${producto.id_producto}, '${producto.nombre}', ${producto.precio}, ${producto.cantidad})">
                     Agregar al Carrito

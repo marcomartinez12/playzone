@@ -190,15 +190,9 @@ function mostrarEstadisticas(stats) {
     if (elemServiciosPendientes) elemServiciosPendientes.textContent = stats.serviciosPendientes;
 
     // Formatear ingresos
-    const formatter = new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0
-    });
-
-    const ingresosTotalesFormateados = formatter.format(stats.ingresosMes);
-    const ingresosVentasFormateados = formatter.format(stats.ingresosVentas || 0);
-    const ingresosServiciosFormateados = formatter.format(stats.ingresosServicios || 0);
+    const ingresosTotalesFormateados = formatCurrency(stats.ingresosMes);
+    const ingresosVentasFormateados = formatCurrency(stats.ingresosVentas || 0);
+    const ingresosServiciosFormateados = formatCurrency(stats.ingresosServicios || 0);
 
     if (elemIngresosMes) elemIngresosMes.textContent = ingresosTotalesFormateados;
     if (elemIngresosVentas) elemIngresosVentas.textContent = ingresosVentasFormateados;

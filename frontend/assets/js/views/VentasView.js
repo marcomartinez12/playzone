@@ -26,7 +26,7 @@ async function cargarVentasDelDia() {
 
         // Actualizar estadísticas
         document.getElementById('ventasHoy').textContent = reporteData.total_ventas || 0;
-        document.getElementById('totalHoy').textContent = `$${(reporteData.monto_total || 0).toLocaleString()}`;
+        document.getElementById('totalHoy').textContent = formatCurrency(reporteData.monto_total || 0);
         document.getElementById('productosVendidos').textContent = reporteData.productos_vendidos || 0;
 
         // Obtener lista de ventas
@@ -87,7 +87,7 @@ function renderVentasTable(ventas) {
                 </span>
             </td>
             <td style="padding: 16px 20px; text-align: right;">
-                <span style="font-weight: 700; color: #38a169; font-size: 15px;">$${venta.total.toLocaleString('es-CO')}</span>
+                <span style="font-weight: 700; color: #38a169; font-size: 15px;">${formatCurrency(venta.total)}</span>
             </td>
             <td style="padding: 16px 20px;">
                 <div style="color: #4a5568; font-size: 14px;">${formatearFecha(venta.fecha_venta)}</div>
@@ -144,10 +144,10 @@ async function verDetalleVenta(idVenta) {
                     </span>
                 </td>
                 <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'}; text-align: right; color: #4a5568; font-weight: 500; font-size: ${isMobile ? '11px' : '12px'};">
-                    $${d.precio_unitario.toLocaleString('es-CO')}
+                    ${formatCurrency(d.precio_unitario)}
                 </td>
                 <td style="padding: ${isMobile ? '10px 8px' : '10px 12px'}; text-align: right; font-weight: 700; color: #38a169; font-size: ${isMobile ? '12px' : '14px'};">
-                    $${d.subtotal.toLocaleString('es-CO')}
+                    ${formatCurrency(d.subtotal)}
                 </td>
             </tr>
         `).join('');
@@ -231,7 +231,7 @@ function mostrarModalDetalle(venta, detallesHTML) {
             <div style="background: linear-gradient(135deg, #38a169 0%, #2f855a 100%); color: white; padding: ${isMobile ? '14px 16px' : '16px 18px'}; border-radius: 8px; margin-top: ${isMobile ? '14px' : '16px'}; text-align: right; position: sticky; bottom: ${isMobile ? '-20px' : '-10px'}; z-index: 10;">
                 <div style="font-size: ${isMobile ? '11px' : '12px'}; opacity: 0.9; margin-bottom: 3px;">TOTAL DE LA VENTA</div>
                 <div style="font-size: ${isMobile ? '24px' : '28px'}; font-weight: 700;">
-                    $${venta.total.toLocaleString('es-CO')}
+                    ${formatCurrency(venta.total)}
                 </div>
             </div>
         </div>

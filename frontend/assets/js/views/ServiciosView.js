@@ -130,7 +130,7 @@ function renderServiciosTable(servicios) {
                 </td>
                 <td style="padding: 16px 20px; text-align: right;">
                     <span style="font-weight: 700; color: #2d3748; font-size: 15px;">
-                        ${servicio.costo ? '$' + servicio.costo.toLocaleString('es-CO') : 'Por definir'}
+                        ${servicio.costo ? formatCurrency(servicio.costo) : 'Por definir'}
                     </span>
                 </td>
                 <td style="padding: 16px 20px; text-align: center;">
@@ -271,7 +271,7 @@ function mostrarModalServicio(servicio = null) {
                     </div>
                     <div>
                         <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
-                            Costo
+                            Costo ${servicio.costo ? `<span style="color: #38a169; font-weight: 700;">(${formatCurrency(servicio.costo)})</span>` : ''}
                         </label>
                         <input type="number" id="servicioCosto" min="0" step="1000"
                             value="${servicio.costo ? servicio.costo : ''}"

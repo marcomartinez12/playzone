@@ -82,7 +82,7 @@ function renderCart() {
         <div class="cart-item">
             <div class="cart-item-header">
                 <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                <div class="cart-item-price">${formatCurrency(item.price)}</div>
             </div>
             <div class="cart-item-controls">
                 <div class="quantity-controls">
@@ -97,12 +97,12 @@ function renderCart() {
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-    totalAmountDiv.textContent = total.toFixed(2);
+    totalAmountDiv.textContent = formatNumber(total);
 
     // RF-12: Actualizar badge en móvil
     if (cartBadge && window.innerWidth <= 480) {
         cartBadge.style.display = 'inline-block';
-        cartBadge.textContent = `${totalItems} • $${total.toFixed(2)}`;
+        cartBadge.textContent = `${totalItems} • ${formatCurrency(total)}`;
     }
 }
 
@@ -299,7 +299,7 @@ async function saveCart() {
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const confirmado = await showConfirm({
         title: '¿Confirmar venta?',
-        message: `Cliente: ${clienteData.nombre}\nDocumento: ${clienteData.documento}\nTotal: $${total.toLocaleString()}\nProductos: ${cart.length}`,
+        message: `Cliente: ${clienteData.nombre}\nDocumento: ${clienteData.documento}\nTotal: ${formatCurrency(total)}\nProductos: ${cart.length}`,
         type: 'info',
         confirmText: 'Confirmar venta',
         cancelText: 'Cancelar'
