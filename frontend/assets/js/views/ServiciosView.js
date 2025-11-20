@@ -119,7 +119,7 @@ function renderServiciosTable(servicios) {
                     <div style="font-weight: 500; color: #2d3748;">🎮 ${servicio.consola}</div>
                 </td>
                 <td style="padding: 16px 20px;">
-                    <div style="color: #4a5568; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <div title="${servicio.descripcion}" style="color: #4a5568; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
                         ${servicio.descripcion}
                     </div>
                 </td>
