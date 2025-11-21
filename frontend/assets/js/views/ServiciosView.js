@@ -327,10 +327,29 @@ function mostrarModalServicio(servicio = null) {
 
     overlay.classList.add('active');
 
+    // Validaciones de entrada en tiempo real
+    const inputDocumento = document.getElementById('servicioClienteDocumento');
+    const inputNombre = document.getElementById('servicioClienteNombre');
+    const inputTelefono = document.getElementById('servicioClienteTelefono');
+
+    // Documento: solo números
+    inputDocumento.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+
+    // Nombre: solo letras y espacios
+    inputNombre.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    });
+
+    // Teléfono: solo números
+    inputTelefono.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+
     // Configurar evento de búsqueda de cliente (solo para nuevo servicio)
     if (!esEdicion) {
         const btnBuscar = document.getElementById('btnBuscarClienteServicio');
-        const inputDocumento = document.getElementById('servicioClienteDocumento');
 
         btnBuscar.onclick = () => buscarClienteParaServicio();
         inputDocumento.addEventListener('keypress', (e) => {
@@ -377,10 +396,15 @@ async function buscarClienteParaServicio() {
     try {
         statusDiv.innerHTML = '<span style="color: #667eea;">🔍 Buscando...</span>';
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/clientes/buscar/${encodeURIComponent(documento)}`, {
+        // Agregar timestamp para evitar cache del navegador
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${API_URL}/clientes/buscar/${encodeURIComponent(documento)}?t=${timestamp}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
             }
         });
 
@@ -574,6 +598,13 @@ async function actualizarServicio() {
     const pagadoCheckbox = document.getElementById('servicioPagado');
     const pagado = pagadoCheckbox ? pagadoCheckbox.checked : false;
 
+    // Obtener datos del cliente para actualización
+    const telefono = document.getElementById('servicioClienteTelefono').value.trim();
+    const email = document.getElementById('servicioClienteEmail').value.trim();
+    const idCliente = document.getElementById('servicioClienteId').value;
+    const nombre = document.getElementById('servicioClienteNombre').value.trim();
+    const documento = document.getElementById('servicioClienteDocumento').value.trim();
+
     if (!consola || !descripcion || !estado) {
         showWarning('Por favor completa todos los campos obligatorios', 'Campos incompletos');
         return;
@@ -582,6 +613,29 @@ async function actualizarServicio() {
     try {
         const token = localStorage.getItem('token');
 
+        // 1. Actualizar datos del cliente si hay cambios en teléfono o email
+        if (idCliente && (telefono || email)) {
+            const clienteResponse = await fetch(`${API_URL}/clientes/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    documento: documento,
+                    telefono: telefono,
+                    email: email || null
+                })
+            });
+
+            const clienteData = await clienteResponse.json();
+            if (!clienteData.success) {
+                showWarning('No se pudo actualizar los datos del cliente', 'Advertencia');
+            }
+        }
+
+        // 2. Actualizar servicio
         const response = await fetch(`${API_URL}/servicios/${servicioEditando.id_servicio}`, {
             method: 'PUT',
             headers: {
@@ -655,6 +709,21 @@ async function eliminarServicio(idServicio) {
 document.addEventListener('DOMContentLoaded', function() {
     let cargandoServicios = false;
     let timeoutId = null;
+
+    // Escuchar eventos de actualización de clientes para refrescar servicios
+    // IMPORTANTE: Recargar servicios sin importar si la sección está activa
+    // para que cuando el usuario vuelva, los datos ya estén actualizados
+    EventBus.on(Events.CLIENTE_ACTUALIZADO, (data) => {
+        console.log('[ServiciosView] Evento CLIENTE_ACTUALIZADO recibido:', data);
+        console.log('[ServiciosView] Recargando servicios...');
+        cargarServicios();
+    });
+
+    EventBus.on(Events.CLIENTE_CREADO, (data) => {
+        console.log('[ServiciosView] Evento CLIENTE_CREADO recibido:', data);
+        console.log('[ServiciosView] Recargando servicios...');
+        cargarServicios();
+    });
 
     const observer = new MutationObserver(function(mutations) {
         const serviciosSection = document.getElementById('servicios');

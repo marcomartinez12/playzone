@@ -109,6 +109,13 @@ function showConfirm(options = {}) {
             cancelText: options.cancelText || 'Cancelar'
         };
 
+        // Verificar que todos los elementos existen
+        if (!icon || !title || !message || !cancelBtn || !okBtn) {
+            console.error('[showConfirm] Modal elements not found. Modal may be in use.');
+            resolve(false);
+            return;
+        }
+
         const iconMap = {
             warning: '⚠️',
             danger: '🗑️',

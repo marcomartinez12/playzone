@@ -134,9 +134,16 @@ async function clearCart() {
 // Buscar cliente por documento
 async function buscarClientePorDocumento(documento) {
     try {
-        const response = await fetch(`${API_URL}/clientes/buscar/${documento}`, {
+        // Agregar timestamp para evitar cache del navegador
+        const timestamp = new Date().getTime();
+        const response = await fetch(`${API_URL}/clientes/buscar/${documento}?t=${timestamp}`, {
             method: 'GET',
-            headers: getAuthHeaders()
+            headers: {
+                ...getAuthHeaders(),
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
         });
 
         if (response.ok) {
@@ -211,6 +218,22 @@ function mostrarFormularioCliente() {
 
         documentoInput.focus();
 
+        // Validaciones de entrada en tiempo real
+        // Documento: solo números
+        documentoInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Nombre: solo letras y espacios
+        nombreInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+        });
+
+        // Teléfono: solo números
+        telefonoInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
         // Buscar cliente al hacer clic en el botón
         btnBuscar.onclick = async () => {
             const documento = documentoInput.value.trim();
@@ -254,9 +277,13 @@ function mostrarFormularioCliente() {
         nombreInput.focus();
 
         const cleanup = (data) => {
+            console.log('[VentaController] Iniciando cleanup del modal');
             overlay.classList.remove('active');
+
+            // Esperar a que la animación de cierre termine antes de resolver
             setTimeout(() => {
-                modal.innerHTML = originalContent;
+                console.log('[VentaController] Modal cerrado, resolviendo promesa SIN restaurar aún');
+                // NO restaurar el modal aquí, dejarlo para después de la confirmación
                 resolve(data);
             }, 350);
         };
@@ -288,27 +315,21 @@ async function saveCart() {
         return;
     }
 
+    // Guardar el contenido original del modal antes de modificarlo
+    const overlay = document.getElementById('confirmModalOverlay');
+    const modal = overlay.querySelector('.confirm-modal');
+    const originalModalContent = modal.innerHTML;
+
     // Mostrar formulario de cliente
     const clienteData = await mostrarFormularioCliente();
-    if (!clienteData) return;
-
-    // Pequeño delay para restaurar el modal
-    await new Promise(resolve => setTimeout(resolve, 400));
-
-    // Confirmación antes de guardar (RF-04)
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const confirmado = await showConfirm({
-        title: '¿Confirmar venta?',
-        message: `Cliente: ${clienteData.nombre}\nDocumento: ${clienteData.documento}\nTotal: ${formatCurrency(total)}\nProductos: ${cart.length}`,
-        type: 'info',
-        confirmText: 'Confirmar venta',
-        cancelText: 'Cancelar'
-    });
-
-    if (!confirmado) return;
+    if (!clienteData) {
+        // Restaurar modal si se canceló
+        modal.innerHTML = originalModalContent;
+        return;
+    }
 
     try {
-        // 1. Crear o buscar cliente
+        // 1. Crear o actualizar cliente PRIMERO
         let clienteResponse = await fetch(`${API_URL}/clientes/`, {
             method: 'POST',
             headers: getAuthHeaders(),
@@ -317,19 +338,49 @@ async function saveCart() {
 
         const clienteResult = await clienteResponse.json();
         if (!clienteResult.success) {
+            // Restaurar modal antes de mostrar error
+            modal.innerHTML = originalModalContent;
             showError('No se pudo registrar el cliente: ' + clienteResult.message, 'Error');
             return;
         }
 
+        // 2. Buscar cliente actualizado desde el servidor para tener datos frescos
+        const clienteActualizado = await buscarClientePorDocumento(clienteData.documento);
+        const clienteFinal = clienteActualizado || clienteResult.data;
+
+        // 3. Restaurar el modal ANTES de la confirmación
+        // Eliminar el modal completo y dejar que initNotifications lo recree
+        overlay.remove();
+
+        // Esperar un momento para que el DOM se limpie
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Reinicializar el modal con initNotifications
+        initNotifications();
+
+        // 4. Confirmación antes de guardar (RF-04) con datos frescos del servidor
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const mensajeConfirmacion = `Cliente: ${clienteFinal.nombre}\nDocumento: ${clienteFinal.documento}${clienteFinal.email ? `\nEmail: ${clienteFinal.email}` : ''}\nTotal: ${formatCurrency(total)}\nProductos: ${cart.length}`;
+        const confirmado = await showConfirm({
+            title: '¿Confirmar venta?',
+            message: mensajeConfirmacion,
+            type: 'info',
+            confirmText: 'Confirmar venta',
+            cancelText: 'Cancelar'
+        });
+
+        if (!confirmado) return;
+
         // Emitir evento de cliente creado/actualizado
         if (clienteResult.message === 'Cliente actualizado') {
+            console.log('[VentaController] Emitiendo evento CLIENTE_ACTUALIZADO:', clienteResult.data);
             EventBus.emit(Events.CLIENTE_ACTUALIZADO, clienteResult.data);
         } else if (clienteResult.message === 'Cliente registrado exitosamente') {
+            console.log('[VentaController] Emitiendo evento CLIENTE_CREADO:', clienteResult.data);
             EventBus.emit(Events.CLIENTE_CREADO, clienteResult.data);
         }
 
-        // 2. Crear la venta
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        // 4. Crear la venta
         const usuario = JSON.parse(localStorage.getItem('usuario'));
 
         const ventaResponse = await fetch(`${API_URL}/ventas/`, {
