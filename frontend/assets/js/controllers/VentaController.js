@@ -232,8 +232,8 @@ function mostrarFormularioCliente() {
                 nombreInput.value = cliente.nombre || '';
                 telefonoInput.value = cliente.telefono || '';
                 emailInput.value = cliente.email || '';
-                statusDiv.innerHTML = '<span style="color: #059669;">✓ Cliente encontrado</span>';
-                nombreInput.focus();
+                statusDiv.innerHTML = '<span style="color: #059669;">✓ Cliente encontrado - Puedes actualizar teléfono/email</span>';
+                telefonoInput.focus();
             } else {
                 nombreInput.value = '';
                 telefonoInput.value = '';
@@ -319,6 +319,13 @@ async function saveCart() {
         if (!clienteResult.success) {
             showError('No se pudo registrar el cliente: ' + clienteResult.message, 'Error');
             return;
+        }
+
+        // Emitir evento de cliente creado/actualizado
+        if (clienteResult.message === 'Cliente actualizado') {
+            EventBus.emit(Events.CLIENTE_ACTUALIZADO, clienteResult.data);
+        } else if (clienteResult.message === 'Cliente registrado exitosamente') {
+            EventBus.emit(Events.CLIENTE_CREADO, clienteResult.data);
         }
 
         // 2. Crear la venta

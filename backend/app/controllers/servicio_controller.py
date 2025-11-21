@@ -60,7 +60,7 @@ class ServicioController:
             cursor.execute(
                 """
                 SELECT s.*, c.nombre as nombre_cliente, c.telefono as telefono_cliente,
-                       u.username as nombre_usuario
+                       c.email as email_cliente, u.username as nombre_usuario
                 FROM servicios s
                 JOIN clientes c ON s.id_cliente = c.id_cliente
                 JOIN usuarios u ON s.id_usuario = u.id_usuario
@@ -98,7 +98,7 @@ class ServicioController:
                 SELECT s.id_servicio, s.id_usuario, s.id_cliente, s.consola,
                        s.descripcion, s.estado, s.costo, s.pagado, s.fecha_ingreso, s.fecha_entrega,
                        c.nombre as nombre_cliente, c.documento as documento_cliente,
-                       c.telefono as telefono_cliente,
+                       c.telefono as telefono_cliente, c.email as email_cliente,
                        u.username as nombre_usuario,
                        EXTRACT(DAY FROM (COALESCE(s.fecha_entrega, NOW()) - s.fecha_ingreso)) as dias_en_servicio
                 FROM servicios s
@@ -147,7 +147,7 @@ class ServicioController:
                 SELECT s.id_servicio, s.id_usuario, s.id_cliente, s.consola,
                        s.descripcion, s.estado, s.costo, s.pagado, s.fecha_ingreso, s.fecha_entrega,
                        c.nombre as nombre_cliente, c.documento as documento_cliente,
-                       c.telefono as telefono_cliente, c.email,
+                       c.telefono as telefono_cliente, c.email as email_cliente,
                        u.username as nombre_usuario,
                        EXTRACT(DAY FROM (COALESCE(s.fecha_entrega, NOW()) - s.fecha_ingreso)) as dias_en_servicio
                 FROM servicios s
@@ -236,7 +236,7 @@ class ServicioController:
             cursor.execute(
                 """
                 SELECT s.*, c.nombre as nombre_cliente, c.telefono as telefono_cliente,
-                       u.username as nombre_usuario
+                       c.email as email_cliente, u.username as nombre_usuario
                 FROM servicios s
                 JOIN clientes c ON s.id_cliente = c.id_cliente
                 JOIN usuarios u ON s.id_usuario = u.id_usuario
@@ -311,7 +311,7 @@ class ServicioController:
                 SELECT s.id_servicio, s.id_usuario, s.id_cliente, s.consola,
                        s.descripcion, s.estado, s.costo, s.fecha_ingreso, s.fecha_entrega,
                        c.nombre as nombre_cliente, c.telefono as telefono_cliente,
-                       u.username as nombre_usuario
+                       c.email as email_cliente, u.username as nombre_usuario
                 FROM servicios s
                 JOIN clientes c ON s.id_cliente = c.id_cliente
                 JOIN usuarios u ON s.id_usuario = u.id_usuario

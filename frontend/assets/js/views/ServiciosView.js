@@ -227,10 +227,18 @@ function mostrarModalServicio(servicio = null) {
                     </label>
                     <input type="tel" id="servicioClienteTelefono" inputmode="numeric"
                         value="${esEdicion && servicio.telefono_cliente ? servicio.telefono_cliente : ''}"
-                        ${esEdicion ? 'readonly' : ''}
                         placeholder="Ej: 3001234567"
-                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'}; ${esEdicion ? 'background: #f7fafc; cursor: not-allowed;' : ''}">
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'};">
                     <div id="servicioClienteTelefonoHint" style="font-size: ${isMobile ? '9px' : '10px'}; color: #718096; margin-top: 2px; display: none;">Cliente nuevo - ingresa el teléfono</div>
+                </div>
+                <div style="margin-bottom: ${isMobile ? '10px' : '12px'};">
+                    <label style="display: block; font-size: ${isMobile ? '10px' : '11px'}; font-weight: 600; color: #4a5568; margin-bottom: 4px;">
+                        Email (opcional)
+                    </label>
+                    <input type="email" id="servicioClienteEmail" inputmode="email"
+                        value="${esEdicion && servicio.email_cliente ? servicio.email_cliente : ''}"
+                        placeholder="cliente@ejemplo.com"
+                        style="width: 100%; padding: ${isMobile ? '10px 8px' : '8px 10px'}; border: 1px solid #e2e8f0; border-radius: 6px; font-size: ${isMobile ? '14px' : '13px'};">
                 </div>
                 <input type="hidden" id="servicioClienteId" value="${esEdicion && servicio.id_cliente ? servicio.id_cliente : ''}">
 
@@ -358,6 +366,7 @@ async function buscarClienteParaServicio() {
     const nombreInput = document.getElementById('servicioClienteNombre');
     const clienteIdInput = document.getElementById('servicioClienteId');
     const telefonoInput = document.getElementById('servicioClienteTelefono');
+    const emailInput = document.getElementById('servicioClienteEmail');
     const telefonoHint = document.getElementById('servicioClienteTelefonoHint');
 
     if (!documento) {
@@ -378,21 +387,27 @@ async function buscarClienteParaServicio() {
         if (response.ok) {
             const data = await response.json();
             if (data.success && data.cliente) {
-                // Cliente encontrado - mostrar datos y hacer readonly
+                // Cliente encontrado - cargar datos pero permitir edición de teléfono y email
                 nombreInput.value = data.cliente.nombre;
                 nombreInput.setAttribute('readonly', 'readonly');
                 nombreInput.style.background = '#f7fafc';
                 nombreInput.style.cursor = 'not-allowed';
 
+                // Teléfono y email editables para permitir actualización
                 telefonoInput.value = data.cliente.telefono || '';
-                telefonoInput.setAttribute('readonly', 'readonly');
-                telefonoInput.style.background = '#f7fafc';
-                telefonoInput.style.cursor = 'not-allowed';
-                telefonoInput.removeAttribute('required');
+                telefonoInput.removeAttribute('readonly');
+                telefonoInput.style.background = '';
+                telefonoInput.style.cursor = '';
+                telefonoInput.setAttribute('required', 'required');
+
+                emailInput.value = data.cliente.email || '';
+                emailInput.removeAttribute('readonly');
+                emailInput.style.background = '';
+                emailInput.style.cursor = '';
 
                 clienteIdInput.value = data.cliente.id_cliente;
                 telefonoHint.style.display = 'none';
-                statusDiv.innerHTML = '<span style="color: #10b981;">✓ Cliente encontrado</span>';
+                statusDiv.innerHTML = '<span style="color: #10b981;">✓ Cliente encontrado - Puedes actualizar teléfono/email</span>';
             } else {
                 // Cliente nuevo - habilitar campos para edición
                 nombreInput.value = '';
@@ -406,6 +421,11 @@ async function buscarClienteParaServicio() {
                 telefonoInput.style.background = '';
                 telefonoInput.style.cursor = '';
                 telefonoInput.setAttribute('required', 'required');
+
+                emailInput.value = '';
+                emailInput.removeAttribute('readonly');
+                emailInput.style.background = '';
+                emailInput.style.cursor = '';
 
                 clienteIdInput.value = '';
                 telefonoHint.style.display = 'block';
@@ -425,6 +445,11 @@ async function buscarClienteParaServicio() {
             telefonoInput.style.cursor = '';
             telefonoInput.setAttribute('required', 'required');
 
+            emailInput.value = '';
+            emailInput.removeAttribute('readonly');
+            emailInput.style.background = '';
+            emailInput.style.cursor = '';
+
             clienteIdInput.value = '';
             telefonoHint.style.display = 'block';
             statusDiv.innerHTML = '<span style="color: #f59e0b;">ℹ️ Cliente nuevo - Ingresa nombre y teléfono</span>';
@@ -441,6 +466,7 @@ async function guardarServicio() {
     const nombre = document.getElementById('servicioClienteNombre').value.trim();
     let idCliente = document.getElementById('servicioClienteId').value;
     const telefono = document.getElementById('servicioClienteTelefono').value.trim();
+    const email = document.getElementById('servicioClienteEmail').value.trim();
     const consola = document.getElementById('servicioConsola').value.trim();
     const descripcion = document.getElementById('servicioDescripcion').value.trim();
     const costo = document.getElementById('servicioCosto').value;
@@ -472,7 +498,8 @@ async function guardarServicio() {
                 body: JSON.stringify({
                     nombre: nombre,
                     documento: documento,
-                    telefono: telefono
+                    telefono: telefono,
+                    email: email || null
                 })
             });
 

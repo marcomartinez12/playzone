@@ -34,7 +34,43 @@ class ClienteController:
             existing = cursor.fetchone()
 
             if existing:
-                # Retornar el cliente existente en lugar de error
+                # Actualizar datos del cliente existente si vienen nuevos valores
+                updates = []
+                params = []
+
+                if cliente.nombre:
+                    updates.append("nombre = %s")
+                    params.append(cliente.nombre)
+
+                if cliente.telefono:
+                    updates.append("telefono = %s")
+                    params.append(cliente.telefono)
+
+                if cliente.email:
+                    updates.append("email = %s")
+                    params.append(cliente.email)
+
+                # Si hay algo que actualizar, hacerlo
+                if updates:
+                    params.append(cliente.documento)
+                    cursor.execute(
+                        f"""
+                        UPDATE clientes
+                        SET {', '.join(updates)}
+                        WHERE documento = %s
+                        RETURNING id_cliente, nombre, documento, telefono, email, fecha_registro
+                        """,
+                        params
+                    )
+                    updated_cliente = cursor.fetchone()
+                    return {
+                        "success": True,
+                        "message": "Cliente actualizado",
+                        "id_cliente": updated_cliente["id_cliente"],
+                        "data": dict(updated_cliente)
+                    }
+
+                # Si no hay nada que actualizar, retornar el existente
                 cursor.execute(
                     """
                     SELECT id_cliente, nombre, documento, telefono, email, fecha_registro
