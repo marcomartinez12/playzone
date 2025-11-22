@@ -102,7 +102,7 @@ async function cargarEstadisticasDashboard() {
             ingresosMes: 0,
             ingresosVentas: 0,
             ingresosServicios: 0,
-            productoMasVendido: { nombre: 'N/A', cantidad: 0 }
+            productoMasVendido: { nombre: 'N/A', cantidad: 0, imagen_url: null }
         });
     }
 }
@@ -153,24 +153,38 @@ function calcularIngresosServiciosMes(servicios) {
 // Obtener producto más vendido
 function obtenerProductoMasVendido(ventas) {
     const conteo = {};
+    const productosInfo = {}; // Guardar info completa del producto
 
     ventas.forEach(venta => {
         if (venta.productos && Array.isArray(venta.productos)) {
             venta.productos.forEach(item => {
-                const nombre = item.nombre || 'Producto';
-                conteo[nombre] = (conteo[nombre] || 0) + (item.cantidad || 1);
+                const id = item.id_producto || item.id;
+                if (id) {
+                    if (!conteo[id]) {
+                        conteo[id] = 0;
+                        productosInfo[id] = {
+                            nombre: item.nombre || 'Producto',
+                            imagen_url: item.imagen_url || null
+                        };
+                    }
+                    conteo[id] += (item.cantidad || 1);
+                }
             });
         }
     });
 
     const entries = Object.entries(conteo);
-    if (entries.length === 0) return { nombre: 'N/A', cantidad: 0 };
+    if (entries.length === 0) return { nombre: 'N/A', cantidad: 0, imagen_url: null };
 
-    const [nombre, cantidad] = entries.reduce((max, current) =>
+    const [id, cantidad] = entries.reduce((max, current) =>
         current[1] > max[1] ? current : max
     );
 
-    return { nombre, cantidad };
+    return {
+        nombre: productosInfo[id].nombre,
+        cantidad,
+        imagen_url: productosInfo[id].imagen_url
+    };
 }
 
 // Mostrar estadísticas en el dashboard
@@ -201,7 +215,13 @@ function mostrarEstadisticas(stats) {
     // Mostrar producto más vendido
     const productoMasVendido = document.getElementById('producto-mas-vendido');
     if (productoMasVendido) {
+        const imagenHTML = stats.productoMasVendido.imagen_url
+            ? `<img src="${stats.productoMasVendido.imagen_url}" alt="${stats.productoMasVendido.nombre}"
+                    style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">`
+            : `<div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 12px;">📦</div>`;
+
         productoMasVendido.innerHTML = `
+            ${imagenHTML}
             <div style="font-size: 24px; font-weight: 700; color: #0066cc;">${stats.productoMasVendido.nombre}</div>
             <div style="color: #718096; font-size: 14px; margin-top: 4px;">${stats.productoMasVendido.cantidad} unidades vendidas</div>
         `;

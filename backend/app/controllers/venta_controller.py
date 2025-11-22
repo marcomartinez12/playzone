@@ -167,9 +167,9 @@ class VentaController:
                 # Obtener detalles de productos de esta venta
                 cursor.execute(
                     """
-                    SELECT dv.cantidad, dv.precio_unitario,
+                    SELECT dv.id_producto, dv.cantidad, dv.precio_unitario,
                            (dv.cantidad * dv.precio_unitario) as subtotal,
-                           p.nombre, p.codigo, p.categoria
+                           p.nombre, p.codigo, p.categoria, p.imagen_url
                     FROM detalle_ventas dv
                     JOIN productos p ON dv.id_producto = p.id_producto
                     WHERE dv.id_venta = %s
@@ -224,7 +224,7 @@ class VentaController:
             cursor.execute(
                 """
                 SELECT dv.id_detalle, dv.id_producto, dv.cantidad, dv.precio_unitario,
-                       p.nombre as nombre_producto, p.codigo,
+                       p.nombre as nombre_producto, p.codigo, p.imagen_url,
                        (dv.cantidad * dv.precio_unitario) as subtotal
                 FROM detalle_ventas dv
                 JOIN productos p ON dv.id_producto = p.id_producto

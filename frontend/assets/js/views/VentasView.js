@@ -3,6 +3,7 @@
 // ============================================
 
 let ventasData = [];
+let ventasOriginales = []; // Para guardar todas las ventas sin filtrar
 
 // Cargar ventas del día
 async function cargarVentasDelDia() {
@@ -36,6 +37,7 @@ async function cargarVentasDelDia() {
         });
         console.log('Ventas response status:', ventasResponse.status);
         ventasData = await ventasResponse.json();
+        ventasOriginales = [...ventasData]; // Guardar copia de todas las ventas
         console.log('Ventas data:', ventasData);
 
         renderVentasTable(ventasData);
@@ -313,6 +315,67 @@ async function descargarReporte() {
         console.error('Error descargando reporte:', error);
         showError('Error al descargar el reporte PDF', 'Error de descarga');
     }
+}
+
+// Filtrar ventas por rango de fechas
+function filtrarVentasPorFecha() {
+    const fechaInicial = document.getElementById('fechaInicial').value;
+    const fechaFinal = document.getElementById('fechaFinal').value;
+
+    if (!fechaInicial && !fechaFinal) {
+        showWarning('Selecciona al menos una fecha para filtrar', 'Filtro vacío');
+        return;
+    }
+
+    let ventasFiltradas = [...ventasOriginales];
+
+    if (fechaInicial) {
+        const fechaIni = new Date(fechaInicial + 'T00:00:00');
+        ventasFiltradas = ventasFiltradas.filter(venta => {
+            const fechaVenta = new Date(venta.fecha_venta);
+            return fechaVenta >= fechaIni;
+        });
+    }
+
+    if (fechaFinal) {
+        const fechaFin = new Date(fechaFinal + 'T23:59:59');
+        ventasFiltradas = ventasFiltradas.filter(venta => {
+            const fechaVenta = new Date(venta.fecha_venta);
+            return fechaVenta <= fechaFin;
+        });
+    }
+
+    ventasData = ventasFiltradas;
+    renderVentasTable(ventasFiltradas);
+
+    // Actualizar estadísticas con las ventas filtradas
+    actualizarEstadisticasFiltradas(ventasFiltradas);
+
+    showSuccess(`Se encontraron ${ventasFiltradas.length} venta(s)`, 'Filtro aplicado');
+}
+
+// Limpiar filtros y mostrar todas las ventas
+function limpiarFiltros() {
+    document.getElementById('fechaInicial').value = '';
+    document.getElementById('fechaFinal').value = '';
+    ventasData = [...ventasOriginales];
+    renderVentasTable(ventasOriginales);
+
+    // Recargar estadísticas completas
+    cargarVentasDelDia();
+
+    showInfo('Mostrando todas las ventas', 'Filtros limpiados');
+}
+
+// Actualizar estadísticas basadas en ventas filtradas
+function actualizarEstadisticasFiltradas(ventas) {
+    const totalVentas = ventas.length;
+    const montoTotal = ventas.reduce((sum, venta) => sum + parseFloat(venta.total || 0), 0);
+    const productosVendidos = ventas.reduce((sum, venta) => sum + parseInt(venta.total_productos || 0), 0);
+
+    document.getElementById('ventasHoy').textContent = totalVentas;
+    document.getElementById('totalHoy').textContent = formatCurrency(montoTotal);
+    document.getElementById('productosVendidos').textContent = productosVendidos;
 }
 
 // Cargar ventas cuando se accede a la sección
