@@ -610,6 +610,12 @@ async function actualizarServicio() {
         return;
     }
 
+    // Validar que si el estado es "Entregado", el servicio debe estar pagado
+    if (estado === 'Entregado' && !pagado) {
+        showWarning('No se puede marcar como Entregado un servicio que no ha sido pagado', 'Pago Pendiente');
+        return;
+    }
+
     try {
         const token = localStorage.getItem('token');
 
