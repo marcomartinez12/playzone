@@ -77,7 +77,7 @@ async function cargarEstadisticasDashboard() {
 
         const estadisticas = {
             totalProductos: productosArray.length,
-            stockBajo: productosArray.filter(p => p.stock_bajo === true || p.cantidad < 10).length,
+            stockBajo: productosArray.filter(p => p.stock_bajo === true || p.cantidad <= 5).length,
             ventasHoy: filtrarVentasHoy(ventasArray).length,
             totalVentas: ventasArray.length,
             serviciosPendientes: serviciosArray.filter(s => s.estado === 'En reparacion').length,

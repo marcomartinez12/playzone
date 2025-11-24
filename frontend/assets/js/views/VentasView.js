@@ -355,7 +355,7 @@ function filtrarVentasPorFecha() {
 }
 
 // Limpiar filtros y mostrar todas las ventas
-function limpiarFiltros() {
+function limpiarFiltrosVentas() {
     document.getElementById('fechaInicial').value = '';
     document.getElementById('fechaFinal').value = '';
     ventasData = [...ventasOriginales];

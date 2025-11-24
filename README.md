@@ -27,7 +27,7 @@ Sistema integral de gestión de inventario desarrollado para **Universidad Popul
   - **Videojuegos:** RAWG API (base de datos especializada)
   - **Consolas y Accesorios:** Serper.dev (Google Images)
 - ✅ Botón de búsqueda manual 🔍 para encontrar imágenes
-- ✅ Alertas de stock bajo (< 10 unidades)
+- ✅ Alertas de stock bajo (≤ 5 unidades)
 - ✅ Filtros avanzados por categoría, precio y stock
 - ✅ Generación automática de códigos únicos
 

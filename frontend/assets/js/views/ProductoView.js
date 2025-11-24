@@ -260,8 +260,8 @@ function mostrarProductosEnTabla(productos) {
     };
 
     tbody.innerHTML = productos.map(producto => {
-        // Simplificado: rojo (0), naranja (1-9), verde (10+)
-        const stockColor = producto.cantidad === 0 ? '#ef4444' : producto.cantidad < 10 ? '#f59e0b' : '#10b981';
+        // Simplificado: rojo (0), naranja (1-5), verde (6+)
+        const stockColor = producto.cantidad === 0 ? '#ef4444' : producto.cantidad <= 5 ? '#f59e0b' : '#10b981';
         const categoriaBg = categoriaColors[producto.categoria] || '#6b7280';
 
         return `
@@ -290,7 +290,8 @@ function mostrarProductosEnTabla(productos) {
             </td>
 
             <td style="padding: 16px 20px; max-width: 200px;">
-                <span style="color: #718096; font-size: 13px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <span style="color: #718096; font-size: 13px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;"
+                      title="${producto.descripcion || 'Sin descripción'}">
                     ${producto.descripcion || 'Sin descripción'}
                 </span>
             </td>
@@ -548,9 +549,9 @@ function aplicarFiltros() {
         productosFiltrados = productosFiltrados.filter(producto => {
             switch (estadoStock) {
                 case 'disponible':
-                    return producto.cantidad >= 10;
+                    return producto.cantidad > 5;
                 case 'bajo':
-                    return producto.cantidad >= 1 && producto.cantidad < 10;
+                    return producto.cantidad >= 1 && producto.cantidad <= 5;
                 case 'agotado':
                     return producto.cantidad === 0;
                 default:
@@ -562,8 +563,8 @@ function aplicarFiltros() {
     mostrarProductosEnTabla(productosFiltrados);
 }
 
-// RF-09: Limpiar todos los filtros
-function limpiarFiltros() {
+// RF-09: Limpiar todos los filtros de productos
+function limpiarFiltrosProductos() {
     const searchInput = document.getElementById('searchProductInput');
     const precioMin = document.getElementById('filtroPrecioMin');
     const precioMax = document.getElementById('filtroPrecioMax');
@@ -575,6 +576,7 @@ function limpiarFiltros() {
     if (filtroStock) filtroStock.value = '';
 
     mostrarProductosEnTabla(todosLosProductos);
+    showInfo('Mostrando todos los productos', 'Filtros limpiados');
 }
 
 // ============================================
@@ -583,8 +585,8 @@ function limpiarFiltros() {
 
 // Verificar y mostrar alertas de stock bajo
 function verificarAlertasStock(productos) {
-    const stockBajo = 10; // Nivel mínimo de stock
-    const productosBajoStock = productos.filter(p => p.cantidad < stockBajo);
+    const stockBajo = 5; // Nivel mínimo de stock
+    const productosBajoStock = productos.filter(p => p.cantidad <= stockBajo);
 
     const alertaPanel = document.getElementById('alertaStockPanel');
     const alertaCount = document.getElementById('alertaStockCount');
@@ -601,8 +603,8 @@ function verificarAlertasStock(productos) {
 
 // Mostrar solo productos con stock bajo
 function mostrarProductosBajoStock() {
-    const stockBajo = 10;
-    const productosBajoStock = todosLosProductos.filter(p => p.cantidad < stockBajo);
+    const stockBajo = 5;
+    const productosBajoStock = todosLosProductos.filter(p => p.cantidad <= stockBajo);
 
     if (productosBajoStock.length === 0) {
         showSuccess('¡Excelente! Todos los productos tienen stock suficiente', 'Stock Saludable');
